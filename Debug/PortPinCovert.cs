@@ -82,5 +82,29 @@ namespace Debug
             IniHelper iniHelper = new IniHelper();
             iniHelper.IniUpdate2File(this);
         }
+
+        private void tb_chkSumInput_TextChanged(object sender, EventArgs e) {
+            try {
+                byte sum = 0;
+                string inputStr = tb_chkSumInput.Text.ToString();
+                string[] inputArrary = inputStr.Split(' ');
+                foreach(var hex in inputArrary) {
+                    if(string.IsNullOrWhiteSpace(hex)) {
+                        continue;
+                    }
+                    if(hex.Length > 2) {
+                        tb_chkSumOutput.Text = "parse err";
+                        return;
+                    }
+                    byte valDec = (byte)System.Convert.ToInt32(hex, 16);
+                    sum += valDec;
+                }
+                sum = (byte)(256 - sum);
+                tb_chkSumOutput.Text = sum.ToString("X");
+                Clipboard.SetText(tb_chkSumOutput.Text);
+            } catch(Exception ex) {
+                Console.WriteLine(ex.Message);
+            }
+        }
     }
 }
