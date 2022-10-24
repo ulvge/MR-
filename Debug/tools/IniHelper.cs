@@ -69,12 +69,15 @@ namespace Debug.tools {
             WritePrivateProfileString(section, key, val, filename);
         }
 
-        List<TextBox> textBoxList = new List<TextBox>();
-        public List<TextBox> FandAllTextBoxControls(Control control) {
+        List<object> textBoxList = new List<object>();
+        public List<object> FandAllTextBoxControls(Control control) {
             foreach(Control ct in control.Controls) {
                 //调用AddControlInofToListBox方法获取控件信息
                 if(ct is TextBox) {
                     textBoxList.Add((TextBox)ct);
+                }
+                if(ct is ComboBox) {
+                    textBoxList.Add((ComboBox)ct);
                 }
                 //C#只遍历窗体的子控件，不遍历孙控件
                 //当窗体上的控件有子控件时，需要用递归的方法遍历，才能全部列出窗体上的控件
@@ -96,8 +99,15 @@ namespace Debug.tools {
             textBoxList.Clear();
             textBoxList = FandAllTextBoxControls(form);
             foreach(var tb in textBoxList) {
-                string readVal = getString(form.Text, tb.Name, string.Empty,INI_FILE_NAME);
-                tb.Text = readVal;
+                if(tb is TextBox) {
+                    TextBox t = (TextBox)tb; 
+                    string readVal = getString(form.Text, t.Name, string.Empty, INI_FILE_NAME);
+                    t.Text = readVal;
+                } else if(tb is ComboBox) {
+                    ComboBox c = (ComboBox)tb;
+                    string readVal = getString(form.Text, c.Name, string.Empty, INI_FILE_NAME);
+                    c.Text = readVal;
+                }
             }
         }
         public void IniUpdate2File(Form form, string iniFileName = INI_FILE_NAME) {
@@ -105,7 +115,13 @@ namespace Debug.tools {
             textBoxList = FandAllTextBoxControls(form);
             foreach(var tb in textBoxList) {
                 //write vals to ini
-                writeString(form.Text, tb.Name, tb.Text.ToString(), iniFileName);
+                if(tb is TextBox) {
+                    TextBox t = (TextBox)tb;
+                    writeString(form.Text, t.Name, t.Text.ToString(), iniFileName);
+                } else if(tb is ComboBox) {
+                    ComboBox c = (ComboBox)tb;
+                    writeString(form.Text, c.Name, c.Text.ToString(), iniFileName);
+                }
             }
         }
     }

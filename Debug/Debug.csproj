@@ -55,6 +55,8 @@
     <Compile Include="CPLDTable.Designer.cs">
       <DependentUpon>CPLDTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="IPMB\IPMBHelper.cs" />
+    <Compile Include="IPMB\NetFun.cs" />
     <Compile Include="tools\IniHelper.cs" />
     <Compile Include="tools\InterfaceINI.cs" />
     <Compile Include="Form1.cs">
