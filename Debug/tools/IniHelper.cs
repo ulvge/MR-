@@ -79,6 +79,9 @@ namespace Debug.tools {
                 if(ct is ComboBox) {
                     textBoxList.Add((ComboBox)ct);
                 }
+                if(ct is CheckBox) {
+                    textBoxList.Add((CheckBox)ct);
+                }
                 //C#只遍历窗体的子控件，不遍历孙控件
                 //当窗体上的控件有子控件时，需要用递归的方法遍历，才能全部列出窗体上的控件
                 if(ct.HasChildren) {
@@ -96,18 +99,26 @@ namespace Debug.tools {
             // find all vals by read all para from ini, 
             // foreach all controls from From
             // fill paras into controls
-            textBoxList.Clear();
-            textBoxList = FandAllTextBoxControls(form);
-            foreach(var tb in textBoxList) {
-                if(tb is TextBox) {
-                    TextBox t = (TextBox)tb; 
-                    string readVal = getString(form.Text, t.Name, string.Empty, INI_FILE_NAME);
-                    t.Text = readVal;
-                } else if(tb is ComboBox) {
-                    ComboBox c = (ComboBox)tb;
-                    string readVal = getString(form.Text, c.Name, string.Empty, INI_FILE_NAME);
-                    c.Text = readVal;
+            try {
+                textBoxList.Clear();
+                textBoxList = FandAllTextBoxControls(form);
+                foreach(var tb in textBoxList) {
+                    if(tb is TextBox) {
+                        TextBox t = (TextBox)tb;
+                        string readVal = getString(form.Text, t.Name, string.Empty, INI_FILE_NAME);
+                        t.Text = readVal;
+                    } else if(tb is ComboBox) {
+                        ComboBox c = (ComboBox)tb;
+                        string readVal = getString(form.Text, c.Name, string.Empty, INI_FILE_NAME);
+                        c.Text = readVal;
+                    } else if(tb is CheckBox) {
+                        CheckBox c = (CheckBox)tb;
+                        string readVal = getString(form.Text, c.Name, string.Empty, INI_FILE_NAME);
+                        c.Checked = Boolean.Parse(readVal);
+                    }
                 }
+            } catch(Exception ex) {
+                Console.WriteLine(ex.Message);
             }
         }
         public void IniUpdate2File(Form form, string iniFileName = INI_FILE_NAME) {
@@ -121,6 +132,9 @@ namespace Debug.tools {
                 } else if(tb is ComboBox) {
                     ComboBox c = (ComboBox)tb;
                     writeString(form.Text, c.Name, c.Text.ToString(), iniFileName);
+                } else if(tb is CheckBox) {
+                    CheckBox c = (CheckBox)tb;
+                    writeString(form.Text, c.Name, c.Checked.ToString(), iniFileName);
                 }
             }
         }
