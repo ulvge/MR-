@@ -14,14 +14,24 @@ namespace Debug.IPMB {
             new NetFuncDesc("CMD_GET_SENSOR_READING",       "0x2d"),
             new NetFuncDesc("CMD_SET_SENSOR_READING",       "0x30"),
         };
+
+        private static string g_ChassisCtrlDesc = "CHASSIS_POWER_OFF : 0" + "\n" +
+                                                  "CHASSIS_POWER_ON :  1" + "\n";
+
+
+        //private static NetFuncDesc[] g_ChassisCtrlDesc = new NetFuncDesc[] {
+        //    new NetFuncDesc("CHASSIS_POWER_OFF",            "0x00"),
+        //    new NetFuncDesc("CHASSIS_POWER_ON",             "0x01"),
+        //    new NetFuncDesc("CHASSIS_POWER_CYCLE",          "0x02"),
+        //    new NetFuncDesc("CHASSIS_POWER_RESET",          "0x03"),
+        //    new NetFuncDesc("CHASSIS_DIAGNOSTIC_INTERRUPT", "0x04"),
+        //    new NetFuncDesc("CHASSIS_SOFT_OFF",             "0x05"),
+        //    new NetFuncDesc("CHASSIS_SMI_INTERRUPT",        "0x06"),
+        //};
         private static NetFuncDesc[] g_ChassisDesc = new NetFuncDesc[] {
-            new NetFuncDesc("CHASSIS_POWER_OFF",            "0x00"),
-            new NetFuncDesc("CHASSIS_POWER_ON",             "0x01"),
-            new NetFuncDesc("CHASSIS_POWER_CYCLE",          "0x02"),
-            new NetFuncDesc("CHASSIS_POWER_RESET",          "0x03"),
-            new NetFuncDesc("CHASSIS_DIAGNOSTIC_INTERRUPT", "0x04"),
-            new NetFuncDesc("CHASSIS_SOFT_OFF",             "0x05"),
-            new NetFuncDesc("CHASSIS_SMI_INTERRUPT",        "0x06"),
+            new NetFuncDesc("CMD_CHASSIS_CONTROL",           "0x02", g_ChassisCtrlDesc),
+            new NetFuncDesc("CMD_CHASSIS_RESET",             "0x03"),
+            new NetFuncDesc("CMD_CHASSIS_IDENTIFY",          "0x04"),
         };
         private static NetFuncDesc[] g_AppDesc = new NetFuncDesc[] {
             new NetFuncDesc("CMD_GET_DEV_ID",       "0x01"),

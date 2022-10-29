@@ -194,6 +194,7 @@ namespace Debug
         private void cb_cmd_SelectedIndexChanged(object sender, EventArgs e) {
             UpdateCmd();
             string desc = NetFun.SumCmd_getDesc(cb_netFun.Text, cb_cmd.Text);
+            tb_data.Text = string.Empty;
             toolTip1.SetToolTip(tb_data, desc);
         }
     }

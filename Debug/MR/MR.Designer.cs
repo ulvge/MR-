@@ -45,6 +45,11 @@ namespace Debug {
             this.tbVoltSys = new System.Windows.Forms.TextBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.cb_Units2 = new System.Windows.Forms.ComboBox();
+            this.lb_Units2 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.tb_sensorName = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -52,6 +57,7 @@ namespace Debug {
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -62,7 +68,7 @@ namespace Debug {
             this.splitContainer1.BackColor = System.Drawing.Color.Gray;
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -83,7 +89,12 @@ namespace Debug {
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.splitContainer1.Panel2.Controls.Add(this.cb_Units2);
+            this.splitContainer1.Panel2.Controls.Add(this.dataGridView2);
             this.splitContainer1.Panel2.Controls.Add(this.dataGridView1);
+            this.splitContainer1.Panel2.Controls.Add(this.lb_Units2);
+            this.splitContainer1.Panel2.Controls.Add(this.label5);
+            this.splitContainer1.Panel2.Controls.Add(this.tb_sensorName);
             this.splitContainer1.Size = new System.Drawing.Size(1076, 474);
             this.splitContainer1.SplitterDistance = 418;
             this.splitContainer1.SplitterWidth = 2;
@@ -98,9 +109,9 @@ namespace Debug {
             this.groupBox1.Controls.Add(this.radioButton1);
             this.groupBox1.Controls.Add(this.radioButton2);
             this.groupBox1.Location = new System.Drawing.Point(31, 328);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox1.Size = new System.Drawing.Size(186, 122);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
@@ -109,7 +120,7 @@ namespace Debug {
             // textBox1
             // 
             this.textBox1.Location = new System.Drawing.Point(94, 78);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(2);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(76, 21);
             this.textBox1.TabIndex = 2;
@@ -118,7 +129,7 @@ namespace Debug {
             // 
             this.ref0.AutoSize = true;
             this.ref0.Location = new System.Drawing.Point(94, 19);
-            this.ref0.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.ref0.Margin = new System.Windows.Forms.Padding(2);
             this.ref0.Name = "ref0";
             this.ref0.Size = new System.Drawing.Size(54, 16);
             this.ref0.TabIndex = 1;
@@ -130,7 +141,7 @@ namespace Debug {
             // 
             this.radioButton4.AutoSize = true;
             this.radioButton4.Location = new System.Drawing.Point(4, 79);
-            this.radioButton4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.radioButton4.Margin = new System.Windows.Forms.Padding(2);
             this.radioButton4.Name = "radioButton4";
             this.radioButton4.Size = new System.Drawing.Size(59, 16);
             this.radioButton4.TabIndex = 0;
@@ -144,7 +155,7 @@ namespace Debug {
             // 
             this.radioButton3.AutoSize = true;
             this.radioButton3.Location = new System.Drawing.Point(4, 59);
-            this.radioButton3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.radioButton3.Margin = new System.Windows.Forms.Padding(2);
             this.radioButton3.Name = "radioButton3";
             this.radioButton3.Size = new System.Drawing.Size(47, 16);
             this.radioButton3.TabIndex = 0;
@@ -157,7 +168,7 @@ namespace Debug {
             // 
             this.radioButton1.AutoSize = true;
             this.radioButton1.Location = new System.Drawing.Point(4, 19);
-            this.radioButton1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.radioButton1.Margin = new System.Windows.Forms.Padding(2);
             this.radioButton1.Name = "radioButton1";
             this.radioButton1.Size = new System.Drawing.Size(65, 16);
             this.radioButton1.TabIndex = 0;
@@ -170,7 +181,7 @@ namespace Debug {
             // 
             this.radioButton2.AutoSize = true;
             this.radioButton2.Location = new System.Drawing.Point(4, 39);
-            this.radioButton2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.radioButton2.Margin = new System.Windows.Forms.Padding(2);
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(71, 16);
             this.radioButton2.TabIndex = 0;
@@ -184,7 +195,7 @@ namespace Debug {
             this.pictureBox1.Image = global::Debug.Properties.Resources.分压采样;
             this.pictureBox1.InitialImage = null;
             this.pictureBox1.Location = new System.Drawing.Point(31, 20);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(128, 127);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -195,7 +206,7 @@ namespace Debug {
             // 
             this.btCalc.Font = new System.Drawing.Font("宋体", 10F, System.Drawing.FontStyle.Bold);
             this.btCalc.Location = new System.Drawing.Point(236, 379);
-            this.btCalc.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btCalc.Margin = new System.Windows.Forms.Padding(2);
             this.btCalc.Name = "btCalc";
             this.btCalc.Size = new System.Drawing.Size(62, 36);
             this.btCalc.TabIndex = 5;
@@ -251,7 +262,7 @@ namespace Debug {
             // 
             this.tbR2.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tbR2.Location = new System.Drawing.Point(236, 282);
-            this.tbR2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbR2.Margin = new System.Windows.Forms.Padding(2);
             this.tbR2.Name = "tbR2";
             this.tbR2.Size = new System.Drawing.Size(76, 26);
             this.tbR2.TabIndex = 4;
@@ -261,7 +272,7 @@ namespace Debug {
             // 
             this.tbR1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tbR1.Location = new System.Drawing.Point(236, 241);
-            this.tbR1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbR1.Margin = new System.Windows.Forms.Padding(2);
             this.tbR1.Name = "tbR1";
             this.tbR1.Size = new System.Drawing.Size(76, 26);
             this.tbR1.TabIndex = 3;
@@ -271,7 +282,7 @@ namespace Debug {
             // 
             this.tbVoltRef.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tbVoltRef.Location = new System.Drawing.Point(236, 167);
-            this.tbVoltRef.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbVoltRef.Margin = new System.Windows.Forms.Padding(2);
             this.tbVoltRef.Name = "tbVoltRef";
             this.tbVoltRef.Size = new System.Drawing.Size(76, 26);
             this.tbVoltRef.TabIndex = 1;
@@ -281,7 +292,7 @@ namespace Debug {
             // 
             this.tbVoltSys.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tbVoltSys.Location = new System.Drawing.Point(236, 200);
-            this.tbVoltSys.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbVoltSys.Margin = new System.Windows.Forms.Padding(2);
             this.tbVoltSys.Name = "tbVoltSys";
             this.tbVoltSys.Size = new System.Drawing.Size(76, 26);
             this.tbVoltSys.TabIndex = 2;
@@ -296,13 +307,75 @@ namespace Debug {
             this.dataGridView1.ColumnHeadersHeight = 29;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Top;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dataGridView1.RowTemplate.Height = 27;
             this.dataGridView1.Size = new System.Drawing.Size(656, 236);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
+            // 
+            // dataGridView2
+            // 
+            this.dataGridView2.AllowUserToDeleteRows = false;
+            this.dataGridView2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView2.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dataGridView2.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            this.dataGridView2.ColumnHeadersHeight = 29;
+            this.dataGridView2.Location = new System.Drawing.Point(2, 236);
+            this.dataGridView2.Margin = new System.Windows.Forms.Padding(2);
+            this.dataGridView2.Name = "dataGridView2";
+            this.dataGridView2.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
+            this.dataGridView2.RowTemplate.Height = 27;
+            this.dataGridView2.Size = new System.Drawing.Size(375, 236);
+            this.dataGridView2.TabIndex = 1;
+            // 
+            // cb_Units2
+            // 
+            this.cb_Units2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cb_Units2.FormattingEnabled = true;
+            this.cb_Units2.ItemHeight = 12;
+            this.cb_Units2.Location = new System.Drawing.Point(482, 259);
+            this.cb_Units2.Name = "cb_Units2";
+            this.cb_Units2.Size = new System.Drawing.Size(151, 20);
+            this.cb_Units2.TabIndex = 27;
+            // 
+            // lb_Units2
+            // 
+            this.lb_Units2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lb_Units2.AutoSize = true;
+            this.lb_Units2.Font = new System.Drawing.Font("宋体", 10F, System.Drawing.FontStyle.Bold);
+            this.lb_Units2.Location = new System.Drawing.Point(381, 261);
+            this.lb_Units2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lb_Units2.Name = "lb_Units2";
+            this.lb_Units2.Size = new System.Drawing.Size(79, 14);
+            this.lb_Units2.TabIndex = 6;
+            this.lb_Units2.Text = "lb_Units2";
+            // 
+            // label5
+            // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("宋体", 10F, System.Drawing.FontStyle.Bold);
+            this.label5.Location = new System.Drawing.Point(381, 304);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(87, 14);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "sensorName";
+            // 
+            // tb_sensorName
+            // 
+            this.tb_sensorName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tb_sensorName.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.tb_sensorName.Location = new System.Drawing.Point(482, 292);
+            this.tb_sensorName.Margin = new System.Windows.Forms.Padding(2);
+            this.tb_sensorName.Name = "tb_sensorName";
+            this.tb_sensorName.Size = new System.Drawing.Size(151, 26);
+            this.tb_sensorName.TabIndex = 4;
             // 
             // MR
             // 
@@ -311,7 +384,7 @@ namespace Debug {
             this.ClientSize = new System.Drawing.Size(1076, 475);
             this.Controls.Add(this.splitContainer1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "MR";
             this.Text = "MR";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MR_FormClosing);
@@ -319,12 +392,14 @@ namespace Debug {
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -351,5 +426,10 @@ namespace Debug {
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.RadioButton radioButton4;
         private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.ComboBox cb_Units2;
+        private System.Windows.Forms.Label lb_Units2;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox tb_sensorName;
     }
 }

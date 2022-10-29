@@ -65,10 +65,10 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="MR.cs">
+    <Compile Include="MR\MR.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MR.Designer.cs">
+    <Compile Include="MR\MR.Designer.cs">
       <DependentUpon>MR.cs</DependentUpon>
     </Compile>
     <Compile Include="PortPinCovert.cs">
@@ -82,7 +82,7 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MR.resx">
+    <EmbeddedResource Include="MR\MR.resx">
       <DependentUpon>MR.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CPLDTable.resx">
