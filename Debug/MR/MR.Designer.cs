@@ -1,6 +1,6 @@
 ﻿
 namespace Debug {
-    partial class MR {
+    partial class MRForm {
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -43,13 +43,18 @@ namespace Debug {
             this.tbR1 = new System.Windows.Forms.TextBox();
             this.tbVoltRef = new System.Windows.Forms.TextBox();
             this.tbVoltSys = new System.Windows.Forms.TextBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.tb_SDR = new System.Windows.Forms.TextBox();
+            this.cb_sensorNum = new System.Windows.Forms.ComboBox();
             this.cb_Units2 = new System.Windows.Forms.ComboBox();
+            this.bt_CreateSDR = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             this.lb_Units2 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.tb_recoderID = new System.Windows.Forms.TextBox();
             this.tb_sensorName = new System.Windows.Forms.TextBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -57,7 +62,6 @@ namespace Debug {
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -89,13 +93,18 @@ namespace Debug {
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.splitContainer1.Panel2.Controls.Add(this.tb_SDR);
+            this.splitContainer1.Panel2.Controls.Add(this.cb_sensorNum);
             this.splitContainer1.Panel2.Controls.Add(this.cb_Units2);
-            this.splitContainer1.Panel2.Controls.Add(this.dataGridView2);
+            this.splitContainer1.Panel2.Controls.Add(this.bt_CreateSDR);
             this.splitContainer1.Panel2.Controls.Add(this.dataGridView1);
+            this.splitContainer1.Panel2.Controls.Add(this.label6);
+            this.splitContainer1.Panel2.Controls.Add(this.label7);
             this.splitContainer1.Panel2.Controls.Add(this.lb_Units2);
             this.splitContainer1.Panel2.Controls.Add(this.label5);
+            this.splitContainer1.Panel2.Controls.Add(this.tb_recoderID);
             this.splitContainer1.Panel2.Controls.Add(this.tb_sensorName);
-            this.splitContainer1.Size = new System.Drawing.Size(1076, 474);
+            this.splitContainer1.Size = new System.Drawing.Size(1105, 567);
             this.splitContainer1.SplitterDistance = 418;
             this.splitContainer1.SplitterWidth = 2;
             this.splitContainer1.TabIndex = 0;
@@ -298,6 +307,50 @@ namespace Debug {
             this.tbVoltSys.TabIndex = 2;
             this.toolTip1.SetToolTip(this.tbVoltSys, "比如P12，即12");
             // 
+            // tb_SDR
+            // 
+            this.tb_SDR.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tb_SDR.Location = new System.Drawing.Point(3, 249);
+            this.tb_SDR.Multiline = true;
+            this.tb_SDR.Name = "tb_SDR";
+            this.tb_SDR.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.tb_SDR.Size = new System.Drawing.Size(406, 315);
+            this.tb_SDR.TabIndex = 29;
+            // 
+            // cb_sensorNum
+            // 
+            this.cb_sensorNum.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cb_sensorNum.FormattingEnabled = true;
+            this.cb_sensorNum.ItemHeight = 12;
+            this.cb_sensorNum.Location = new System.Drawing.Point(515, 303);
+            this.cb_sensorNum.Name = "cb_sensorNum";
+            this.cb_sensorNum.Size = new System.Drawing.Size(151, 20);
+            this.cb_sensorNum.TabIndex = 27;
+            // 
+            // cb_Units2
+            // 
+            this.cb_Units2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cb_Units2.FormattingEnabled = true;
+            this.cb_Units2.ItemHeight = 12;
+            this.cb_Units2.Location = new System.Drawing.Point(515, 331);
+            this.cb_Units2.Name = "cb_Units2";
+            this.cb_Units2.Size = new System.Drawing.Size(151, 20);
+            this.cb_Units2.TabIndex = 27;
+            // 
+            // bt_CreateSDR
+            // 
+            this.bt_CreateSDR.Font = new System.Drawing.Font("宋体", 10F, System.Drawing.FontStyle.Bold);
+            this.bt_CreateSDR.Location = new System.Drawing.Point(573, 396);
+            this.bt_CreateSDR.Margin = new System.Windows.Forms.Padding(2);
+            this.bt_CreateSDR.Name = "bt_CreateSDR";
+            this.bt_CreateSDR.Size = new System.Drawing.Size(62, 36);
+            this.bt_CreateSDR.TabIndex = 5;
+            this.bt_CreateSDR.Text = "SDR";
+            this.bt_CreateSDR.UseVisualStyleBackColor = true;
+            this.bt_CreateSDR.Click += new System.EventHandler(this.bt_CreateSDR_Click);
+            // 
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToDeleteRows = false;
@@ -311,44 +364,40 @@ namespace Debug {
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
             this.dataGridView1.RowTemplate.Height = 27;
-            this.dataGridView1.Size = new System.Drawing.Size(656, 236);
+            this.dataGridView1.Size = new System.Drawing.Size(685, 236);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
-            // dataGridView2
+            // label6
             // 
-            this.dataGridView2.AllowUserToDeleteRows = false;
-            this.dataGridView2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridView2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridView2.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.dataGridView2.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            this.dataGridView2.ColumnHeadersHeight = 29;
-            this.dataGridView2.Location = new System.Drawing.Point(2, 236);
-            this.dataGridView2.Margin = new System.Windows.Forms.Padding(2);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
-            this.dataGridView2.RowTemplate.Height = 27;
-            this.dataGridView2.Size = new System.Drawing.Size(375, 236);
-            this.dataGridView2.TabIndex = 1;
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("宋体", 10F, System.Drawing.FontStyle.Bold);
+            this.label6.Location = new System.Drawing.Point(414, 266);
+            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(87, 14);
+            this.label6.TabIndex = 6;
+            this.label6.Text = "Recoder ID";
             // 
-            // cb_Units2
+            // label7
             // 
-            this.cb_Units2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cb_Units2.FormattingEnabled = true;
-            this.cb_Units2.ItemHeight = 12;
-            this.cb_Units2.Location = new System.Drawing.Point(482, 259);
-            this.cb_Units2.Name = "cb_Units2";
-            this.cb_Units2.Size = new System.Drawing.Size(151, 20);
-            this.cb_Units2.TabIndex = 27;
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("宋体", 10F, System.Drawing.FontStyle.Bold);
+            this.label7.Location = new System.Drawing.Point(414, 303);
+            this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(79, 14);
+            this.label7.TabIndex = 6;
+            this.label7.Text = "sensorNum";
             // 
             // lb_Units2
             // 
             this.lb_Units2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lb_Units2.AutoSize = true;
             this.lb_Units2.Font = new System.Drawing.Font("宋体", 10F, System.Drawing.FontStyle.Bold);
-            this.lb_Units2.Location = new System.Drawing.Point(381, 261);
+            this.lb_Units2.Location = new System.Drawing.Point(414, 333);
             this.lb_Units2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lb_Units2.Name = "lb_Units2";
             this.lb_Units2.Size = new System.Drawing.Size(79, 14);
@@ -360,32 +409,42 @@ namespace Debug {
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("宋体", 10F, System.Drawing.FontStyle.Bold);
-            this.label5.Location = new System.Drawing.Point(381, 304);
+            this.label5.Location = new System.Drawing.Point(414, 376);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(87, 14);
             this.label5.TabIndex = 5;
             this.label5.Text = "sensorName";
             // 
+            // tb_recoderID
+            // 
+            this.tb_recoderID.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tb_recoderID.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.tb_recoderID.Location = new System.Drawing.Point(515, 260);
+            this.tb_recoderID.Margin = new System.Windows.Forms.Padding(2);
+            this.tb_recoderID.Name = "tb_recoderID";
+            this.tb_recoderID.Size = new System.Drawing.Size(151, 26);
+            this.tb_recoderID.TabIndex = 4;
+            // 
             // tb_sensorName
             // 
             this.tb_sensorName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tb_sensorName.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tb_sensorName.Location = new System.Drawing.Point(482, 292);
+            this.tb_sensorName.Location = new System.Drawing.Point(515, 364);
             this.tb_sensorName.Margin = new System.Windows.Forms.Padding(2);
             this.tb_sensorName.Name = "tb_sensorName";
             this.tb_sensorName.Size = new System.Drawing.Size(151, 26);
             this.tb_sensorName.TabIndex = 4;
             // 
-            // MR
+            // MRForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1076, 475);
+            this.ClientSize = new System.Drawing.Size(1105, 568);
             this.Controls.Add(this.splitContainer1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(2);
-            this.Name = "MR";
+            this.Name = "MRForm";
             this.Text = "MR";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MR_FormClosing);
             this.Load += new System.EventHandler(this.PortPinCovert_Load);
@@ -399,7 +458,6 @@ namespace Debug {
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -411,7 +469,7 @@ namespace Debug {
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox tbR1;
         private System.Windows.Forms.TextBox tbVoltSys;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        public System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Button btCalc;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label3;
@@ -426,10 +484,15 @@ namespace Debug {
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.RadioButton radioButton4;
         private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.DataGridView dataGridView2;
-        private System.Windows.Forms.ComboBox cb_Units2;
         private System.Windows.Forms.Label lb_Units2;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox tb_sensorName;
+        private System.Windows.Forms.Button bt_CreateSDR;
+        private System.Windows.Forms.TextBox tb_SDR;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        public System.Windows.Forms.TextBox tb_recoderID;
+        public System.Windows.Forms.ComboBox cb_Units2;
+        public System.Windows.Forms.TextBox tb_sensorName;
+        public System.Windows.Forms.ComboBox cb_sensorNum;
     }
 }

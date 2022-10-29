@@ -13,19 +13,19 @@ D:\1Application\3Visio Studio\1Proj\Debug\Debug\obj\Debug\Debug.form.resources
 D:\1Application\3Visio Studio\1Proj\Debug\Debug\bin\Debug\Newtonsoft.Json.dll
 D:\1Application\3Visio Studio\1Proj\Debug\Debug\bin\Debug\Newtonsoft.Json.xml
 D:\1Application\3Visio Studio\1Proj\Debug\Debug\obj\Debug\Debug.csproj.CopyComplete
+P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\obj\Debug\Debug.form.resources
+P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\obj\Debug\Debug.CPLDTable.resources
+P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\obj\Debug\Debug.PortPinCovert.resources
+P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\obj\Debug\Debug.Properties.Resources.resources
+P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\obj\Debug\Debug.csproj.GenerateResource.cache
+P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\obj\Debug\Debug.csproj.CoreCompileInputs.cache
+P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\obj\Debug\Debug.MRForm.resources
 P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\bin\Debug\Debug.exe.config
 P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\bin\Debug\Debug.exe
 P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\bin\Debug\Debug.pdb
 P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\bin\Debug\Newtonsoft.Json.dll
 P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\bin\Debug\Newtonsoft.Json.xml
-P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\obj\Debug\Debug.csproj.AssemblyReference.cache
-P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\obj\Debug\Debug.form.resources
-P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\obj\Debug\Debug.MR.resources
-P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\obj\Debug\Debug.PortPinCovert.resources
-P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\obj\Debug\Debug.Properties.Resources.resources
-P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\obj\Debug\Debug.csproj.GenerateResource.cache
-P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\obj\Debug\Debug.csproj.CoreCompileInputs.cache
 P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\obj\Debug\Debug.csproj.CopyComplete
 P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\obj\Debug\Debug.exe
 P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\obj\Debug\Debug.pdb
-P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\obj\Debug\Debug.CPLDTable.resources
+P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\obj\Debug\Debug.csproj.AssemblyReference.cache

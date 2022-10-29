@@ -17,7 +17,7 @@ namespace Debug
         List<Form> formList = new List<Form>();
 
         PortPinCovert portPinCovert = new PortPinCovert();
-        MR mr = new MR();
+        MRForm mr = new MRForm();
         public form()
         {
             InitializeComponent();
@@ -54,7 +54,6 @@ namespace Debug
             tabControl1.TabPages[idx].Controls.Add(form);
             tabControl1.TabPages[idx].Text = form.Name;
         }
-        private static int g_formIndex=0;
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
             foreach(var item in formList) {
