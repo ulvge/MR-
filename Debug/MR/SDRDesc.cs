@@ -134,15 +134,15 @@ namespace Debug.MR {
             this.DeAssertionEventMask = "0x7A95";
             this.DiscreteReadingMask = "0x3F3F";
             this.Units1 = "0x20";
-                this.Units2 = "0x07";
+            this.Units2 = "IPMI_UNIT_DEGREES_C";
             this.Units3 = "0x00";
             this.Linearization = "0x00";
-                this.M = "0x07";
+            this.M = "0x05";
             this.M_Tolerance = "0x00";
             this.B = "0x00 & 0xff";
             this.B_Accuracy = "0x3E & 0xFF";
             this.Accuracy = "0x34";
-            //this.R_B_Exp = "(0x0d << 4) + (0x0 & 0x0F)";
+            this.R_B_Exp = "(0x0F << 4) + (0x0 & 0x0F)";
             this.Flags = "0x00";
             this.NominalReading = "0x00";
             this.NormalMax = "0x00";
@@ -150,20 +150,20 @@ namespace Debug.MR {
             this.MaxReading = "0xFF";
             this.MinReading = "0x00";
 
-            this.UpperNonRecoverable = "0x07";
-            this.UpperCritical = "0x07";
-            this.UpperNonCritical = "0x07";
+            this.UpperNonRecoverable = "0xC8";
+            this.UpperCritical = "0xAA";
+            this.UpperNonCritical = "0x96";
 
-            this.LowerNonRecoverable = "0x07";
-            this.LowerCritical = "0x07";
-            this.LowerNonCritical = "0x07";
+            this.LowerNonRecoverable = "0x00";
+            this.LowerCritical = "0x00";
+            this.LowerNonCritical = "0x00";
 
             this.PositiveHysterisis = "0x00";
             this.NegativeHysterisis = "0x00";
             this.Reserved1 = "0x00";
             this.Reserved2 = "0x00";
-            this.OEMField = "0x00";   //slave address (SUB_DEVICE_MODE)
-            this.IDStrTypeLen = "0xC0 + sizeof \"P12V123\"";
+            //this.OEMField = "0x00";   //slave address (SUB_DEVICE_MODE)
+            //this.IDStrTypeLen = "0xC0 + sizeof \"P12V123\"";
             //this.IDStr = "0x07";
         }
 
