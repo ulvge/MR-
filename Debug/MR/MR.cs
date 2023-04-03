@@ -19,12 +19,7 @@ using System.Windows.Forms;
 namespace Debug {
     public partial class MRForm : Form, InterfaceINI {
 
-        //  SDR  SDR  SDR  SDR  SDR  SDR  SDR  SDR  SDR  SDR  SDR  SDR
 
-        private static string[] g_IPMI_UNIT = new string[] {
-            "IPMI_UNIT_VOLTS",
-            "IPMI_UNIT_DEGREES_C",
-        };
         private class GearsDesc {
             public string humanName { get; set; }// eg: nr cr
             public int scale { get; set; } // eg: -10, 20
@@ -379,12 +374,16 @@ namespace Debug {
         /// <param name="scale"></param>
         /// <returns>true 显示</returns>
         public bool isGearsDisp(int dispMode, int scale) {
-            if(dispMode >= GearsDispModeTb.Length) return false;
-            List<int> list = GearsDispModeTb[dispMode].list;
-            foreach(var item in list) {
-                if(Math.Abs(scale) == item) {
-                    return true;
+            try {
+                if(dispMode >= GearsDispModeTb.Length) return false;
+                List<int> list = GearsDispModeTb[dispMode].list;
+                foreach(var item in list) {
+                    if(Math.Abs(scale) == item) {
+                        return true;
+                    }
                 }
+            } catch(Exception) {
+
             }
             return false;
         }
@@ -418,6 +417,12 @@ namespace Debug {
             CreateSDR createSDR = new CreateSDR();
             string sdr = createSDR.SDRDescGetAllDesc(this);
             tb_SDR.Text = sdr;
+        }
+
+        private void tb_textBoxEnter(object sender, EventArgs e) {
+            TextBox tb = (TextBox)sender;
+            tb.SelectAll();
+
         }
     }
 }

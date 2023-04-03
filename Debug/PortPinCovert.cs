@@ -197,5 +197,9 @@ namespace Debug
             tb_data.Text = string.Empty;
             toolTip1.SetToolTip(tb_data, desc);
         }
+
+        private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e) {
+
+        }
     }
 }

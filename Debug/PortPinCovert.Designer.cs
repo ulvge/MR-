@@ -102,6 +102,7 @@ namespace Debug
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.splitContainer1.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel2_Paint);
             this.splitContainer1.Size = new System.Drawing.Size(1431, 398);
             this.splitContainer1.SplitterDistance = 683;
             this.splitContainer1.SplitterWidth = 2;
@@ -125,7 +126,7 @@ namespace Debug
             this.cb_cmd.ItemHeight = 12;
             this.cb_cmd.Location = new System.Drawing.Point(127, 282);
             this.cb_cmd.Name = "cb_cmd";
-            this.cb_cmd.Size = new System.Drawing.Size(151, 20);
+            this.cb_cmd.Size = new System.Drawing.Size(233, 20);
             this.cb_cmd.TabIndex = 26;
             this.cb_cmd.SelectedIndexChanged += new System.EventHandler(this.cb_cmd_SelectedIndexChanged);
             // 
@@ -135,7 +136,7 @@ namespace Debug
             this.cb_netFun.ItemHeight = 12;
             this.cb_netFun.Location = new System.Drawing.Point(127, 187);
             this.cb_netFun.Name = "cb_netFun";
-            this.cb_netFun.Size = new System.Drawing.Size(151, 20);
+            this.cb_netFun.Size = new System.Drawing.Size(233, 20);
             this.cb_netFun.TabIndex = 22;
             this.cb_netFun.SelectedIndexChanged += new System.EventHandler(this.cb_netFun_SelectedIndexChanged);
             // 

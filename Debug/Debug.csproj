@@ -55,6 +55,12 @@
     <Compile Include="CPLDTable.Designer.cs">
       <DependentUpon>CPLDTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="IconConvert.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IconConvert.Designer.cs">
+      <DependentUpon>IconConvert.cs</DependentUpon>
+    </Compile>
     <Compile Include="IPMB\IPMBHelper.cs" />
     <Compile Include="IPMB\NetFun.cs" />
     <Compile Include="MR\CreateSDR.cs" />
@@ -84,6 +90,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IconConvert.resx">
+      <DependentUpon>IconConvert.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MR\MR.resx">
       <DependentUpon>MR.cs</DependentUpon>

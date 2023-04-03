@@ -29,3 +29,4 @@ P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\obj\Debug\Debug.csproj.CopyComplete
 P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\obj\Debug\Debug.exe
 P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\obj\Debug\Debug.pdb
 P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\obj\Debug\Debug.csproj.AssemblyReference.cache
+P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\obj\Debug\Debug.IconConvert.resources

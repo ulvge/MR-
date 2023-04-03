@@ -7,16 +7,17 @@ using System.Threading.Tasks;
 namespace Debug.IPMB {
     static class NetFun {
         private static NetFuncDesc[] g_SensorDesc = new NetFuncDesc[] {
-            new NetFuncDesc("CMD_GET_DEV_SDR_INFO",         "0x20"),
-            new NetFuncDesc("CMD_GET_SENSOR_THRESHOLDS",    "0x27"),
-            new NetFuncDesc("CMD_SET_SENSOR_EVENT_ENABLE",  "0x28"),
-            new NetFuncDesc("CMD_GET_SENSOR_EVENT_STATUS",  "0x2B"),
-            new NetFuncDesc("CMD_GET_SENSOR_READING",       "0x2d"),
-            new NetFuncDesc("CMD_SET_SENSOR_READING",       "0x30"),
+            new NetFuncDesc("CMD_GET_DEV_SDR_INFO(0x20)",           "0x20"),
+            new NetFuncDesc("CMD_GET_SENSOR_THRESHOLDS",            "0x27"),
+            new NetFuncDesc("CMD_SET_SENSOR_EVENT_ENABLE",          "0x28"),
+            new NetFuncDesc("CMD_GET_SENSOR_EVENT_STATUS(0x2B)",    "0x2B"),
+            new NetFuncDesc("CMD_GET_SENSOR_READING(0x2d)",         "0x2d"),
+            new NetFuncDesc("CMD_SET_SENSOR_READING(0x30)",         "0x30"),
         };
 
         private static string g_ChassisCtrlDesc = "CHASSIS_POWER_OFF : 0" + "\n" +
-                                                  "CHASSIS_POWER_ON :  1" + "\n";
+                                                  "CHASSIS_POWER_ON :  1" + "\n" +
+                                                  "CHASSIS_POWER_RESET :  3" + "\n";
 
 
         //private static NetFuncDesc[] g_ChassisCtrlDesc = new NetFuncDesc[] {
@@ -29,13 +30,18 @@ namespace Debug.IPMB {
         //    new NetFuncDesc("CHASSIS_SMI_INTERRUPT",        "0x06"),
         //};
         private static NetFuncDesc[] g_ChassisDesc = new NetFuncDesc[] {
-            new NetFuncDesc("CMD_CHASSIS_CONTROL",           "0x02", g_ChassisCtrlDesc),
-            new NetFuncDesc("CMD_CHASSIS_RESET",             "0x03"),
+            new NetFuncDesc("CMD_CHASSIS_STATUS(0x01)",           "0x01"),
+            new NetFuncDesc("CMD_CHASSIS_CONTROL(0x02)",           "0x02", g_ChassisCtrlDesc),
             new NetFuncDesc("CMD_CHASSIS_IDENTIFY",          "0x04"),
         };
         private static NetFuncDesc[] g_AppDesc = new NetFuncDesc[] {
             new NetFuncDesc("CMD_GET_DEV_ID",       "0x01"),
-            new NetFuncDesc("CMD_COLD_RESET",       "0x02"),
+            new NetFuncDesc("CMD_COLD_RESET(0x02)",       "0x02"),
+            new NetFuncDesc("CMD_SEND_MSG(0x34)",         "0x34"),
+        };
+        private static NetFuncDesc[] g_StorageDesc = new NetFuncDesc[] {
+            new NetFuncDesc("CMD_RESERVE_SDR_REPOSITORY(0x22)",       "0x22"),
+            new NetFuncDesc("CMD_GET_SDR(0x23)",                    "0x23"),
         };
         private static NetFuncDesc[] g_OEMDesc = new NetFuncDesc[] {
             new NetFuncDesc("CMD_GET_BLADE_ID",     "0x01"),
@@ -61,14 +67,14 @@ namespace Debug.IPMB {
         }
 
         private static NetFuncDesc[] g_NetFunDesc = new NetFuncDesc[] {
-            new NetFuncDesc("NETFN_CHASSIS", "0x00", g_ChassisDesc),
-            new NetFuncDesc("netfn_bridge", "0x02", null),
-            new NetFuncDesc("netfn_sensor", "0x04", g_SensorDesc),
-            new NetFuncDesc("netfn_app", "0x06", g_AppDesc),
+            new NetFuncDesc("NETFN_CHASSIS(0x00)", "0x00", g_ChassisDesc),
+            new NetFuncDesc("netfn_bridge(0x02)", "0x02", null),
+            new NetFuncDesc("netfn_sensor(0x04)", "0x04", g_SensorDesc),
+            new NetFuncDesc("netfn_app(0x06)", "0x06", g_AppDesc),
             new NetFuncDesc("netfn_firmware","0x08", null),
-            new NetFuncDesc("netfn_storage","0x0a", null),
+            new NetFuncDesc("netfn_storage(0x0a)","0x0a", g_StorageDesc),
             new NetFuncDesc("netfn_transport","0x0c", null),
-            new NetFuncDesc("netfn_oem","0x2e", g_OEMDesc),
+            new NetFuncDesc("netfn_oem(0x2e)","0x2e", g_OEMDesc),
             //new NetFuncDesc("netfn_picmg","0x2c", null),
             //new NetFuncDesc("netfn_ami","0x32", null),
             //new NetFuncDesc("netfn_opma1","0x30", null),

@@ -272,6 +272,7 @@ namespace Debug {
             this.tbR2.Size = new System.Drawing.Size(76, 26);
             this.tbR2.TabIndex = 4;
             this.toolTip1.SetToolTip(this.tbR2, "如果没有分压，此处可随便写");
+            this.tbR2.Enter += new System.EventHandler(this.tb_textBoxEnter);
             // 
             // tbR1
             // 
@@ -282,6 +283,7 @@ namespace Debug {
             this.tbR1.Size = new System.Drawing.Size(76, 26);
             this.tbR1.TabIndex = 3;
             this.toolTip1.SetToolTip(this.tbR1, "如果没有分压，则写0");
+            this.tbR1.Enter += new System.EventHandler(this.tb_textBoxEnter);
             // 
             // tbVoltRef
             // 
@@ -302,6 +304,7 @@ namespace Debug {
             this.tbVoltSys.Size = new System.Drawing.Size(76, 26);
             this.tbVoltSys.TabIndex = 2;
             this.toolTip1.SetToolTip(this.tbVoltSys, "比如P12，即12");
+            this.tbVoltSys.Enter += new System.EventHandler(this.tb_textBoxEnter);
             // 
             // tb_SDR
             // 
@@ -312,7 +315,7 @@ namespace Debug {
             this.tb_SDR.Multiline = true;
             this.tb_SDR.Name = "tb_SDR";
             this.tb_SDR.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tb_SDR.Size = new System.Drawing.Size(408, 315);
+            this.tb_SDR.Size = new System.Drawing.Size(412, 315);
             this.tb_SDR.TabIndex = 29;
             // 
             // cb_Units2
@@ -320,7 +323,7 @@ namespace Debug {
             this.cb_Units2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cb_Units2.FormattingEnabled = true;
             this.cb_Units2.ItemHeight = 12;
-            this.cb_Units2.Location = new System.Drawing.Point(517, 302);
+            this.cb_Units2.Location = new System.Drawing.Point(521, 302);
             this.cb_Units2.Name = "cb_Units2";
             this.cb_Units2.Size = new System.Drawing.Size(151, 20);
             this.cb_Units2.TabIndex = 27;
@@ -330,7 +333,7 @@ namespace Debug {
             // 
             this.bt_CreateSDR.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.bt_CreateSDR.Font = new System.Drawing.Font("宋体", 10F, System.Drawing.FontStyle.Bold);
-            this.bt_CreateSDR.Location = new System.Drawing.Point(419, 407);
+            this.bt_CreateSDR.Location = new System.Drawing.Point(423, 407);
             this.bt_CreateSDR.Margin = new System.Windows.Forms.Padding(2);
             this.bt_CreateSDR.Name = "bt_CreateSDR";
             this.bt_CreateSDR.Size = new System.Drawing.Size(62, 36);
@@ -361,7 +364,7 @@ namespace Debug {
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("宋体", 10F, System.Drawing.FontStyle.Bold);
-            this.label6.Location = new System.Drawing.Point(416, 266);
+            this.label6.Location = new System.Drawing.Point(420, 266);
             this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(87, 14);
@@ -373,7 +376,7 @@ namespace Debug {
             this.lb_Units2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lb_Units2.AutoSize = true;
             this.lb_Units2.Font = new System.Drawing.Font("宋体", 10F, System.Drawing.FontStyle.Bold);
-            this.lb_Units2.Location = new System.Drawing.Point(416, 304);
+            this.lb_Units2.Location = new System.Drawing.Point(420, 304);
             this.lb_Units2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lb_Units2.Name = "lb_Units2";
             this.lb_Units2.Size = new System.Drawing.Size(79, 14);
@@ -386,7 +389,7 @@ namespace Debug {
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("宋体", 10F, System.Drawing.FontStyle.Bold);
-            this.label5.Location = new System.Drawing.Point(416, 351);
+            this.label5.Location = new System.Drawing.Point(420, 351);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(87, 14);
@@ -397,7 +400,7 @@ namespace Debug {
             // 
             this.tb_recoderID.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tb_recoderID.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tb_recoderID.Location = new System.Drawing.Point(517, 260);
+            this.tb_recoderID.Location = new System.Drawing.Point(521, 260);
             this.tb_recoderID.Margin = new System.Windows.Forms.Padding(2);
             this.tb_recoderID.Name = "tb_recoderID";
             this.tb_recoderID.Size = new System.Drawing.Size(151, 26);
@@ -407,7 +410,7 @@ namespace Debug {
             // 
             this.tb_sensorName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.tb_sensorName.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tb_sensorName.Location = new System.Drawing.Point(517, 339);
+            this.tb_sensorName.Location = new System.Drawing.Point(521, 339);
             this.tb_sensorName.Margin = new System.Windows.Forms.Padding(2);
             this.tb_sensorName.Name = "tb_sensorName";
             this.tb_sensorName.Size = new System.Drawing.Size(151, 26);

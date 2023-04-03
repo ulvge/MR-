@@ -11,13 +11,29 @@ namespace Debug.MR {
     class CreateSDR {
 
         private static string SUB_DEVICE_SDR_NO_PARTIAL = "SUB_DEVICE_SDR_NO_PARTIAL";
+        private static string SUB_DEVICE_SDR_P0V9 = "SUB_DEVICE_SDR_P0V9";
+        private static string SUB_DEVICE_SDR_P1V2 = "SUB_DEVICE_SDR_P1V2";
+        private static string SUB_DEVICE_SDR_P1V8 = "SUB_DEVICE_SDR_P1V8";
         private static string SUB_DEVICE_SDR_P2V5 = "SUB_DEVICE_SDR_P2V5";
         private static string SUB_DEVICE_SDR_P3V3 = "SUB_DEVICE_SDR_P3V3";
+        private static string SUB_DEVICE_SDR_VBAT = "SUB_DEVICE_SDR_VBAT";
         private static string SUB_DEVICE_SDR_P12V = "SUB_DEVICE_SDR_P12V";
         private static string SUB_DEVICE_SDR_TEMP = "SUB_DEVICE_SDR_TEMP";
+        private static string SUB_DEVICE_SDR_FAN = "SUB_DEVICE_SDR_FAN";
+
+        private static string SUB_DEVICE_SDR_MAC5023_P = "SUB_DEVICE_SDR_MAC5023_P";
+        private static string SUB_DEVICE_SDR_MAC5023_V = "SUB_DEVICE_SDR_MAC5023_V";
+        private static string SUB_DEVICE_SDR_MAC5023_I = "SUB_DEVICE_SDR_MAC5023_I";
         private static string SUB_DEVICE_SDR_ERROR = "SUB_DEVICE_SDR_ERROR";
 
 
+        //  SDR  SDR  SDR  SDR  SDR  SDR  SDR  SDR  SDR  SDR  SDR  SDR
+
+        private static string g_IPMI_UNIT_VOLTS = "IPMI_UNIT_VOLTS";
+        private static string g_IPMI_UNIT_DEGREES_C = "IPMI_UNIT_DEGREES_C";
+        private static string g_IPMI_UNIT_RPM = "IPMI_UNIT_RPM";
+        private static string g_IPMI_UNIT_AMPS = "IPMI_UNIT_AMPS";
+        private static string g_IPMI_UNIT_WATTS = "IPMI_UNIT_WATTS";
         SDRDesc sDRDesc = new SDRDesc();
         public CreateSDR() {
         }
@@ -43,8 +59,21 @@ namespace Debug.MR {
                 return SUB_DEVICE_SDR_TEMP;
             }
             if(nameUpper.Contains("BAT")) {
-                return SUB_DEVICE_SDR_P3V3;
+                return SUB_DEVICE_SDR_VBAT;
             }
+            if(nameUpper.Contains("FAN")) {
+                return SUB_DEVICE_SDR_FAN;
+            }
+            if(nameUpper.Contains("MAC5023_P")) {
+                return SUB_DEVICE_SDR_MAC5023_P;
+            }
+            if(nameUpper.Contains("MAC5023_V")) {
+                return SUB_DEVICE_SDR_MAC5023_V;
+            }
+            if(nameUpper.Contains("MAC5023_I")) {
+                return SUB_DEVICE_SDR_MAC5023_I;
+            }
+
             string[] arrary = nameUpper.Split('_');
             string val = "0";
             foreach(string item in arrary) {
@@ -70,8 +99,17 @@ namespace Debug.MR {
                 if(vol == 25) {
                     return SUB_DEVICE_SDR_P2V5;
                 }
-                if(vol < 25) {
-                    return SUB_DEVICE_SDR_NO_PARTIAL;
+                if(vol == 18) {
+                    return SUB_DEVICE_SDR_P1V8;
+                }
+                if(vol == 12) {
+                    return SUB_DEVICE_SDR_P1V2;
+                }
+                if(vol == 9) {
+                    return SUB_DEVICE_SDR_P0V9;
+                }
+                else {
+                    return SUB_DEVICE_SDR_ERROR;
                 }
             } catch(Exception) {
 
@@ -86,9 +124,17 @@ namespace Debug.MR {
                 }
                 sDRDesc.OEMField = SDRGetOEMFiled(form.tb_sensorName.Text);
                 if(sDRDesc.OEMField.Equals(SUB_DEVICE_SDR_TEMP)) {
-                    sDRDesc.Units2 = "IPMI_UNIT_DEGREES_C";
+                    sDRDesc.Units2 = g_IPMI_UNIT_DEGREES_C;
+                }else if(sDRDesc.OEMField.Equals(SUB_DEVICE_SDR_FAN)) {
+                    sDRDesc.Units2 = g_IPMI_UNIT_RPM;
+                } else if(sDRDesc.OEMField.Equals(SUB_DEVICE_SDR_MAC5023_P)) {
+                    sDRDesc.Units2 = g_IPMI_UNIT_WATTS;
+                } else if(sDRDesc.OEMField.Equals(SUB_DEVICE_SDR_MAC5023_V)) {
+                    sDRDesc.Units2 = g_IPMI_UNIT_VOLTS;
+                } else if(sDRDesc.OEMField.Equals(SUB_DEVICE_SDR_MAC5023_I)) {
+                    sDRDesc.Units2 = g_IPMI_UNIT_AMPS;
                 } else { 
-                    sDRDesc.Units2 = "IPMI_UNIT_VOLTS";
+                    sDRDesc.Units2 = g_IPMI_UNIT_VOLTS;
                     sDRDesc.M = (string)dg.Rows[2].Cells[0].Value + string.Empty;
                     sDRDesc.R_B_Exp = (string)dg.Rows[3].Cells[0].Value + "0";
 

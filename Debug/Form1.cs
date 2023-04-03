@@ -18,11 +18,13 @@ namespace Debug
 
         PortPinCovert portPinCovert = new PortPinCovert();
         MRForm mr = new MRForm();
+        IconConvert iconConvert = new IconConvert();
         public form()
         {
             InitializeComponent();
             formList.Add(mr);
             formList.Add(portPinCovert);
+            formList.Add(iconConvert);
         }
 
         private void Form1_Load(object sender, EventArgs e)
