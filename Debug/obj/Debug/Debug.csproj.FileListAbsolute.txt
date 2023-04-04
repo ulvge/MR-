@@ -30,3 +30,12 @@ P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\obj\Debug\Debug.exe
 P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\obj\Debug\Debug.pdb
 P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\obj\Debug\Debug.csproj.AssemblyReference.cache
 P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\obj\Debug\Debug.IconConvert.resources
+P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\bin\Debug\PdfSharp.Charting.dll
+P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\bin\Debug\PdfSharp.dll
+P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\bin\Debug\PdfSharp.xml
+P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\bin\Debug\PdfSharp.Charting.xml
+P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\bin\Debug\de\PdfSharp.resources.dll
+P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\bin\Debug\de\PdfSharp.Charting.resources.dll
+P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\bin\Debug\pdfium_x64.dll
+P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\bin\Debug\pdfium_x86.dll
+P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\bin\Debug\Patagames.Pdf.xml
