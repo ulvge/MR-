@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -473,9 +474,72 @@ namespace Debug
 			}
 			Console.WriteLine("res length = "+ res.Length+", errorCount: " +nullIOSTANDARD.Count); //所有信息
 			Console.WriteLine(nullIOSTANDARD.ToString()); //error信息
-			;
+
+
+			V2_AutoCreateAllItems();
 		}
 
+		private class V2_OriDesc {
+			public string humanName { get; set; }// eg: nr cr
+			public string pin { get; set; } // eg: -10, 20
+			public string IOSTANDARD { get; set; }
+			public V2_OriDesc(string humanName, string pin) {
+				this.humanName = humanName;
+				this.pin = pin;
+				this.IOSTANDARD = JugeIOS(pin);
+			}
+			private string JugeIOS(string pin) {
+				char row = pin[0];
+				int column = int.Parse(pin.Substring(1));
+				if (row >= 'L') {
+					int rowNum = row - 'L';
+					if((rowNum + column >= 7) && (rowNum + column <= 10)) {
+						return "LVCMOS18";
+					}
+                }
+				return "LVCMOS33";
+			}
+		}
+		string oriFile = "../../res/ori.txt";
+		string destFile = "../../res/dest.txt";
+		//1 read ori table
+		//2 parsing split ori table
+		//3 add column
+		//4 format output
+		private void V2_AutoCreateAllItems() {
+			List<V2_OriDesc> destDesc = new List<V2_OriDesc>();	
+			// 1 read ori table
+			string[] oriItems = File.ReadAllLines(oriFile);
+			//2 parsing split ori table
+			foreach(var item in oriItems) {
+				string removeSpace = item;
+				int lastLen;
+				while(true) {
+					lastLen = removeSpace.Length;
+					removeSpace = removeSpace.Replace("  ", " ");
+					removeSpace = removeSpace.Replace("\t", " ");
+					removeSpace = removeSpace.Replace("#", "");
+					if (lastLen == removeSpace.Length) {
+						break;
+					}
+				}
+				string[] lines = removeSpace.Split(' ');
+				if (lines.Length != 2) {
+					continue;
+                }
+
+				//3 add column
+				destDesc.Add(new V2_OriDesc(lines[0], lines[1]));
+			}
+
+			//4 format output
+			StringBuilder sb = new StringBuilder();
+            foreach(var item in destDesc) {
+				//set_pin_assignment { CPU_CKOBV_SEL0 } {  LOCATION = T6   ;IOSTANDARD = LVCMOS18  ;PULLTYPE = NONE; }
+				sb.Append("set_pin_assignment { " + item.humanName + " } { LOCATION = " + item.pin + "; IOSTANDARD = " + item.IOSTANDARD + "; PULLTYPE = NONE; }\r\n");
+			}
+			File.WriteAllText(destFile, sb.ToString());
+		}
 
 		private void PortPinCovert_FormClosing(object sender,FormClosingEventArgs e) {
             //e.Cancel = true;                  //不执行操作
