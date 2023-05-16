@@ -362,13 +362,17 @@ namespace Debug {
         }
 
         private void IconConvert_Load(object sender, EventArgs e) {
-            // regedit web https://patagames.com/request-trial/
-            // how to use the license
-            //Initialize the SDK library with license key
-            //You have to call this function before you can call any PDF processing functions.
-            PdfCommon.Initialize("EEF6E707-0413E707-04040B50-44464955-4D5F434F-52500D00-756C7667-65403132-362E636F-6D400036-F61625E7-9DDA9455-7D6B9BD6-4901A600-22A0FC7F-389E4B2E-384C583F-5335CCC1-C943CF5F-8A7BE508-8CF71EBF-F4E390D0-A07C94F1-AEE68BDC-0C1F2978-C0F764");
+            try {
+                // regedit web https://patagames.com/request-trial/
+                // how to use the license
+                //Initialize the SDK library with license key
+                //You have to call this function before you can call any PDF processing functions.
+                PdfCommon.Initialize("EEF6E707-0413E707-04040B50-44464955-4D5F434F-52500D00-756C7667-65403132-362E636F-6D400036-F61625E7-9DDA9455-7D6B9BD6-4901A600-22A0FC7F-389E4B2E-384C583F-5335CCC1-C943CF5F-8A7BE508-8CF71EBF-F4E390D0-A07C94F1-AEE68BDC-0C1F2978-C0F764");
 
-            //Open and load a PDF document from a file.
+                //Open and load a PDF document from a file.
+            } catch(Exception ex) {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }

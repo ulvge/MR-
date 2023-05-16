@@ -376,6 +376,7 @@ namespace Debug {
         public bool isGearsDisp(int dispMode, int scale) {
             try {
                 if(dispMode >= GearsDispModeTb.Length) return false;
+                if (GearsDispModeTb[dispMode] == null) return false;
                 List<int> list = GearsDispModeTb[dispMode].list;
                 foreach(var item in list) {
                     if(Math.Abs(scale) == item) {

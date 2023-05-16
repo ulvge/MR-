@@ -16,7 +16,7 @@ namespace Debug
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new form());
+            Application.Run(new form());
             //Application.Run(new PortPinCovert());
             //Application.Run(new MR());
             Application.Run(new CPLDTable());
