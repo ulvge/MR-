@@ -52,7 +52,6 @@ D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\bin\Debug\PdfSharp.xml
 D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\bin\Debug\PdfSharp.Charting.xml
 D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\bin\Debug\de\PdfSharp.resources.dll
 D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\bin\Debug\de\PdfSharp.Charting.resources.dll
-D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Debug\Debug.csproj.AssemblyReference.cache
 D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Debug\Debug.form.resources
 D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Debug\Debug.IconConvert.resources
 D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Debug\Debug.MRForm.resources
@@ -64,3 +63,4 @@ D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Debug\Debug.csproj.
 D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Debug\Debug.csproj.CopyComplete
 D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Debug\Debug.exe
 D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Debug\Debug.pdb
+D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Debug\Debug.csproj.AssemblyReference.cache
