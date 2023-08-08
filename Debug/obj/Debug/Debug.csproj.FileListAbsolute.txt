@@ -39,3 +39,28 @@ P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\bin\Debug\de\PdfSharp.Charting.resou
 P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\bin\Debug\pdfium_x64.dll
 P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\bin\Debug\pdfium_x86.dll
 P:\4proj\@VSPorj\1Proj\MR计算工具\Debug\bin\Debug\Patagames.Pdf.xml
+D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\bin\Debug\pdfium_x64.dll
+D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\bin\Debug\pdfium_x86.dll
+D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\bin\Debug\Debug.exe.config
+D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\bin\Debug\Debug.exe
+D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\bin\Debug\Debug.pdb
+D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\bin\Debug\Newtonsoft.Json.dll
+D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\bin\Debug\PdfSharp.Charting.dll
+D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\bin\Debug\PdfSharp.dll
+D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\bin\Debug\Newtonsoft.Json.xml
+D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\bin\Debug\PdfSharp.xml
+D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\bin\Debug\PdfSharp.Charting.xml
+D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\bin\Debug\de\PdfSharp.resources.dll
+D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\bin\Debug\de\PdfSharp.Charting.resources.dll
+D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Debug\Debug.csproj.AssemblyReference.cache
+D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Debug\Debug.form.resources
+D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Debug\Debug.IconConvert.resources
+D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Debug\Debug.MRForm.resources
+D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Debug\Debug.CPLDTable.resources
+D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Debug\Debug.PortPinCovert.resources
+D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Debug\Debug.Properties.Resources.resources
+D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Debug\Debug.csproj.GenerateResource.cache
+D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Debug\Debug.csproj.CoreCompileInputs.cache
+D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Debug\Debug.csproj.CopyComplete
+D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Debug\Debug.exe
+D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Debug\Debug.pdb

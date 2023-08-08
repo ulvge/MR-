@@ -19,7 +19,7 @@ namespace Debug
             Application.Run(new form());
             //Application.Run(new PortPinCovert());
             //Application.Run(new MR());
-            Application.Run(new CPLDTable());
+            //Application.Run(new CPLDTable());
 
         }
     }

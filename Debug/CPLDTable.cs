@@ -120,10 +120,10 @@ namespace Debug
 			private BankClass[] g_BankClass =  {
 				new BankClass("bank0", BankVolotLevel.BankVolotLevel_3P3, BankClass.Range_Bank0),
 				new BankClass("bank1", BankVolotLevel.BankVolotLevel_3P3, BankClass.Range_Bank1),
-				new BankClass("bank2", BankVolotLevel.BankVolotLevel_3P3, BankClass.Range_Bank2),
-				new BankClass("bank3", BankVolotLevel.BankVolotLevel_1P8, BankClass.Range_Bank3),
-				new BankClass("bank4", BankVolotLevel.BankVolotLevel_1P8, BankClass.Range_Bank4),
-				new BankClass("bank5", BankVolotLevel.BankVolotLevel_1P8, BankClass.Range_Bank5),
+				new BankClass("bank2", BankVolotLevel.BankVolotLevel_1P8, BankClass.Range_Bank2),
+				new BankClass("bank3", BankVolotLevel.BankVolotLevel_3P3, BankClass.Range_Bank3),
+				new BankClass("bank4", BankVolotLevel.BankVolotLevel_3P3, BankClass.Range_Bank4),
+				new BankClass("bank5", BankVolotLevel.BankVolotLevel_3P3, BankClass.Range_Bank5),
 			};
 			private string GetBankVolLevel(string pin) {
 				if(pin.Equals("T6")) {
