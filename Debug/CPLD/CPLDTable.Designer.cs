@@ -29,6 +29,7 @@ namespace Debug {
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.cb_devs = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.bt_createAgain = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -45,6 +46,7 @@ namespace Debug {
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.splitContainer1.Panel1.Controls.Add(this.bt_createAgain);
             this.splitContainer1.Panel1.Controls.Add(this.label1);
             this.splitContainer1.Panel1.Controls.Add(this.cb_devs);
             // 
@@ -76,6 +78,17 @@ namespace Debug {
             this.label1.Size = new System.Drawing.Size(71, 12);
             this.label1.TabIndex = 28;
             this.label1.Text = "CPLD device";
+            this.toolTip1.SetToolTip(this.label1, "仿照 ori.txt里面的格式，填写原始信息");
+            // 
+            // bt_createAgain
+            // 
+            this.bt_createAgain.Location = new System.Drawing.Point(198, 101);
+            this.bt_createAgain.Name = "bt_createAgain";
+            this.bt_createAgain.Size = new System.Drawing.Size(75, 23);
+            this.bt_createAgain.TabIndex = 29;
+            this.bt_createAgain.Text = "重新生成";
+            this.bt_createAgain.UseVisualStyleBackColor = true;
+            this.bt_createAgain.Click += new System.EventHandler(this.bt_createAgain_Click);
             // 
             // CPLDTable
             // 
@@ -103,5 +116,6 @@ namespace Debug {
         private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.ComboBox cb_devs;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button bt_createAgain;
     }
 }

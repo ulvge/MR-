@@ -140,5 +140,29 @@ namespace Debug
             IniHelper iniHelper = new IniHelper();
             iniHelper.IniUpdate2File(this);
         }
+
+        private void bt_createAgain_Click(object sender, EventArgs e)
+        {
+			AutoCreateAllItems();
+
+			// 获取当前工作目录并合并相对路径
+			try
+			{
+				string fullPath = Path.GetFullPath(destFile.Substring(0, destFile.LastIndexOf('/')));
+				// 检查文件夹是否存在
+				if (Directory.Exists(fullPath))
+				{
+					// 打开文件夹
+					System.Diagnostics.Process.Start(fullPath);
+				}
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine($"发生错误: {ex.Message}");
+			}
+
+			
+
+		}
     }
 }
