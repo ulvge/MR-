@@ -12,7 +12,6 @@ D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\bin\Release\PdfSharp.xm
 D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\bin\Release\PdfSharp.Charting.xml
 D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\bin\Release\de\PdfSharp.resources.dll
 D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\bin\Release\de\PdfSharp.Charting.resources.dll
-D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Release\Debug.csproj.AssemblyReference.cache
 D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Release\Debug.form.resources
 D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Release\Debug.IconConvert.resources
 D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Release\Debug.MRForm.resources
