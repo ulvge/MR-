@@ -23,3 +23,4 @@ D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Release\Debug.cspro
 D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Release\Debug.csproj.CopyComplete
 D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Release\Debug.exe
 D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Release\Debug.pdb
+D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Release\Debug.csproj.AssemblyReference.cache

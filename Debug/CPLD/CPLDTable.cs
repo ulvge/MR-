@@ -142,8 +142,10 @@ namespace Debug
         }
 
         private void bt_createAgain_Click(object sender, EventArgs e)
-        {
-			AutoCreateAllItems();
+		{
+			SelectPdf.Handler();
+			return;
+			//AutoCreateAllItems();
 
 			// 获取当前工作目录并合并相对路径
 			try

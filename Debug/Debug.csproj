@@ -101,6 +101,7 @@
     <Compile Include="MR\CreateSDR.cs" />
     <Compile Include="MR\DescriptionExtension.cs" />
     <Compile Include="MR\SDRDesc.cs" />
+    <Compile Include="SelectPdf.cs" />
     <Compile Include="tools\IniHelper.cs" />
     <Compile Include="tools\InterfaceINI.cs" />
     <Compile Include="Form1.cs">
