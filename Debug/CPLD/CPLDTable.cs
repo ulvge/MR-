@@ -1,4 +1,5 @@
-﻿using Debug.tools;
+﻿using Debug.misc;
+using Debug.tools;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -29,9 +30,17 @@ namespace Debug
         {
 			if (cb_devs.Text.Contains("EF3"))
             {
-				return EF3L.GetEL3LConfig();
+				return EF3L.GetConfig();
 			}
-			return EF2L.GetEL2LConfig();
+			else if(cb_devs.Text.Contains("EF2L45UG132B"))
+			{
+				return EF2L45UG132B.GetConfig();
+            }
+			else if (cb_devs.Text.Contains("EF2L45BG256B"))
+			{
+				return EF2L45BG256B.GetConfig();
+			}
+			return null;
 		}
 		private class OriDesc {
 			public string humanName { get; set; }// eg: nr cr
@@ -45,12 +54,16 @@ namespace Debug
 
 			private string GetBankVolLevel(string pin) {
 				if(pin.Equals("T6")) {
-					Console.WriteLine(pin);
+					//Console.WriteLine(pin);
                 }
 				string row = pin.Substring(0,1);
 				int column = int.Parse(pin.Substring(1));
 
                 foreach(var bank in g_BankClass) {
+					if (bank.bankName.Equals("bank1") && pin.Equals("R17"))
+					{
+						//Console.WriteLine("bank.bankName :" + bank.bankName);
+					}
 					LVCMOS[] range = bank.range;
                     foreach(var item in range) {
 						if(item.rowName == row) {
@@ -87,6 +100,10 @@ namespace Debug
 		//4 format output
 		private void AutoCreateAllItems() {
 			g_BankClass = GetDeviceConfig();
+			if (g_BankClass == null)
+            {
+				return;
+            }
 			List<OriDesc> destDesc = new List<OriDesc>();	
 			// 1 read ori table
 			string[] oriItems = File.ReadAllLines(oriFile);
@@ -99,6 +116,8 @@ namespace Debug
 					removeSpace = removeSpace.Replace("  ", " ");
 					removeSpace = removeSpace.Replace("\t", " ");
 					removeSpace = removeSpace.Replace("#", "");
+					removeSpace = removeSpace.Replace("<", "");
+					removeSpace = removeSpace.Replace(">", "");
 					if (lastLen == removeSpace.Length) {
 						break;
 					}
@@ -143,9 +162,10 @@ namespace Debug
 
         private void bt_createAgain_Click(object sender, EventArgs e)
 		{
-			SelectPdf.Handler();
-			return;
-			//AutoCreateAllItems();
+			DataCheck.DataCheckMain();
+			//SelectPdf.Handler();
+			//return;
+			AutoCreateAllItems();
 
 			// 获取当前工作目录并合并相对路径
 			try

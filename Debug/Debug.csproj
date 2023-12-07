@@ -87,7 +87,8 @@
     <Compile Include="CPLD\CPLDTable.Designer.cs">
       <DependentUpon>CPLDTable.cs</DependentUpon>
     </Compile>
-    <Compile Include="CPLD\EF2L.cs" />
+    <Compile Include="CPLD\EF2L45UG132B.cs" />
+    <Compile Include="CPLD\EF2L45BG256B.cs" />
     <Compile Include="CPLD\EF3L.cs" />
     <Compile Include="CPLD\LVCMOS.cs" />
     <Compile Include="IconConvert.cs">
@@ -98,10 +99,11 @@
     </Compile>
     <Compile Include="IPMB\IPMBHelper.cs" />
     <Compile Include="IPMB\NetFun.cs" />
+    <Compile Include="misc\DataCheck.cs" />
     <Compile Include="MR\CreateSDR.cs" />
     <Compile Include="MR\DescriptionExtension.cs" />
     <Compile Include="MR\SDRDesc.cs" />
-    <Compile Include="SelectPdf.cs" />
+    <Compile Include="misc\SelectPdf.cs" />
     <Compile Include="tools\IniHelper.cs" />
     <Compile Include="tools\InterfaceINI.cs" />
     <Compile Include="Form1.cs">

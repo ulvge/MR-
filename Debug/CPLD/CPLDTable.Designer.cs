@@ -26,10 +26,10 @@ namespace Debug {
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.cb_devs = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.bt_createAgain = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.cb_devs = new System.Windows.Forms.ComboBox();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -53,51 +53,55 @@ namespace Debug {
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.splitContainer1.Size = new System.Drawing.Size(841, 398);
-            this.splitContainer1.SplitterDistance = 364;
-            this.splitContainer1.SplitterWidth = 2;
+            this.splitContainer1.Size = new System.Drawing.Size(1121, 498);
+            this.splitContainer1.SplitterDistance = 485;
+            this.splitContainer1.SplitterWidth = 3;
             this.splitContainer1.TabIndex = 0;
-            // 
-            // cb_devs
-            // 
-            this.cb_devs.FormattingEnabled = true;
-            this.cb_devs.ItemHeight = 12;
-            this.cb_devs.Items.AddRange(new object[] {
-            "EF2",
-            "EF3"});
-            this.cb_devs.Location = new System.Drawing.Point(137, 22);
-            this.cb_devs.Name = "cb_devs";
-            this.cb_devs.Size = new System.Drawing.Size(137, 20);
-            this.cb_devs.TabIndex = 27;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(39, 30);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(71, 12);
-            this.label1.TabIndex = 28;
-            this.label1.Text = "CPLD device";
-            this.toolTip1.SetToolTip(this.label1, "仿照 ori.txt里面的格式，填写原始信息");
             // 
             // bt_createAgain
             // 
-            this.bt_createAgain.Location = new System.Drawing.Point(198, 101);
+            this.bt_createAgain.Location = new System.Drawing.Point(264, 126);
+            this.bt_createAgain.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.bt_createAgain.Name = "bt_createAgain";
-            this.bt_createAgain.Size = new System.Drawing.Size(75, 23);
+            this.bt_createAgain.Size = new System.Drawing.Size(100, 29);
             this.bt_createAgain.TabIndex = 29;
             this.bt_createAgain.Text = "重新生成";
             this.bt_createAgain.UseVisualStyleBackColor = true;
             this.bt_createAgain.Click += new System.EventHandler(this.bt_createAgain_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(52, 38);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(95, 15);
+            this.label1.TabIndex = 28;
+            this.label1.Text = "CPLD device";
+            this.toolTip1.SetToolTip(this.label1, "仿照 ori.txt里面的格式，填写原始信息");
+            // 
+            // cb_devs
+            // 
+            this.cb_devs.FormattingEnabled = true;
+            this.cb_devs.ItemHeight = 15;
+            this.cb_devs.Items.AddRange(new object[] {
+            "EF2L45UG132B",
+            "EF2L45BG256B",
+            "EF3"});
+            this.cb_devs.Location = new System.Drawing.Point(183, 28);
+            this.cb_devs.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cb_devs.Name = "cb_devs";
+            this.cb_devs.Size = new System.Drawing.Size(181, 23);
+            this.cb_devs.TabIndex = 27;
+            // 
             // CPLDTable
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(841, 398);
+            this.ClientSize = new System.Drawing.Size(1121, 498);
             this.Controls.Add(this.splitContainer1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "CPLDTable";
             this.Text = "CPLDTable";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.PortPinCovert_FormClosing);

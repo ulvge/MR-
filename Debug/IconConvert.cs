@@ -150,11 +150,12 @@ namespace Debug {
             }
         }
 
-        private static int CONST_MIN = 1000;
-        private static int CONST_MAX = 1000;
+        private static int CONST_MIN = 50000;
+        private static int CONST_MAX = 50000;
         AreaZone[] g_areaFilter = new AreaZone[]{
-            new AreaZone(112578 - CONST_MIN, 112578+CONST_MAX), // 112578
-            new AreaZone(199839 - CONST_MIN, 199839+CONST_MAX), // 199839
+            //new AreaZone(112578 - CONST_MIN, 112578+CONST_MAX), // 112578
+            //new AreaZone(199839 - CONST_MIN, 199839+CONST_MAX), // 199839
+            new AreaZone(193256 - CONST_MIN, 193256+CONST_MAX), // 112578
         };
         private bool isFilter(int destArea) {
             foreach(AreaZone item in g_areaFilter) {
@@ -171,11 +172,12 @@ namespace Debug {
             PdfDocument document = PdfDocument.Load(name);
             for(int i = 0; i < document.Pages.Count; i++) {
                 PdfPage collection = document.Pages[i];
-                Console.WriteLine(collection.Text);
+                Console.WriteLine(collection.Text.GetText(0, 1));
                 FS_SIZEF pageSize = document.GetPageSizeByIndex(i);
                 //Image image = new Image();
                 Console.WriteLine("page: " + i + ", " + collection.PageObjects.Count);
                 int removeCount = 0;
+
                 for(int j = collection.PageObjects.Count - 1; j >= 0; j--) {
                     FS_RECTF rec = collection.PageObjects[j].BoundingBox;
                     float area = rec.Height * rec.Width;
@@ -302,38 +304,11 @@ namespace Debug {
                 }
             }
         }
-        private string BSSID = string.Empty;
         private void tb_items_TextChanged(object sender, EventArgs e) {
-            string oriStr = tb_items.Text;
-            Console.WriteLine(oriStr.Length);
-            oriStr = oriStr.Trim();
-            try {
-                while(true) {
-                    if(oriStr.Contains("  ")) {
-                        oriStr = oriStr.Replace("  ", " ");
-                        continue;
-                    } else {
-                        break;
-                    }
-                }
-                string[] list = oriStr.Split(' ');
-                if(list.Length < 10) {
-                    return;
-                }
-                BSSID = list[0];
-                string ch = list[5];
-                string ESSID = list[10];
-                Console.WriteLine(ESSID.Length);
-                string dump = string.Format("airodump-ng -w {0} -c {1} --bssid  {2} wlan0mon", ESSID, ch, BSSID);
-                Clipboard.SetText(dump);
-            } catch(Exception ex) {
-                Console.WriteLine(ex.Message);
-            }
+            
         }
 
         private void tb_station_TextChanged(object sender, EventArgs e) {
-            string replay = string.Format("aireplay - ng - 0 50 - a {0} - c {1} wlan0mon", BSSID, tb_station.Text);
-            Clipboard.SetText(replay);
         }
 
         /// <summary>
@@ -342,23 +317,7 @@ namespace Debug {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void button2_Click_1(object sender, EventArgs e) {
-            string text = tb_python.Text;
-            string[] textSplit = text.Split('\n');
-            StringBuilder sb = new StringBuilder();
-            foreach(var item in textSplit) {
-                string itemVal = item;
-                itemVal = itemVal.Replace("0777", "0x777");
-                if (itemVal.Trim().StartsWith("print \"")) {
-                    string temp;
-                    temp = itemVal.Replace("print \"", "print (\"");
-                    temp = temp.Replace("\r", ")\r");
-                    //temp += ")\r";
-                    sb.Append(temp + "\n");
-                } else {
-                    sb.Append(itemVal + "\n");
-                }
-            }
-            tb_python.Text = sb.ToString();
+            
         }
 
         private void IconConvert_Load(object sender, EventArgs e) {

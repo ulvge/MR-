@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Debug
 {
-    class EF2L
+    class EF2L45BG256B
     {
+
         public static LVCMOS[] Range_Bank0 = {
                     new LVCMOS("A", 3, 15),
                     new LVCMOS("B", 3, 14),
@@ -70,12 +71,12 @@ namespace Debug
         private static BankClass[] g_BankClass =  {
                 new BankClass("bank0", BankVolotLevel.BankVolotLevel_3P3, Range_Bank0),
                 new BankClass("bank1", BankVolotLevel.BankVolotLevel_3P3, Range_Bank1),
-                new BankClass("bank2", BankVolotLevel.BankVolotLevel_1P8, Range_Bank2),
+                new BankClass("bank2", BankVolotLevel.BankVolotLevel_3P3, Range_Bank2),
                 new BankClass("bank3", BankVolotLevel.BankVolotLevel_3P3, Range_Bank3),
                 new BankClass("bank4", BankVolotLevel.BankVolotLevel_3P3, Range_Bank4),
                 new BankClass("bank5", BankVolotLevel.BankVolotLevel_3P3, Range_Bank5),
             };
-        public static BankClass[] GetEL2LConfig()
+        public static BankClass[] GetConfig()
         {
             return g_BankClass;
         }
