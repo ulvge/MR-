@@ -23,10 +23,28 @@ namespace Debug
 
 		private void PortPinCovert_Load(object sender, EventArgs e) {
 			loadINI();
-			
-			AutoCreateAllItems();
+			AddUsage();
 		}
-		private BankClass[] GetDeviceConfig()
+
+        private void AddUsage()
+        { 
+			StringBuilder stringBuilder = new StringBuilder();
+			stringBuilder.Append("1、可支持根据CPLD简述生成adc" + Environment.NewLine);
+			stringBuilder.Append("\t格式：名称 pin" + Environment.NewLine);
+			stringBuilder.Append("\t示例：" + Environment.NewLine);
+			stringBuilder.Append("\tCPLD_DEBUG1	P8" + Environment.NewLine);
+			stringBuilder.Append("\tCPLD_DEBUG2 T8" + Environment.NewLine);
+
+			stringBuilder.Append("2、可支持根据CPLD简述定义变量" + Environment.NewLine);
+			stringBuilder.Append("\t格式：名称 in/out 注释 " + Environment.NewLine);
+			stringBuilder.Append("\t示例：" + Environment.NewLine);
+			stringBuilder.Append("\tCPLD_DEBUG1	IN for CPLD debug" + Environment.NewLine);
+			stringBuilder.Append("\tCPU_CRU_RST_OK OUT for CPU复位完成信号" + Environment.NewLine);
+
+			tb_input.Text = stringBuilder.ToString();
+		}
+
+        private BankClass[] GetDeviceConfig()
         {
 			if (cb_devs.Text.Contains("EF3"))
             {
@@ -42,11 +60,11 @@ namespace Debug
 			}
 			return null;
 		}
-		private class OriDesc {
+		private class CreateADC {
 			public string humanName { get; set; }// eg: nr cr
 			public string pin { get; set; } // eg: -10, 20
 			public string IOSTANDARD { get; set; }
-			public OriDesc(string humanName, string pin) {
+			public CreateADC(string humanName, string pin) {
 				this.humanName = humanName.Replace(".", "_");
 				this.pin = pin;
 				this.IOSTANDARD = GetBankVolLevel(pin);
@@ -92,8 +110,72 @@ namespace Debug
 			}
 			return false;
 		}
-		string oriFile = "../../res/ori.txt";
-		string destFile = "../../res/dest.txt";
+
+		private class DefineVariable
+		{
+			public string humanName { get; set; }
+			public string inout { get; set; }
+			public string comm { get; set; }
+
+			public DefineVariable(string[] str)
+			{
+				if (str.Length >= 2)
+                {
+					humanName = str[0];
+					inout = str[1].ToLower() + "put";
+				}
+                for (int i = 2; i < str.Length; i++)
+                {
+					comm += str[i] + " ";
+				}
+				if (!inout.Equals("input") && !inout.Equals("output"))
+                {
+					inout += "error__";
+				}
+				if (comm.Contains(humanName))
+                {
+					comm = comm.Replace(humanName, "");
+				}
+				comm = comm.Trim();
+			}
+		}
+
+		private void OutputDefineVariable(List<DefineVariable> defineVariable)
+		{
+			StringBuilder sb = new StringBuilder();
+			foreach (var item in defineVariable)
+			{
+				string assembly = "    " + item.inout + " " + item.humanName + "; // " + item.comm + "\r\n";
+				if (IsPinNameNeedCommit(item.humanName))
+				{
+					sb.Insert(0, "#" + assembly);
+				}
+				else
+				{
+					sb.Append(assembly);
+				}
+			}
+			tb_res.Text = sb.ToString();
+		}
+		private void OutputADC(List<CreateADC> destDesc)
+        {
+			//4 format output
+			StringBuilder sb = new StringBuilder();
+			foreach (var item in destDesc)
+			{
+				//set_pin_assignment { CPU_CKOBV_SEL0 } {  LOCATION = T6   ;IOSTANDARD = LVCMOS18  ;PULLTYPE = NONE; }
+				string assembly = ("set_pin_assignment { " + item.humanName + " } { LOCATION = " + item.pin + "; IOSTANDARD = " + item.IOSTANDARD + "; PULLTYPE = NONE; }\r\n");
+				if (IsPinNameNeedCommit(item.humanName))
+				{
+					sb.Insert(0, "#" + assembly);
+				}
+				else
+				{
+					sb.Append(assembly);
+				}
+			}
+			tb_res.Text = sb.ToString();
+		}
 		//1 read ori table
 		//2 parsing split ori table
 		//3 add column
@@ -103,12 +185,13 @@ namespace Debug
 			if (g_BankClass == null)
             {
 				return;
-            }
-			List<OriDesc> destDesc = new List<OriDesc>();	
+			}
+			List<DefineVariable> defineVariable = new List<DefineVariable>();
+			List<CreateADC> destDesc = new List<CreateADC>();
 			// 1 read ori table
-			string[] oriItems = File.ReadAllLines(oriFile);
+			string[] oriItems = tb_input.Text.Split('\n');
 			//2 parsing split ori table
-			foreach(var item in oriItems) {
+			foreach (var item in oriItems) {
 				string removeSpace = item;
 				int lastLen;
 				while(true) {
@@ -123,29 +206,28 @@ namespace Debug
 					}
 				}
 				string[] lines = removeSpace.Split(' ');
-				if (lines.Length != 2) {
+				if (lines.Length == 1)
+                {
 					continue;
                 }
+				if (lines.Length == 2)
+				{
+					destDesc.Add(new CreateADC(lines[0], lines[1]));
+                }
 
-				//3 add column
-				destDesc.Add(new OriDesc(lines[0], lines[1]));
+				defineVariable.Add(new DefineVariable(lines));
 			}
-
-			//4 format output
-			StringBuilder sb = new StringBuilder();
-            foreach(var item in destDesc) {
-				//set_pin_assignment { CPU_CKOBV_SEL0 } {  LOCATION = T6   ;IOSTANDARD = LVCMOS18  ;PULLTYPE = NONE; }
-				string assembly = ("set_pin_assignment { " + item.humanName + " } { LOCATION = " + item.pin + "; IOSTANDARD = " + item.IOSTANDARD + "; PULLTYPE = NONE; }\r\n");
-				if(IsPinNameNeedCommit(item.humanName)) {
-					sb.Insert(0, "#" + assembly);
-                } else {
-					sb.Append(assembly);
-				}
+			if (defineVariable.Count > destDesc.Count) {
+				OutputDefineVariable(defineVariable);
+            }
+            else
+            {
+				OutputADC(destDesc);
 			}
-			File.WriteAllText(destFile, sb.ToString());
 		}
 
-		private void PortPinCovert_FormClosing(object sender,FormClosingEventArgs e) {
+
+        private void PortPinCovert_FormClosing(object sender,FormClosingEventArgs e) {
             //e.Cancel = true;                  //不执行操作
             updateINI();
         }
@@ -162,29 +244,10 @@ namespace Debug
 
         private void bt_createAgain_Click(object sender, EventArgs e)
 		{
-			DataCheck.DataCheckMain();
+			//DataCheck.DataCheckMain();
 			//SelectPdf.Handler();
 			//return;
 			AutoCreateAllItems();
-
-			// 获取当前工作目录并合并相对路径
-			try
-			{
-				string fullPath = Path.GetFullPath(destFile.Substring(0, destFile.LastIndexOf('/')));
-				// 检查文件夹是否存在
-				if (Directory.Exists(fullPath))
-				{
-					// 打开文件夹
-					System.Diagnostics.Process.Start(fullPath);
-				}
-			}
-			catch (Exception ex)
-			{
-				Console.WriteLine($"发生错误: {ex.Message}");
-			}
-
-			
-
 		}
     }
 }
