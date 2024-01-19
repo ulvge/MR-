@@ -64,3 +64,19 @@ D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Debug\Debug.csproj.
 D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Debug\Debug.exe
 D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Debug\Debug.pdb
 D:\1Application\3Visio Studio\1Proj\MR计算工具\Debug\obj\Debug\Debug.csproj.AssemblyReference.cache
+E:\3Proj\@VSPorj\1MR计算工具\MR计算工具\Debug\bin\Debug\Debug.exe.config
+E:\3Proj\@VSPorj\1MR计算工具\MR计算工具\Debug\bin\Debug\Debug.exe
+E:\3Proj\@VSPorj\1MR计算工具\MR计算工具\Debug\bin\Debug\Debug.pdb
+E:\3Proj\@VSPorj\1MR计算工具\MR计算工具\Debug\bin\Debug\Newtonsoft.Json.dll
+E:\3Proj\@VSPorj\1MR计算工具\MR计算工具\Debug\bin\Debug\Newtonsoft.Json.xml
+E:\3Proj\@VSPorj\1MR计算工具\MR计算工具\Debug\obj\Debug\Debug.form.resources
+E:\3Proj\@VSPorj\1MR计算工具\MR计算工具\Debug\obj\Debug\Debug.IconConvert.resources
+E:\3Proj\@VSPorj\1MR计算工具\MR计算工具\Debug\obj\Debug\Debug.MRForm.resources
+E:\3Proj\@VSPorj\1MR计算工具\MR计算工具\Debug\obj\Debug\Debug.CPLDTable.resources
+E:\3Proj\@VSPorj\1MR计算工具\MR计算工具\Debug\obj\Debug\Debug.PortPinCovert.resources
+E:\3Proj\@VSPorj\1MR计算工具\MR计算工具\Debug\obj\Debug\Debug.Properties.Resources.resources
+E:\3Proj\@VSPorj\1MR计算工具\MR计算工具\Debug\obj\Debug\Debug.csproj.GenerateResource.cache
+E:\3Proj\@VSPorj\1MR计算工具\MR计算工具\Debug\obj\Debug\Debug.csproj.CoreCompileInputs.cache
+E:\3Proj\@VSPorj\1MR计算工具\MR计算工具\Debug\obj\Debug\Debug.csproj.CopyComplete
+E:\3Proj\@VSPorj\1MR计算工具\MR计算工具\Debug\obj\Debug\Debug.exe
+E:\3Proj\@VSPorj\1MR计算工具\MR计算工具\Debug\obj\Debug\Debug.pdb

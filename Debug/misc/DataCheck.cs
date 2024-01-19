@@ -33,6 +33,7 @@ namespace Debug.misc
         }
         /// <summary>
         /// CRC maxim
+        /// https://crccalc.com/
         /// </summary>
         /// <param name="buffer"></param>
         /// <returns></returns>

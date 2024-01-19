@@ -121,7 +121,7 @@ namespace Debug
 			{
 				if (str.Length >= 2)
                 {
-					humanName = str[0];
+					humanName = str[0].Replace(".", "_");
 					inout = str[1].ToLower() + "put";
 				}
                 for (int i = 2; i < str.Length; i++)
@@ -145,7 +145,7 @@ namespace Debug
 			StringBuilder sb = new StringBuilder();
 			foreach (var item in defineVariable)
 			{
-				string assembly = "    " + item.inout + " " + item.humanName + "; // " + item.comm + "\r\n";
+				string assembly = "    " + item.inout + " " + item.humanName + ", // " + item.comm + "\r\n";
 				if (IsPinNameNeedCommit(item.humanName))
 				{
 					sb.Insert(0, "#" + assembly);
@@ -244,9 +244,7 @@ namespace Debug
 
         private void bt_createAgain_Click(object sender, EventArgs e)
 		{
-			//DataCheck.DataCheckMain();
-			//SelectPdf.Handler();
-			//return;
+			DataCheck.DataCheckMain();
 			AutoCreateAllItems();
 		}
     }

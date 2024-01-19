@@ -10,14 +10,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-//using PdfSharp;
-//using PdfSharp.Drawing;
-//using PdfSharp.Pdf;
-//using PdfSharp.Pdf.Content;
-//using PdfSharp.Pdf.Content.Objects;
-//using PdfSharp.Pdf.IO;
-using Patagames.Pdf;
-using Patagames.Pdf.Net;
 
 namespace Debug {
     public partial class IconConvert : Form {
@@ -165,143 +157,19 @@ namespace Debug {
             }
             return false;
         }
-        private void pdfHandler(string name) {
-            string path = name.Substring(0, name.LastIndexOf('\\') + 1);
-            string[] fileNameExt = name.Substring(name.LastIndexOf('\\') + 1).Split('.');
-            string newName = path + fileNameExt[0] + "_"+DateTime.Now.ToString("yyyy_MM_dd-HHmmss") + "." + fileNameExt[1];
-            PdfDocument document = PdfDocument.Load(name);
-            for(int i = 0; i < document.Pages.Count; i++) {
-                PdfPage collection = document.Pages[i];
-                Console.WriteLine(collection.Text.GetText(0, 1));
-                FS_SIZEF pageSize = document.GetPageSizeByIndex(i);
-                //Image image = new Image();
-                Console.WriteLine("page: " + i + ", " + collection.PageObjects.Count);
-                int removeCount = 0;
-
-                for(int j = collection.PageObjects.Count - 1; j >= 0; j--) {
-                    FS_RECTF rec = collection.PageObjects[j].BoundingBox;
-                    float area = rec.Height * rec.Width;
-                    if(isFilter((int)area)) {
-                        removeCount++;
-                        Console.WriteLine(string.Format("pages: {0}, RemoveAt Ojbect: {1} , area : {2}", i, j, area));
-                        collection.PageObjects.RemoveAt(j);
-                    }
-                    //Console.WriteLine(string.Format("pages: {0}, Ojbect: {1} , area : {2}", i, j, area));
-                }
-                if(removeCount != 2) {
-                    Console.WriteLine(string.Format("pages: {0} error", removeCount));
-                }
-                collection.GenerateContent();
-            }
-            document.WriteBlock += (s, ex) => {
-                using(var stream = new FileStream(newName, FileMode.OpenOrCreate, FileAccess.ReadWrite)) {
-                    stream.Seek(0, SeekOrigin.End);
-                    stream.Write(ex.Buffer, 0, ex.Buffer.Length);
-                }
-            };
-            document.Save(Patagames.Pdf.Enums.SaveFlags.NoIncremental | Patagames.Pdf.Enums.SaveFlags.RemoveUnusedObjects);
-            document.Dispose();
-        }
-        public void EnumerateAllPageObjects(PdfPageObjectsCollection collection) {
-            foreach(PdfPageObject obj in collection) {
-                if(obj is PdfFormObject) {
-                    var formObject = obj as PdfFormObject;
-                    EnumerateAllPageObjects(formObject.PageObjects);
-                } else if(obj is PdfTextObject) {
-                    var textObject = obj as PdfTextObject;
-                    if(textObject.TextUnicode.Contains("ASPEEDCon")) {
-                        //Console.WriteLine(string.Format("Contains feature: {0}", textObject.TextUnicode));
-                    }
-                    if(textObject.TextUnicode.Contains("dential")) {
-                        //Console.WriteLine(string.Format("Contains feature: {0}", textObject.TextUnicode));
-                    }
-                    Console.WriteLine(string.Format("check feature: {0}", textObject.TextUnicode));
-                    // process text object.
-                } else if(obj is PdfImageObject) {
-                    var imageObject = obj as PdfImageObject;
-                    // process image object.
-                } else if(obj is PdfPathObject) {
-                    var pathObject = obj as PdfPathObject;
-                    // process path object.
-                } else if(obj is PdfShadingObject) {
-                    var shadingObject = obj as PdfShadingObject;
-                    // process shading object.
-                }
-            }
-        }
-        //private void pdfHandler(string name) {
-        //    // Read document into memory for modification
-        //    name = @"P:\4proj\1MDS\1ast2500\ast2500v15 - 副本.pdf";
-        //    PdfDocument inputDocument = PdfReader.Open(name);
-        //    Console.WriteLine(inputDocument.FileSize);
-
-        //    for(int idx = 0; idx < 2; idx++) {
-        //        Console.WriteLine(inputDocument.FileSize);
-        //        PdfPage page = inputDocument.Pages[idx];
-        //        // 获取页面内容
-
-        //        CSequence contents = ContentReader.ReadContent(page);
-        //        StringBuilder sb = new StringBuilder();
-        //        // 查找要删除的水印内容
-        //        for(int i = 0; i < contents.Count; i++) {
-        //            StringBuilder tmp = ExtractText((COperator)contents[i]);
-        //            if (tmp.ToString().Contains("ASPEEDCondential")) {
-        //                Console.WriteLine(tmp.ToString()+ "contents.Count:"+ contents.Count+ "  contents[i]:" + contents[i]);
-        //                //newContents.RemoveAt(i);
-        //                ExtractText((COperator)contents[i], true);
-
-        //                page.Contents.ReplaceContent(contents);
-        //                break;
-
-        //            }
-        //            sb.Append(tmp);
-        //        }
-
-        //        Console.WriteLine(sb.ToString());
-        //    }
-        //    inputDocument.Save(name);
-        //}
-        //private StringBuilder ExtractText(CObject cObject, bool isClear = false) {
-        //    StringBuilder textList = new StringBuilder();
-        //    if(cObject is COperator) {
-        //        var cOperator = cObject as COperator;
-        //        if(cOperator.OpCode.Name == OpCodeName.Tj.ToString() || cOperator.OpCode.Name == OpCodeName.TJ.ToString()) {
-        //            foreach(var cOperand in cOperator.Operands) {
-        //                textList.Append(ExtractText(cOperand, isClear));
-        //            }
-        //        }
-        //    } else if(cObject is CSequence) {
-        //        var cSequence = cObject as CSequence;
-        //        foreach(var element in cSequence) {
-        //            textList.Append(ExtractText(element, isClear));
-        //        }
-        //    } else if(cObject is CString) {
-        //        var cString = cObject as CString;
-        //        textList.Append(cString.Value);
-
-        //        if(isClear) {
-        //            cString.Value = "A";
-        //        }
-        //    }
-        //    return textList;
-        //}
         private void button1_Click(object sender, EventArgs e) {
             //弹出打开图片对话框
             OpenFileDialog fileDialog = new OpenFileDialog();
             fileDialog.Multiselect = false;
-            fileDialog.Filter = "图片文件|*.jpg;*.jpeg;*.png;*.pdf";
+            fileDialog.Filter = "图片文件|*.jpg;*.jpeg;*.png";
 
             if(fileDialog.ShowDialog() == DialogResult.OK) {
                 //选择图片进行加载
                 tb_fileRoot.Text = fileDialog.FileName;
-                if(tb_fileRoot.Text.Contains(".pdf")) { // pdf
-                    pdfHandler(tb_fileRoot.Text);
-                } else { // icon
-                    Image img = Image.FromFile(tb_fileRoot.Text);
-                    string newName = tb_fileRoot.Text.Substring(0, tb_fileRoot.Text.LastIndexOf(".")) + ".ico";
-                    //Save(img, newName);
-                    ConvertImageToIcon(tb_fileRoot.Text, newName, new Size(255, 255));
-                }
+                
+                string newName = tb_fileRoot.Text.Substring(0, tb_fileRoot.Text.LastIndexOf(".")) + ".ico";
+                //Save(img, newName);
+                ConvertImageToIcon(tb_fileRoot.Text, newName, new Size(255, 255));
             }
         }
         private void tb_items_TextChanged(object sender, EventArgs e) {
@@ -318,20 +186,6 @@ namespace Debug {
         /// <param name="e"></param>
         private void button2_Click_1(object sender, EventArgs e) {
             
-        }
-
-        private void IconConvert_Load(object sender, EventArgs e) {
-            try {
-                // regedit web https://patagames.com/request-trial/
-                // how to use the license
-                //Initialize the SDK library with license key
-                //You have to call this function before you can call any PDF processing functions.
-                PdfCommon.Initialize("EEF6E707-0413E707-04040B50-44464955-4D5F434F-52500D00-756C7667-65403132-362E636F-6D400036-F61625E7-9DDA9455-7D6B9BD6-4901A600-22A0FC7F-389E4B2E-384C583F-5335CCC1-C943CF5F-8A7BE508-8CF71EBF-F4E390D0-A07C94F1-AEE68BDC-0C1F2978-C0F764");
-
-                //Open and load a PDF document from a file.
-            } catch(Exception ex) {
-                Console.WriteLine(ex.Message);
-            }
         }
     }
 }
