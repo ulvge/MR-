@@ -111,32 +111,49 @@ namespace Debug
 			return false;
 		}
 
-		private class DefineVariable
-		{
+		private class DefineVariable { 
+			public static int commCount { get; set; } = 0;
 			public string humanName { get; set; }
 			public string inout { get; set; }
-			public string comm { get; set; }
+			public string comm { get; set; } = "";
+			private static string dir_in = "in";
+			private static string dir_out = "out";
+			private static string dir_out1 = "inout";
+			private static string dir_out2 = "in/out";
 
 			public DefineVariable(string[] str)
 			{
 				if (str.Length >= 2)
                 {
 					humanName = str[0].Replace(".", "_");
-					inout = str[1].ToLower() + "put";
+					inout = str[1].ToLower();
+					if (inout.Equals(dir_in) || inout.Equals(dir_out))
+					{
+						inout += "put";
+					}
+					else if (inout.Equals(dir_out1) || inout.Equals(dir_out2))
+					{
+						inout += dir_out1;
+					}
+					else
+					{
+						inout += "error__";
+					}
 				}
                 for (int i = 2; i < str.Length; i++)
                 {
 					comm += str[i] + " ";
-				}
-				if (!inout.Equals("input") && !inout.Equals("output"))
-                {
-					inout += "error__";
 				}
 				if (comm.Contains(humanName))
                 {
 					comm = comm.Replace(humanName, "");
 				}
 				comm = comm.Trim();
+
+				if (!string.IsNullOrEmpty(comm))
+                {
+					commCount++;
+				}
 			}
 		}
 
@@ -206,10 +223,14 @@ namespace Debug
 					}
 				}
 				string[] lines = removeSpace.Split(' ');
-				if (lines.Length == 1)
+				if (lines.Length == 1 || string.IsNullOrEmpty(lines[0]))
                 {
 					continue;
-                }
+				}
+				for (int i = 0; i < lines.Length; i++)
+				{
+					lines[i] = lines[i].Trim();
+				}
 				if (lines.Length == 2)
 				{
 					destDesc.Add(new CreateADC(lines[0], lines[1]));
@@ -217,7 +238,9 @@ namespace Debug
 
 				defineVariable.Add(new DefineVariable(lines));
 			}
-			if (defineVariable.Count > destDesc.Count) {
+
+			if (DefineVariable.commCount > 10) //if (defineVariable.Count > destDesc.Count) {
+			{
 				OutputDefineVariable(defineVariable);
             }
             else

@@ -80,3 +80,4 @@ E:\3Proj\@VSPorj\1MR计算工具\MR计算工具\Debug\obj\Debug\Debug.csproj.Cor
 E:\3Proj\@VSPorj\1MR计算工具\MR计算工具\Debug\obj\Debug\Debug.csproj.CopyComplete
 E:\3Proj\@VSPorj\1MR计算工具\MR计算工具\Debug\obj\Debug\Debug.exe
 E:\3Proj\@VSPorj\1MR计算工具\MR计算工具\Debug\obj\Debug\Debug.pdb
+E:\3Proj\@VSPorj\1MR计算工具\MR计算工具\Debug\obj\Debug\Debug.csproj.AssemblyReference.cache
