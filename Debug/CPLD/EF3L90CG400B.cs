@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Debug
 {
-    class EF3L
+    class EF3L90CG400B
     {
 		public static LVCMOS[] Range_Bank0 = {
 					new LVCMOS("A", 1, 20),

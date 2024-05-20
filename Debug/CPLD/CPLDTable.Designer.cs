@@ -122,7 +122,7 @@ namespace Debug {
             this.cb_devs.Items.AddRange(new object[] {
             "EF2L45UG132B",
             "EF2L45BG256B",
-            "EF3"});
+            "EF3L90CG400B"});
             this.cb_devs.Location = new System.Drawing.Point(183, 28);
             this.cb_devs.Margin = new System.Windows.Forms.Padding(4);
             this.cb_devs.Name = "cb_devs";

@@ -79,7 +79,7 @@
     </Compile>
     <Compile Include="CPLD\EF2L45UG132B.cs" />
     <Compile Include="CPLD\EF2L45BG256B.cs" />
-    <Compile Include="CPLD\EF3L.cs" />
+    <Compile Include="CPLD\EF3L90CG400B.cs" />
     <Compile Include="CPLD\LVCMOS.cs" />
     <Compile Include="IconConvert.cs">
       <SubType>Form</SubType>

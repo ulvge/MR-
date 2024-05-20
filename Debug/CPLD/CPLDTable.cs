@@ -46,9 +46,9 @@ namespace Debug
 
         private BankClass[] GetDeviceConfig()
         {
-			if (cb_devs.Text.Contains("EF3"))
+			if (cb_devs.Text.Contains("EF3L90CG400B"))
             {
-				return EF3L.GetConfig();
+				return EF3L90CG400B.GetConfig();
 			}
 			else if(cb_devs.Text.Contains("EF2L45UG132B"))
 			{
@@ -120,6 +120,7 @@ namespace Debug
 			private static string dir_out = "out";
 			private static string dir_out1 = "inout";
 			private static string dir_out2 = "in/out";
+			private static string dir_out3 = "od";
 
 			public DefineVariable(string[] str)
 			{
@@ -131,9 +132,9 @@ namespace Debug
 					{
 						inout += "put";
 					}
-					else if (inout.Equals(dir_out1) || inout.Equals(dir_out2))
+					else if (inout.Equals(dir_out1) || inout.Equals(dir_out2) || inout.Equals(dir_out3))
 					{
-						inout += dir_out1;
+						inout = dir_out1;
 					}
 					else
 					{
