@@ -134,6 +134,11 @@ namespace Debug
             Clipboard.SetText(tb_IPMB.Text);
         }
 
+        /// <summary>
+        /// 把arrary中的元素，检测并补0
+        /// </summary>
+        /// <param name="arrary"></param>
+        /// <returns></returns>
         private string checkFormat(string arrary) {
             string[] cmdBytes = arrary.Split(' ');
             StringBuilder cmds = new StringBuilder();

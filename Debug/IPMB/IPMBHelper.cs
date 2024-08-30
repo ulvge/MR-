@@ -11,6 +11,7 @@ namespace Debug.IPMB {
         /// </summary>
         /// <param name="hexStr">ini 中的原始 hex 数据</param>
         /// <param name="shiftCount">根据标准协议，进行移位的个数</param>
+        /// <param name="LUMStr">附加到后面的lum</param>
         /// <returns></returns>
         public static string Radix(string hexStr, int shiftCount, string LUMStr) {
             try {

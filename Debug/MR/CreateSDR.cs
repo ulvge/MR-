@@ -154,7 +154,7 @@ namespace Debug.MR {
 
                 sDRDesc._hdr_ID = "0x" + form.tb_recoderID.Text;
 
-                sDRDesc.SensorNum = "0x" + form.tb_recoderID.Text.Substring(form.tb_recoderID.Text.Length-2);
+                sDRDesc.SensorNum = "0x" + form.tb_recoderID.Text.Substring(form.tb_recoderID.Text.Length-2 < 0 ? 0 : form.tb_recoderID.Text.Length - 2);
                 sDRDesc.IDStrTypeLen = "0xC0 + sizeof(\"" +form.tb_sensorName.Text+ "\")"; //0xC0 + sizeof "P12V"
                 sDRDesc.IDStr = "\"" + form.tb_sensorName.Text+"\"";
 
