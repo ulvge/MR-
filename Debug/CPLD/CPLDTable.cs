@@ -268,7 +268,6 @@ namespace Debug
 
         private void bt_createAgain_Click(object sender, EventArgs e)
 		{
-			DataCheck.DataCheckMain();
 			AutoCreateAllItems();
 		}
     }

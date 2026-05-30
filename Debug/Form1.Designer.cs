@@ -106,7 +106,7 @@ namespace Debug
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "form";
-            this.Text = "航星中云";
+            this.Text = "TTY";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.form_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);

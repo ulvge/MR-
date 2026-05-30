@@ -54,7 +54,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.13.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -69,6 +69,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="tools\GetRange.cs" />
+    <Compile Include="upgrade\BatchUpgradeManager.cs" />
+    <Compile Include="upgrade\BmcRedfishClient.cs" />
     <Compile Include="CPLD\BankClass.cs" />
     <Compile Include="CPLD\BankVolotLevel.cs" />
     <Compile Include="CPLD\CPLDTable.cs">
@@ -81,11 +84,11 @@
     <Compile Include="CPLD\EF2L45BG256B.cs" />
     <Compile Include="CPLD\EF3L90CG400B.cs" />
     <Compile Include="CPLD\LVCMOS.cs" />
-    <Compile Include="IconConvert.cs">
+    <Compile Include="upgrade\upgradeBMC.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="IconConvert.Designer.cs">
-      <DependentUpon>IconConvert.cs</DependentUpon>
+    <Compile Include="upgrade\upgradeBMC.Designer.cs">
+      <DependentUpon>upgradeBMC.cs</DependentUpon>
     </Compile>
     <Compile Include="IPMB\IPMBHelper.cs" />
     <Compile Include="IPMB\NetFun.cs" />
@@ -118,8 +121,8 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="IconConvert.resx">
-      <DependentUpon>IconConvert.cs</DependentUpon>
+    <EmbeddedResource Include="upgrade\upgradeBMC.resx">
+      <DependentUpon>upgradeBMC.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MR\MR.resx">
       <DependentUpon>MR.cs</DependentUpon>
@@ -175,5 +178,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

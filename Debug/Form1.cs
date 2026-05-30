@@ -18,7 +18,7 @@ namespace Debug
 
         PortPinCovert portPinCovert = new PortPinCovert();
         MRForm mr = new MRForm();
-        IconConvert iconConvert = new IconConvert();
+        UpgradeBMC iconConvert = new UpgradeBMC();
         CPLDTable cpldTable = new CPLDTable();
         public form()
         {
