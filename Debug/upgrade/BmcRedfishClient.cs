@@ -14,16 +14,16 @@ namespace BmcUpgradeTool
     public class BmcRedfishClient
     {
         // BMC 默认配置参数
-        private const string DefaultIpHead = "192.168.60.";
-        private const string DefaultIpTail = "82";
         private const string LoginName = "Administrator";
         private const string LoginPassword = "ttytty`12";
 
         private readonly HttpClient _httpClient;
         private string _authToken;
+        private readonly Action<string> Log;
 
-        public BmcRedfishClient()
+        public BmcRedfishClient(Action<string> log)
         {
+            this.Log = log;
             // 强制使用 TLS 1.2（关键！）
             System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             // 忽略 SSL 证书验证（对应 Python 的 verify=False）
@@ -37,9 +37,9 @@ namespace BmcUpgradeTool
         /// <summary>
         /// 步骤1：获取认证令牌 (X-Auth-Token)
         /// </summary>
-        public async Task<bool> GetAuthTokenAsync(string ipTail = null)
+        public async Task<bool> GetAuthTokenAsync(string ip)
         {
-            string bmcIp = DefaultIpHead + (ipTail ?? DefaultIpTail);
+            string bmcIp = ip;
             string sessionUrl = $"https://{bmcIp}/redfish/v1/SessionService/Sessions";
 
             var payload = new JObject
@@ -86,7 +86,7 @@ namespace BmcUpgradeTool
             }
             return false;
         }
-        public async Task<bool> UploadFileAsync(string filePath, string ipTail)
+        public async Task<bool> UploadFileAsync(string filePath, string ip)
         {
             if (_authToken == null) return false;
             if (!File.Exists(filePath))
@@ -95,7 +95,7 @@ namespace BmcUpgradeTool
                 return false;
             }
 
-            string bmcIp = DefaultIpHead + ipTail;
+            string bmcIp = ip;
             string url = $"https://{bmcIp}/redfish/v1/UpdateService/FirmwareInventory";
 
             Console.WriteLine($"📤 开始上传文件到 {url}");
@@ -165,15 +165,63 @@ namespace BmcUpgradeTool
             return false;
         }
 
+        public async Task<bool> UploadFileAsync_NG(string filePath, string ip)
+        {
+            if (_authToken == null) return false;
+            if (!File.Exists(filePath))
+            {
+                Console.WriteLine($"❌ 文件不存在: {filePath}");
+                return false;
+            }
 
+            // 注意：这里需要动态获取当前请求的 BaseAddress 里的 IP，或者你在外部传入完整的 URL
+            // 为了简单起见，这里假设我们依然使用默认的 IP Head + Tail 构造 URL
+            // 在实际 UI 程序中，建议把 IP 地址作为类的属性保存下来
+            string bmcIp = ip;
+            string url = $"https://{bmcIp}/redfish/v1/UpdateService/FirmwareInventory";
+
+            try
+            {
+                using (var fileStream = File.OpenRead(filePath))
+                {
+                    var content = new MultipartFormDataContent();
+                    var fileContent = new StreamContent(fileStream);
+                    fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("application/octet-stream");
+                    content.Add(fileContent, "imgfile", Path.GetFileName(filePath));
+
+                    // 添加 Token 到请求头
+                    _httpClient.DefaultRequestHeaders.Remove("X-Auth-Token");
+                    _httpClient.DefaultRequestHeaders.Add("X-Auth-Token", _authToken);
+
+                    var response = await _httpClient.PostAsync(url, content);
+
+                    if (response.StatusCode == HttpStatusCode.OK ||
+                        response.StatusCode == HttpStatusCode.Created ||
+                        response.StatusCode == HttpStatusCode.Accepted)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        string error = await response.Content.ReadAsStringAsync();
+                        Console.WriteLine($"❌ 文件上传失败: {response.StatusCode}, 信息: {error}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ 上传请求异常: {ex.Message}");
+            }
+            return false;
+        }
         /// <summary>
         /// 步骤3：启动更新任务 (SimpleUpdate)
         /// </summary>
-        public async Task<(bool success, string taskId)> StartUpdateAsync(string remoteFilePath, string ipTail)
+        public async Task<(bool success, string taskId)> StartUpdateAsync(string remoteFilePath, string ip)
         {
             if (_authToken == null) return (false, null);
     
-            string bmcIp = DefaultIpHead + ipTail;
+            string bmcIp = ip;
             string url = $"https://{bmcIp}/redfish/v1/UpdateService/Actions/UpdateService.SimpleUpdate";
 
             var payload = new JObject
@@ -225,20 +273,27 @@ namespace BmcUpgradeTool
         /// <summary>
         /// 步骤4：轮询检查升级状态
         /// </summary>
-        public async Task<(bool success, string message)> CheckUpdateStatusAsync(string ipTail, string taskId, int timeoutSeconds = 30)
+        public async Task<(bool success, string message)> CheckUpdateStatusAsync(string ip, string taskId, int timeoutSeconds = 30)
         {
             if (_authToken == null) return (false, "未授权");
 
-            string bmcIp = DefaultIpHead + ipTail;
+            string bmcIp = ip;
             string url = $"https://{bmcIp}/redfish/v1/TaskService/Tasks/{taskId}";
 
             _httpClient.DefaultRequestHeaders.Remove("X-Auth-Token");
             _httpClient.DefaultRequestHeaders.Add("X-Auth-Token", _authToken);
 
             int count = 0;
+            bool isFinished = false;
+            bool isFirstLine = true;
+            string msgText = string.Empty;
             while (count < timeoutSeconds)
             {
-                await Task.Delay(2000); // 等待2秒
+                if (isFinished)
+                {
+                    return (true, msgText);
+                }
+                await Task.Delay(300); // 等待2秒
                 count += 2;
 
                 try
@@ -253,39 +308,41 @@ namespace BmcUpgradeTool
                         if (messages == null || !messages.HasValues) continue;
 
                         // 获取第一条消息的 Message 字段
-                        string msgText = messages?["Message"]?.ToString();
+                        msgText = messages?["Message"]?.ToString();
                         if (string.IsNullOrEmpty(msgText)) continue;
+
+
+                        string percent = json["PercentComplete"]?.ToString();
 
                         // 判断关键状态 (完全照搬你的 Python 逻辑)
                         if (msgText.Contains("Upgrading the WhiteBranding is complete") ||
                             msgText.Contains("Upgrading the BMC is complete") ||
                             msgText.Contains("Upgrading the Bios is complete"))
                         {
-                            return (true, msgText);
+                            isFinished = true;
+                            percent = "100";    // 这里先不返回，打印一次100%后，再退出
                         }
 
                         if (msgText.Contains("Upgrading the WhiteBranding"))
                         {
-                            Console.Write($"\r\t✅ 破解中......{count}");
-                            continue;
+                            Log($"✅ 破解中......{percent}% {(isFirstLine ? "\r\n" : "\r")}");
                         }
                         if (msgText.Contains("Upgrading the BMC"))
                         {
-                            Console.Write($"\r\t✅ BMC 升级中......{count}");
+                            Log($"✅ BMC 升级中......{percent}%{(isFirstLine ? "\r\n" : "\r")}");
                             await Task.Delay(3000); // Python 里这里额外睡了3秒
-                            continue;
                         }
                         if (msgText.Contains("Upgrading the Bios"))
                         {
-                            Console.Write($"\r\t✅ BIOS 升级中......{count}");
-                            continue;
+                            Log($"✅ BIOS 升级中......{percent}%{(isFirstLine ? "\r\n" : "\r")}");
                         }
+                        isFirstLine = false;
                     }
                 }
                 catch (Exception ex)
                 {
                     // 网络波动等异常，继续重试
-                    Console.WriteLine($"查询状态异常: {ex.Message}");
+                    Log($"查询状态异常: {ex.Message}");
                 }
             }
             return (false, "检查升级状态超时");

@@ -110,12 +110,33 @@ namespace Debug {
             {
                 tb_fileHpm.Text = fileDialog.FileName;
             }
-
         }
+        public void tb_upgradeLog_AppendText(string message)
+        {
+            if (message.EndsWith(Environment.NewLine) || tb_upgradeLog.Lines.Length == 0)
+            {
+                tb_upgradeLog.AppendText($"{DateTime.Now:HH:mm:ss} {message}");
+            }
+            else
+            {
+                // 获取除最后一行外的所有内容
 
+                var lines = tb_upgradeLog.Lines;
+                if (lines.Length > 0 && string.IsNullOrEmpty(lines[lines.Length - 1]))
+                {
+                    lines = lines.Take(lines.Length - 1).ToArray();
+                }
+                var allButLast = string.Join(Environment.NewLine, lines, 0, lines.Length - 1); //上一行的内容
+
+                // 重新设置文本：保留前面的行 + 新的最后一行
+                tb_upgradeLog.Text = allButLast +  $"\r{DateTime.Now:HH:mm:ss} " + message;
+            }
+            // 如果是 WinForms，还可以让滚动条自动滚到最下方
+            tb_upgradeLog.SelectionStart = tb_upgradeLog.Text.Length;
+            tb_upgradeLog.ScrollToCaret();
+        }
         private async void bt_telnet_Click(object sender, EventArgs e)
         {
-
             // // 解析用户输入的多个IP尾数
             string[] ipTails = GetRange.GetIPRange(cb_upgradeIP.Text.Trim()).ToArray();
             if (ipTails.Length == 0)
@@ -127,22 +148,14 @@ namespace Debug {
             bt_telnet.Enabled = false;
             string filePath = tb_fileTelnet.Text;
 
-            var batchManager = new BatchUpgradeManager();
+            var batchManager = new BatchUpgradeManager(tb_upgradeLog_AppendText);
 
             // 调用批量升级方法，并传入一个匿名函数来更新UI日志
-            await batchManager.StartBatchUpgradeAsync(ipTails, filePath, (message) =>
-            {
-                // // 这里的代码会自动回到UI线程执行，安全地更新界面
-                tb_upgradeLog.AppendText($"{DateTime.Now:HH:mm:ss} {message}\r\n");
-
-                // 如果是 WinForms，还可以让滚动条自动滚到最下方
-                tb_upgradeLog.SelectionStart = tb_upgradeLog.Text.Length;
-                tb_upgradeLog.ScrollToCaret();
-            });
+            await batchManager.StartBatchUpgradeAsync(ipTails, filePath);
 
             // 全部完成后恢复按钮
             bt_telnet.Enabled = true;
-            MessageBox.Show("批量升级流程已结束！");
+            //MessageBox.Show("批量升级流程已结束！");
         }
         private async void bt_hpm_Click(object sender, EventArgs e)
         {
@@ -157,22 +170,14 @@ namespace Debug {
             bt_hpm.Enabled = false;
             string filePath = tb_fileHpm.Text;
 
-            var batchManager = new BatchUpgradeManager();
+            var batchManager = new BatchUpgradeManager(tb_upgradeLog_AppendText);
 
             // 调用批量升级方法，并传入一个匿名函数来更新UI日志
-            await batchManager.StartBatchUpgradeAsync(ipTails, filePath, (message) =>
-            {
-                // // 这里的代码会自动回到UI线程执行，安全地更新界面
-                tb_upgradeLog.AppendText($"{DateTime.Now:HH:mm:ss} {message}\r\n");
-                
-                // 如果是 WinForms，还可以让滚动条自动滚到最下方
-                tb_upgradeLog.SelectionStart = tb_upgradeLog.Text.Length;
-                tb_upgradeLog.ScrollToCaret();
-            });
+            await batchManager.StartBatchUpgradeAsync(ipTails, filePath);
 
             // 全部完成后恢复按钮
             bt_hpm.Enabled = true;
-            MessageBox.Show("批量升级流程已结束！");
+            //MessageBox.Show("批量升级流程已结束！");
 
         }
 

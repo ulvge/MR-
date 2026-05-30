@@ -30,7 +30,6 @@ namespace Debug {
             this.label2 = new System.Windows.Forms.Label();
             this.tb_fileHpm = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.tb_upgradeLog = new System.Windows.Forms.TextBox();
             this.bt_hpm = new System.Windows.Forms.Button();
             this.cb_upgradeIP = new System.Windows.Forms.ComboBox();
             this.checkBox_decryptOnly = new System.Windows.Forms.CheckBox();
@@ -38,6 +37,7 @@ namespace Debug {
             this.label5 = new System.Windows.Forms.Label();
             this.tb_loginUserName = new System.Windows.Forms.TextBox();
             this.tb_loginPwd = new System.Windows.Forms.TextBox();
+            this.tb_upgradeLog = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
             // bt_telnet
@@ -97,18 +97,6 @@ namespace Debug {
             this.label3.Size = new System.Drawing.Size(41, 12);
             this.label3.TabIndex = 1;
             this.label3.Text = "指定IP";
-            // 
-            // tb_upgradeLog
-            // 
-            this.tb_upgradeLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tb_upgradeLog.Location = new System.Drawing.Point(760, 71);
-            this.tb_upgradeLog.Multiline = true;
-            this.tb_upgradeLog.Name = "tb_upgradeLog";
-            this.tb_upgradeLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tb_upgradeLog.Size = new System.Drawing.Size(575, 465);
-            this.tb_upgradeLog.TabIndex = 30;
             // 
             // bt_hpm
             // 
@@ -178,16 +166,24 @@ namespace Debug {
             this.tb_loginPwd.Size = new System.Drawing.Size(154, 21);
             this.tb_loginPwd.TabIndex = 2;
             // 
+            // tb_upgradeLog
+            // 
+            this.tb_upgradeLog.Location = new System.Drawing.Point(738, 12);
+            this.tb_upgradeLog.Name = "tb_upgradeLog";
+            this.tb_upgradeLog.Size = new System.Drawing.Size(541, 524);
+            this.tb_upgradeLog.TabIndex = 34;
+            this.tb_upgradeLog.Text = "";
+            // 
             // UpgradeBMC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1347, 548);
+            this.Controls.Add(this.tb_upgradeLog);
             this.Controls.Add(this.checkBox_decryptOnly);
             this.Controls.Add(this.cb_upgradeIP);
             this.Controls.Add(this.bt_hpm);
-            this.Controls.Add(this.tb_upgradeLog);
             this.Controls.Add(this.tb_fileHpm);
             this.Controls.Add(this.tb_loginPwd);
             this.Controls.Add(this.tb_loginUserName);
@@ -215,7 +211,6 @@ namespace Debug {
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox tb_fileHpm;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox tb_upgradeLog;
         private System.Windows.Forms.Button bt_hpm;
         private System.Windows.Forms.ComboBox cb_upgradeIP;
         private System.Windows.Forms.CheckBox checkBox_decryptOnly;
@@ -223,5 +218,6 @@ namespace Debug {
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox tb_loginUserName;
         private System.Windows.Forms.TextBox tb_loginPwd;
+        private System.Windows.Forms.RichTextBox tb_upgradeLog;
     }
 }
