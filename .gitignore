@@ -25,3 +25,4 @@
 *.cache
 *.xml
 /Debug/.vs
+/.vs/Debug

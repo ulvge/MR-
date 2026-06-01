@@ -277,6 +277,7 @@ namespace Debug {
             try
             {
                 dg_upgradeProcessBar.Rows.Clear();
+                ipRowMap.Clear();
                 // // 解析用户输入的多个IP尾数
                 string[] ipTails = GetRange.GetIPRange(cb_upgradeIP.Text.Trim()).ToArray();
                 if (ipTails.Length == 0)
@@ -311,6 +312,7 @@ namespace Debug {
             try
             {
                 dg_upgradeProcessBar.Rows.Clear();
+                ipRowMap.Clear();
                 // // 解析用户输入的多个IP尾数
                 string[] ipTails = GetRange.GetIPRange(cb_upgradeIP.Text.Trim()).ToArray();
                 if (ipTails.Length == 0)
