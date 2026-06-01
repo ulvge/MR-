@@ -78,6 +78,10 @@ namespace BmcUpgradeTool
                 {
                     log($"{currentIp} ❌ 升级失败或超时: {finalMsg}\r\n");
                 }
+
+                log($"{currentIp} 准备退出）...\r\n");
+                bool exitSuccess = await client.DeleteSessionAsync(currentIp);
+                if (!exitSuccess) { log($"{currentIp} ❌ 退出失败。\r\n"); return; }
             }
             catch (Exception ex)
             {

@@ -44,7 +44,6 @@ namespace Debug.upgrade
             dataGridView.Columns["UpdateTime"].FillWeight = 25; // 25%
 
             // IP列启用排序
-            //dataGridView.Columns["IP"].SortMode = DataGridViewColumnSortMode.Programmatic;
             dataGridView.Columns["IP"].SortMode = DataGridViewColumnSortMode.Automatic;
 
             // 禁用选择和编辑
@@ -52,14 +51,13 @@ namespace Debug.upgrade
             dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView.ClearSelection();                   // 清除默认选中
 
-            // 禁用行和单元格的选择高亮
+            // 禁用选中高亮效果
             dataGridView.DefaultCellStyle.SelectionBackColor = dataGridView.DefaultCellStyle.BackColor;
             dataGridView.DefaultCellStyle.SelectionForeColor = dataGridView.DefaultCellStyle.ForeColor;
 
             // 其他设置
             dataGridView.AllowUserToAddRows = false;
             dataGridView.RowHeadersVisible = false;
-            dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
             // 设置进度列样式
             dataGridView.Columns["Progress"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;

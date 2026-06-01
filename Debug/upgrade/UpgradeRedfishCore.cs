@@ -19,6 +19,7 @@ namespace BmcUpgradeTool
 
         private readonly HttpClient _httpClient;
         private string _authToken;
+        private string _seesionID;
         private readonly Action<string> Log;
 
         public UpgradeRedfishCore(Action<string> log)
@@ -31,7 +32,7 @@ namespace BmcUpgradeTool
             handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
 
             _httpClient = new HttpClient(handler);
-            _httpClient.Timeout = TimeSpan.FromSeconds(30); // 默认超时
+            _httpClient.Timeout = TimeSpan.FromSeconds(50); // 默认超时
         }
 
         /// <summary>
@@ -60,6 +61,12 @@ namespace BmcUpgradeTool
                     {
                         _authToken = string.Join("", values);
                         Console.WriteLine($"✅ 获取到 Token: {_authToken}");
+
+                        if (response.Headers.TryGetValues("Location", out var seesionID))
+                        {
+                            _seesionID = string.Join("", seesionID).Split('/').LastOrDefault();
+                            Console.WriteLine($"✅ 获取到 Session ID: {_seesionID}");
+                        }
                         return true;
                     }
 
@@ -346,6 +353,50 @@ namespace BmcUpgradeTool
                 }
             }
             return (false, "检查升级状态超时");
+        }
+        /// <summary>
+        /// 释放认证令牌（登出/删除会话）
+        /// </summary>
+        public async Task<bool> DeleteSessionAsync(string ip)
+        {
+            
+            if (string.IsNullOrEmpty(_authToken))
+            {
+                Console.WriteLine("⚠️ 无有效 Token，无需释放");
+                return true;
+            }
+            if (string.IsNullOrEmpty(_seesionID))
+            {
+                Console.WriteLine("⚠️ 无有效 Session ID，无需释放");
+                return true;
+            }
+
+            string sessionUrl = $"https://{ip}/redfish/v1/SessionService/Sessions/{_seesionID}";
+            
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Delete, sessionUrl);
+                request.Headers.Add("X-Auth-Token", _authToken);
+                
+                var response = await _httpClient.SendAsync(request);
+                
+                if (response.IsSuccessStatusCode)
+                {
+                    Console.WriteLine($"✅ 已释放 Token: {_authToken}");
+                    _authToken = null;
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine($"⚠️ 释放 Token 失败: {response.StatusCode}");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"❌ 释放 Token 异常: {ex.Message}");
+                return false;
+            }
         }
     }
 }

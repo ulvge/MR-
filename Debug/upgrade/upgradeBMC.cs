@@ -84,20 +84,22 @@ namespace Debug {
         private void UpgradeBMC_Load(object sender, EventArgs e)
         {
             loadINI();
-            //DataGridViewInit();
+            // 先设置全局样式（指定具体颜色，而不是依赖默认值）
+            dg_upgradeProcessBar.DefaultCellStyle.BackColor = Color.White;
+            dg_upgradeProcessBar.DefaultCellStyle.SelectionBackColor = Color.White;  // 选中时也是白色
+            dg_upgradeProcessBar.DefaultCellStyle.ForeColor = Color.Black;
+            dg_upgradeProcessBar.DefaultCellStyle.SelectionForeColor = Color.Black;
+            
+            // 清除行级别的默认样式
+            dg_upgradeProcessBar.RowsDefaultCellStyle.BackColor = Color.Empty;
+            dg_upgradeProcessBar.AlternatingRowsDefaultCellStyle.BackColor = Color.Empty;
+            dg_upgradeProcessBar.RowTemplate.DefaultCellStyle.BackColor = Color.Empty;
+            
+            // 绑定 CellFormatting 事件
+            dg_upgradeProcessBar.CellFormatting += Dg_upgradeProcessBar_CellFormatting;
+            
             // 初始化进度管理器
             BMCProgressManager progressManager = new BMCProgressManager(dg_upgradeProcessBar);
-                // 添加列头点击事件
-            dg_upgradeProcessBar.ColumnHeaderMouseClick += DataGridView1_ColumnHeaderMouseClick;
-        }
-
-        private void DataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            // 只对 IP 列进行排序
-            if (dg_upgradeProcessBar.Columns[e.ColumnIndex].Name == "IP")
-            {
-                //SortDataGridViewByIP();
-            }
         }
         private void UpgradeBMC_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -129,107 +131,99 @@ namespace Debug {
         }
         private Dictionary<string, DataGridViewRow> ipRowMap = new Dictionary<string, DataGridViewRow>();
 
+        private void Dg_upgradeProcessBar_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            // 只处理进度列（索引 1）
+            if (e.ColumnIndex == 1 && e.RowIndex >= 0)
+            {
+                string value = e.Value?.ToString();
+                if (!string.IsNullOrEmpty(value) && value.Contains("%"))
+                {
+                    string percentStr = value.TrimEnd('%');
+                    if (int.TryParse(percentStr, out int percent))
+                    {
+                        if (percent == 100)
+                        {
+                            e.CellStyle.BackColor = Color.LightGreen;
+                            e.CellStyle.SelectionBackColor = Color.LightGreen;
+                        }
+                        else
+                        {
+                            e.CellStyle.BackColor = Color.LightPink;
+                            e.CellStyle.SelectionBackColor = Color.LightPink;
+                        }
+                    }
+                }
+            }
+        }
+
+        // 简化 UpdateDataGridView，只设置值，不设置颜色
         private void UpdateDataGridView(BMCProgressInfo progressInfo)
         {
             string ip = progressInfo.ip;
             int percent = progressInfo.percent;
             string stage = progressInfo.stage;
+
             if (dg_upgradeProcessBar.InvokeRequired)
             {
                 dg_upgradeProcessBar.Invoke(new Action(() => UpdateDataGridView(progressInfo)));
                 return;
             }
 
-            // 查找或创建行
             DataGridViewRow row;
             if (!ipRowMap.ContainsKey(ip))
             {
-                // 添加新行
                 row = new DataGridViewRow();
                 row.CreateCells(dg_upgradeProcessBar);
                 row.Cells[0].Value = ip;
                 dg_upgradeProcessBar.Rows.Add(row);
                 ipRowMap[ip] = row;
-
-                // 添加后立即排序
-                SortDataGridViewByIP();
             }
             else
             {
                 row = ipRowMap[ip];
             }
 
-            // 更新进度和阶段
+            // 只设置值，不设置颜色（颜色由 CellFormatting 自动处理）
             row.Cells[1].Value = $"{percent}%";
-            row.Cells[2].Value = stage;
+            row.Cells[2].Value = percent == 100 ? "完成" : stage;
             row.Cells[3].Value = DateTime.Now.ToString("HH:mm:ss");
-
-            // 根据百分比设置颜色
+            
+            // 强制设置样式（多种方式）
             if (percent == 100)
             {
+                // 方式1：直接设置
                 row.Cells[1].Style.BackColor = Color.LightGreen;
                 row.Cells[1].Style.ForeColor = Color.DarkGreen;
-                row.Cells[2].Value = "完成";
+                row.Cells[1].Style.SelectionBackColor = Color.LightGreen;
+                row.Cells[1].Style.SelectionForeColor = Color.DarkGreen;
+                
+                // 方式2：通过 DefaultCellStyle
+                row.DefaultCellStyle.BackColor = Color.LightGreen;
+                
+                // 方式3：通过单元格的 Style 应用
+                var style = new DataGridViewCellStyle();
+                style.BackColor = Color.LightGreen;
+                style.ForeColor = Color.DarkGreen;
+                row.Cells[1].Style = style;
+                
+                // 方式4：强制刷新
+                dg_upgradeProcessBar.InvalidateCell(1, row.Index);
             }
             else
             {
                 row.Cells[1].Style.BackColor = Color.LightPink;
                 row.Cells[1].Style.ForeColor = Color.DarkRed;
+                row.Cells[1].Style.SelectionBackColor = Color.LightPink;
+                row.Cells[1].Style.SelectionForeColor = Color.DarkRed;
             }
-        }
-        private void SortDataGridViewByIP()
-        {
-            if (dg_upgradeProcessBar.Rows.Count == 0) return;
-
-            // 保存所有数据
-            var rowsData = new List<DataGridViewRow>();
-            foreach (DataGridViewRow row in dg_upgradeProcessBar.Rows)
-            {
-                // 创建新行并复制数据
-                DataGridViewRow newRow = new DataGridViewRow();
-                newRow.CreateCells(dg_upgradeProcessBar);
-
-                for (int i = 0; i < row.Cells.Count; i++)
-                {
-                    newRow.Cells[i].Value = row.Cells[i].Value;
-                    newRow.Cells[i].Style = row.Cells[i].Style.Clone();
-                }
-                rowsData.Add(newRow);
-            }
-
-            // 排序（基于原始 IP）
-            var sortedRows = rowsData
-                .OrderBy(r => IPToLong(r.Cells[0].Value?.ToString()))
-                .ToList();
-
-            // 重新填充
-            dg_upgradeProcessBar.Rows.Clear();
-            ipRowMap.Clear();
-
-            foreach (var row in sortedRows)
-            {
-                string ip = row.Cells[0].Value?.ToString();
-                dg_upgradeProcessBar.Rows.Add(row);
-                ipRowMap[ip] = row;
-            }
-        }
-       
-        private long IPToLong(string ip)
-        {
-            if (string.IsNullOrEmpty(ip)) return 0;
-
-            string[] parts = ip.Split('.');
-            if (parts.Length != 4) return 0;
-
-            long result = 0;
-            for (int i = 0; i < 4; i++)
-            {
-                if (byte.TryParse(parts[i], out byte b))
-                {
-                    result = (result << 8) | b;
-                }
-            }
-            return result;
+            
+            // 确保行不被选中
+            row.Selected = false;
+            
+            // 强制刷新
+            dg_upgradeProcessBar.Refresh();
+            Application.DoEvents();
         }
 
         // 在你的升级方法中调用
@@ -269,50 +263,73 @@ namespace Debug {
             tb_upgradeLog.SelectionStart = tb_upgradeLog.Text.Length;
             tb_upgradeLog.ScrollToCaret();
         }
+        private bool _isTelnetRunning = false;  // 状态标志
         private async void bt_telnet_Click(object sender, EventArgs e)
         {
-            // // 解析用户输入的多个IP尾数
-            string[] ipTails = GetRange.GetIPRange(cb_upgradeIP.Text.Trim()).ToArray();
-            if (ipTails.Length == 0)
+            if (_isTelnetRunning)
             {
-                Console.WriteLine("指定 的IP 地址，格式错误");
+                Console.WriteLine("操作正在进行中，请勿重复点击");
                 return;
             }
-            // 禁用按钮防止重复点击
-            bt_telnet.Enabled = false;
-            string filePath = tb_fileTelnet.Text;
 
-            var batchManager = new UpgradeManagerBatch(tb_upgradeLog_AppendText);
+            // 设置标志
+            _isTelnetRunning = true;
+            try
+            {
+                dg_upgradeProcessBar.Rows.Clear();
+                // // 解析用户输入的多个IP尾数
+                string[] ipTails = GetRange.GetIPRange(cb_upgradeIP.Text.Trim()).ToArray();
+                if (ipTails.Length == 0)
+                {
+                    Console.WriteLine("指定 的IP 地址，格式错误");
+                    return;
+                }
+                string filePath = tb_fileTelnet.Text;
 
-            // 调用批量升级方法，并传入一个匿名函数来更新UI日志
-            await batchManager.StartBatchUpgradeAsync(ipTails, filePath);
+                var batchManager = new UpgradeManagerBatch(tb_upgradeLog_AppendText);
 
-            // 全部完成后恢复按钮
-            bt_telnet.Enabled = true;
-            //MessageBox.Show("批量升级流程已结束！");
+                // 调用批量升级方法，并传入一个匿名函数来更新UI日志
+                await batchManager.StartBatchUpgradeAsync(ipTails, filePath);
+            }
+            finally
+            {
+                // 确保标志一定会被清除
+                _isTelnetRunning = false;
+            }
         }
+        
+        private bool _isGradeHpmRunning = false;  // 状态标志
         private async void bt_hpm_Click(object sender, EventArgs e)
         {
-            // // 解析用户输入的多个IP尾数
-            string[] ipTails = GetRange.GetIPRange(cb_upgradeIP.Text.Trim()).ToArray();
-            if (ipTails.Length == 0)
+            if (_isGradeHpmRunning)
             {
-                Console.WriteLine("指定 的IP 地址，格式错误");
+                Console.WriteLine("操作正在进行中，请勿重复点击");
                 return;
             }
-            // 禁用按钮防止重复点击
-            bt_hpm.Enabled = false;
-            string filePath = tb_fileHpm.Text;
+            // 设置标志
+            _isGradeHpmRunning = true;
+            try
+            {
+                dg_upgradeProcessBar.Rows.Clear();
+                // // 解析用户输入的多个IP尾数
+                string[] ipTails = GetRange.GetIPRange(cb_upgradeIP.Text.Trim()).ToArray();
+                if (ipTails.Length == 0)
+                {
+                    Console.WriteLine("指定 的IP 地址，格式错误");
+                    return;
+                }
+                string filePath = tb_fileHpm.Text;
 
-            var batchManager = new UpgradeManagerBatch(tb_upgradeLog_AppendText);
+                var batchManager = new UpgradeManagerBatch(tb_upgradeLog_AppendText);
 
-            // 调用批量升级方法，并传入一个匿名函数来更新UI日志
-            await batchManager.StartBatchUpgradeAsync(ipTails, filePath);
-
-            // 全部完成后恢复按钮
-            bt_hpm.Enabled = true;
-            //MessageBox.Show("批量升级流程已结束！");
-
+                // 调用批量升级方法，并传入一个匿名函数来更新UI日志
+                await batchManager.StartBatchUpgradeAsync(ipTails, filePath);
+            }
+            finally
+            {
+                // 确保标志一定会被清除
+                _isGradeHpmRunning = false;
+            }   
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)

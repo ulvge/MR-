@@ -44,7 +44,6 @@ namespace Debug {
             // 
             // bt_telnet
             // 
-            this.bt_telnet.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.bt_telnet.Location = new System.Drawing.Point(657, 134);
             this.bt_telnet.Name = "bt_telnet";
             this.bt_telnet.Size = new System.Drawing.Size(75, 23);
@@ -64,8 +63,6 @@ namespace Debug {
             // 
             // tb_fileTelnet
             // 
-            this.tb_fileTelnet.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.tb_fileTelnet.Location = new System.Drawing.Point(118, 138);
             this.tb_fileTelnet.Name = "tb_fileTelnet";
             this.tb_fileTelnet.Size = new System.Drawing.Size(513, 21);
@@ -83,8 +80,6 @@ namespace Debug {
             // 
             // tb_fileHpm
             // 
-            this.tb_fileHpm.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.tb_fileHpm.Location = new System.Drawing.Point(118, 170);
             this.tb_fileHpm.Name = "tb_fileHpm";
             this.tb_fileHpm.Size = new System.Drawing.Size(513, 21);
@@ -102,7 +97,6 @@ namespace Debug {
             // 
             // bt_hpm
             // 
-            this.bt_hpm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.bt_hpm.Location = new System.Drawing.Point(657, 169);
             this.bt_hpm.Name = "bt_hpm";
             this.bt_hpm.Size = new System.Drawing.Size(75, 23);
@@ -117,12 +111,11 @@ namespace Debug {
             this.cb_upgradeIP.ItemHeight = 12;
             this.cb_upgradeIP.Location = new System.Drawing.Point(118, 200);
             this.cb_upgradeIP.Name = "cb_upgradeIP";
-            this.cb_upgradeIP.Size = new System.Drawing.Size(137, 20);
+            this.cb_upgradeIP.Size = new System.Drawing.Size(292, 20);
             this.cb_upgradeIP.TabIndex = 32;
             // 
             // checkBox_decryptOnly
             // 
-            this.checkBox_decryptOnly.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBox_decryptOnly.AutoSize = true;
             this.checkBox_decryptOnly.Location = new System.Drawing.Point(499, 202);
             this.checkBox_decryptOnly.Margin = new System.Windows.Forms.Padding(2);
@@ -171,7 +164,7 @@ namespace Debug {
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tb_upgradeLog.Location = new System.Drawing.Point(738, 12);
             this.tb_upgradeLog.Name = "tb_upgradeLog";
-            this.tb_upgradeLog.Size = new System.Drawing.Size(541, 384);
+            this.tb_upgradeLog.Size = new System.Drawing.Size(597, 384);
             this.tb_upgradeLog.TabIndex = 34;
             this.tb_upgradeLog.Text = "";
             this.tb_upgradeLog.TextChanged += new System.EventHandler(this.tb_upgradeLog_TextChanged);
@@ -186,7 +179,7 @@ namespace Debug {
             this.dg_upgradeProcessBar.Location = new System.Drawing.Point(738, 402);
             this.dg_upgradeProcessBar.Name = "dg_upgradeProcessBar";
             this.dg_upgradeProcessBar.RowTemplate.Height = 23;
-            this.dg_upgradeProcessBar.Size = new System.Drawing.Size(541, 150);
+            this.dg_upgradeProcessBar.Size = new System.Drawing.Size(597, 150);
             this.dg_upgradeProcessBar.TabIndex = 35;
             this.dg_upgradeProcessBar.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
