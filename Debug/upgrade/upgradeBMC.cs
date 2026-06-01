@@ -1,5 +1,6 @@
 ﻿using BmcUpgradeTool;
 using Debug.tools;
+using Debug.upgrade;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,9 +11,11 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static Debug.MRForm;
+using static System.Windows.Forms.AxHost;
 
 namespace Debug {
 
@@ -81,8 +84,21 @@ namespace Debug {
         private void UpgradeBMC_Load(object sender, EventArgs e)
         {
             loadINI();
+            //DataGridViewInit();
+            // 初始化进度管理器
+            BMCProgressManager progressManager = new BMCProgressManager(dg_upgradeProcessBar);
+                // 添加列头点击事件
+            dg_upgradeProcessBar.ColumnHeaderMouseClick += DataGridView1_ColumnHeaderMouseClick;
         }
 
+        private void DataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            // 只对 IP 列进行排序
+            if (dg_upgradeProcessBar.Columns[e.ColumnIndex].Name == "IP")
+            {
+                //SortDataGridViewByIP();
+            }
+        }
         private void UpgradeBMC_FormClosing(object sender, FormClosingEventArgs e)
         {
             updateINI();
@@ -100,7 +116,7 @@ namespace Debug {
             }
         }
 
-        private void tb_fileHpm_DoubleClick(object sender, EventArgs e)
+        private void tb_fileBMCUpgradeHpm_DoubleClick(object sender, EventArgs e)
         {//弹出打开 hpm升级包 对话框
             OpenFileDialog fileDialog = new OpenFileDialog();
             fileDialog.Multiselect = false;
@@ -111,8 +127,126 @@ namespace Debug {
                 tb_fileHpm.Text = fileDialog.FileName;
             }
         }
+        private Dictionary<string, DataGridViewRow> ipRowMap = new Dictionary<string, DataGridViewRow>();
+
+        private void UpdateDataGridView(BMCProgressInfo progressInfo)
+        {
+            string ip = progressInfo.ip;
+            int percent = progressInfo.percent;
+            string stage = progressInfo.stage;
+            if (dg_upgradeProcessBar.InvokeRequired)
+            {
+                dg_upgradeProcessBar.Invoke(new Action(() => UpdateDataGridView(progressInfo)));
+                return;
+            }
+
+            // 查找或创建行
+            DataGridViewRow row;
+            if (!ipRowMap.ContainsKey(ip))
+            {
+                // 添加新行
+                row = new DataGridViewRow();
+                row.CreateCells(dg_upgradeProcessBar);
+                row.Cells[0].Value = ip;
+                dg_upgradeProcessBar.Rows.Add(row);
+                ipRowMap[ip] = row;
+
+                // 添加后立即排序
+                SortDataGridViewByIP();
+            }
+            else
+            {
+                row = ipRowMap[ip];
+            }
+
+            // 更新进度和阶段
+            row.Cells[1].Value = $"{percent}%";
+            row.Cells[2].Value = stage;
+            row.Cells[3].Value = DateTime.Now.ToString("HH:mm:ss");
+
+            // 根据百分比设置颜色
+            if (percent == 100)
+            {
+                row.Cells[1].Style.BackColor = Color.LightGreen;
+                row.Cells[1].Style.ForeColor = Color.DarkGreen;
+                row.Cells[2].Value = "完成";
+            }
+            else
+            {
+                row.Cells[1].Style.BackColor = Color.LightPink;
+                row.Cells[1].Style.ForeColor = Color.DarkRed;
+            }
+        }
+        private void SortDataGridViewByIP()
+        {
+            if (dg_upgradeProcessBar.Rows.Count == 0) return;
+
+            // 保存所有数据
+            var rowsData = new List<DataGridViewRow>();
+            foreach (DataGridViewRow row in dg_upgradeProcessBar.Rows)
+            {
+                // 创建新行并复制数据
+                DataGridViewRow newRow = new DataGridViewRow();
+                newRow.CreateCells(dg_upgradeProcessBar);
+
+                for (int i = 0; i < row.Cells.Count; i++)
+                {
+                    newRow.Cells[i].Value = row.Cells[i].Value;
+                    newRow.Cells[i].Style = row.Cells[i].Style.Clone();
+                }
+                rowsData.Add(newRow);
+            }
+
+            // 排序（基于原始 IP）
+            var sortedRows = rowsData
+                .OrderBy(r => IPToLong(r.Cells[0].Value?.ToString()))
+                .ToList();
+
+            // 重新填充
+            dg_upgradeProcessBar.Rows.Clear();
+            ipRowMap.Clear();
+
+            foreach (var row in sortedRows)
+            {
+                string ip = row.Cells[0].Value?.ToString();
+                dg_upgradeProcessBar.Rows.Add(row);
+                ipRowMap[ip] = row;
+            }
+        }
+       
+        private long IPToLong(string ip)
+        {
+            if (string.IsNullOrEmpty(ip)) return 0;
+
+            string[] parts = ip.Split('.');
+            if (parts.Length != 4) return 0;
+
+            long result = 0;
+            for (int i = 0; i < 4; i++)
+            {
+                if (byte.TryParse(parts[i], out byte b))
+                {
+                    result = (result << 8) | b;
+                }
+            }
+            return result;
+        }
+
+        // 在你的升级方法中调用
+        private void updateProcessBar(string message)
+        {
+            ParseToProgressInfo parseToProgressInfo = new ParseToProgressInfo();
+            BMCProgressInfo progressInfo = parseToProgressInfo.ParseProgressInfo(message);
+
+            UpdateDataGridView(progressInfo);
+        }
+
         public void tb_upgradeLog_AppendText(string message)
         {
+            if (message.Contains("升级中") || message.Contains("破解中"))
+            {
+                updateProcessBar(message);
+            }
             if (message.EndsWith(Environment.NewLine) || tb_upgradeLog.Lines.Length == 0)
             {
                 tb_upgradeLog.AppendText($"{DateTime.Now:HH:mm:ss} {message}");
@@ -148,7 +282,7 @@ namespace Debug {
             bt_telnet.Enabled = false;
             string filePath = tb_fileTelnet.Text;
 
-            var batchManager = new BatchUpgradeManager(tb_upgradeLog_AppendText);
+            var batchManager = new UpgradeManagerBatch(tb_upgradeLog_AppendText);
 
             // 调用批量升级方法，并传入一个匿名函数来更新UI日志
             await batchManager.StartBatchUpgradeAsync(ipTails, filePath);
@@ -170,7 +304,7 @@ namespace Debug {
             bt_hpm.Enabled = false;
             string filePath = tb_fileHpm.Text;
 
-            var batchManager = new BatchUpgradeManager(tb_upgradeLog_AppendText);
+            var batchManager = new UpgradeManagerBatch(tb_upgradeLog_AppendText);
 
             // 调用批量升级方法，并传入一个匿名函数来更新UI日志
             await batchManager.StartBatchUpgradeAsync(ipTails, filePath);
@@ -181,5 +315,14 @@ namespace Debug {
 
         }
 
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void tb_upgradeLog_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

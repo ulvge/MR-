@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BmcUpgradeTool
 {
-    public class BmcRedfishClient
+    public class UpgradeRedfishCore
     {
         // BMC 默认配置参数
         private const string LoginName = "Administrator";
@@ -21,7 +21,7 @@ namespace BmcUpgradeTool
         private string _authToken;
         private readonly Action<string> Log;
 
-        public BmcRedfishClient(Action<string> log)
+        public UpgradeRedfishCore(Action<string> log)
         {
             this.Log = log;
             // 强制使用 TLS 1.2（关键！）

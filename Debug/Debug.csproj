@@ -70,8 +70,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="tools\GetRange.cs" />
-    <Compile Include="upgrade\BatchUpgradeManager.cs" />
-    <Compile Include="upgrade\BmcRedfishClient.cs" />
+    <Compile Include="upgrade\ParseToProgressInfo.cs" />
+    <Compile Include="upgrade\UpgradeManagerBatch.cs" />
+    <Compile Include="upgrade\BMCProgressInfo.cs" />
+    <Compile Include="upgrade\BMCProgressManager.cs" />
+    <Compile Include="upgrade\UpgradeRedfishCore.cs" />
     <Compile Include="CPLD\BankClass.cs" />
     <Compile Include="CPLD\BankVolotLevel.cs" />
     <Compile Include="CPLD\CPLDTable.cs">

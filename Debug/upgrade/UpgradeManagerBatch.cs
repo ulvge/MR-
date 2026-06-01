@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace BmcUpgradeTool
 {
-    public class BatchUpgradeManager
+    public class UpgradeManagerBatch
     {
         private readonly Action<string> log;
-        public BatchUpgradeManager(Action<string> log)
+        public UpgradeManagerBatch(Action<string> log)
         {
             this.log = log;
         }
@@ -45,7 +45,7 @@ namespace BmcUpgradeTool
             string currentIp = ip;
             try
             {
-                var client = new BmcRedfishClient(log); // 使用你之前封装好的核心类
+                var client = new UpgradeRedfishCore(log); // 使用你之前封装好的核心类
 
                 // 1. 获取 Token
                 log($"{currentIp} 正在获取认证令牌...\r\n");
