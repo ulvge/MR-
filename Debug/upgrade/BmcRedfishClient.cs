@@ -31,7 +31,7 @@ namespace BmcUpgradeTool
             handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
 
             _httpClient = new HttpClient(handler);
-            _httpClient.Timeout = TimeSpan.FromSeconds(20); // 默认超时
+            _httpClient.Timeout = TimeSpan.FromSeconds(30); // 默认超时
         }
 
         /// <summary>
@@ -325,16 +325,16 @@ namespace BmcUpgradeTool
 
                         if (msgText.Contains("Upgrading the WhiteBranding"))
                         {
-                            Log($"✅ 破解中......{percent}% {(isFirstLine ? "\r\n" : "\r")}");
+                            Log($"✅ {bmcIp} 破解中......{percent}% {(isFirstLine ? "\r\n" : "\r")}");
                         }
                         if (msgText.Contains("Upgrading the BMC"))
                         {
-                            Log($"✅ BMC 升级中......{percent}%{(isFirstLine ? "\r\n" : "\r")}");
+                            Log($"✅ {bmcIp} BMC 升级中......{percent}%{(isFirstLine ? "\r\n" : "\r")}");
                             await Task.Delay(3000); // Python 里这里额外睡了3秒
                         }
                         if (msgText.Contains("Upgrading the Bios"))
                         {
-                            Log($"✅ BIOS 升级中......{percent}%{(isFirstLine ? "\r\n" : "\r")}");
+                            Log($"✅ {bmcIp} BIOS 升级中......{percent}%{(isFirstLine ? "\r\n" : "\r")}");
                         }
                         isFirstLine = false;
                     }

@@ -3,16 +3,20 @@
   "WorkspaceRootPath": "D:\\debug\\CS-MR-\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F07C26B2-52CA-4F51-9B2A-6BECB9AB032F}|Debug\\Debug.csproj|d:\\debug\\cs-mr-\\debug\\upgrade\\bmcredfishclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{F07C26B2-52CA-4F51-9B2A-6BECB9AB032F}|Debug\\Debug.csproj|D:\\debug\\CS-MR-\\debug\\upgrade\\bmcredfishclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F07C26B2-52CA-4F51-9B2A-6BECB9AB032F}|Debug\\Debug.csproj|solutionrelative:debug\\upgrade\\bmcredfishclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F07C26B2-52CA-4F51-9B2A-6BECB9AB032F}|Debug\\Debug.csproj|D:\\debug\\CS-MR-\\debug\\upgrade\\upgradebmc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F07C26B2-52CA-4F51-9B2A-6BECB9AB032F}|Debug\\Debug.csproj|solutionrelative:debug\\upgrade\\upgradebmc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F07C26B2-52CA-4F51-9B2A-6BECB9AB032F}|Debug\\Debug.csproj|d:\\debug\\cs-mr-\\debug\\upgrade\\batchupgrademanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F07C26B2-52CA-4F51-9B2A-6BECB9AB032F}|Debug\\Debug.csproj|solutionrelative:debug\\upgrade\\batchupgrademanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F07C26B2-52CA-4F51-9B2A-6BECB9AB032F}|Debug\\Debug.csproj|D:\\debug\\CS-MR-\\debug\\upgrade\\upgradebmc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{F07C26B2-52CA-4F51-9B2A-6BECB9AB032F}|Debug\\Debug.csproj|solutionrelative:debug\\upgrade\\upgradebmc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F07C26B2-52CA-4F51-9B2A-6BECB9AB032F}|Debug\\Debug.csproj|d:\\debug\\cs-mr-\\debug\\upgrade\\upgradebmc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F07C26B2-52CA-4F51-9B2A-6BECB9AB032F}|Debug\\Debug.csproj|solutionrelative:debug\\upgrade\\upgradebmc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F07C26B2-52CA-4F51-9B2A-6BECB9AB032F}|Debug\\Debug.csproj|D:\\debug\\CS-MR-\\debug\\tools\\getrange.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -26,17 +30,34 @@
       "DocumentGroups": [
         {
           "DockedHeight": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 3,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "BatchUpgradeManager.cs",
+              "DocumentMoniker": "D:\\debug\\CS-MR-\\Debug\\upgrade\\BatchUpgradeManager.cs",
+              "RelativeDocumentMoniker": "Debug\\upgrade\\BatchUpgradeManager.cs",
+              "ToolTip": "D:\\debug\\CS-MR-\\Debug\\upgrade\\BatchUpgradeManager.cs",
+              "RelativeToolTip": "Debug\\upgrade\\BatchUpgradeManager.cs",
+              "ViewState": "AgIAACgAAAAAAAAAAAAawEAAAABKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-30T05:58:31.893Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "upgradeBMC.cs",
               "DocumentMoniker": "D:\\debug\\CS-MR-\\Debug\\upgrade\\upgradeBMC.cs",
               "RelativeDocumentMoniker": "Debug\\upgrade\\upgradeBMC.cs",
               "ToolTip": "D:\\debug\\CS-MR-\\Debug\\upgrade\\upgradeBMC.cs",
               "RelativeToolTip": "Debug\\upgrade\\upgradeBMC.cs",
-              "ViewState": "AgIAAG4AAAAAAAAAAAAawIAAAABeAAAAAAAAAA==",
+              "ViewState": "AgIAAJMAAAAAAAAAAAAtwKAAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-05-29T01:25:18.225Z",
               "EditorCaption": ""
@@ -49,7 +70,7 @@
               "RelativeDocumentMoniker": "Debug\\upgrade\\BmcRedfishClient.cs",
               "ToolTip": "D:\\debug\\CS-MR-\\Debug\\upgrade\\BmcRedfishClient.cs",
               "RelativeToolTip": "Debug\\upgrade\\BmcRedfishClient.cs",
-              "ViewState": "AgIAADUBAAAAAAAAAAAvwFABAABeAAAAAAAAAA==",
+              "ViewState": "AgIAADUBAAAAAAAAAADgv04BAABDAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-05-29T02:34:53.349Z",
               "EditorCaption": ""
@@ -68,7 +89,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "GetRange.cs",
               "DocumentMoniker": "D:\\debug\\CS-MR-\\Debug\\tools\\GetRange.cs",
               "RelativeDocumentMoniker": "Debug\\tools\\GetRange.cs",
