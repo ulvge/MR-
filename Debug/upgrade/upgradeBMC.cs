@@ -393,6 +393,8 @@ namespace Debug {
         string g_queryBMCFirmwareKey = "BMC版本";
         private async void bt_ipmiCmd_Click(object sender, EventArgs e)
         {
+            dg_upgradeProcessBar.Rows.Clear();
+            ipRowMap.Clear();
             string[] ipTails = GetRange.GetIPRange(cb_upgradeIP.Text.Trim()).ToArray();
             if (ipTails.Length == 0)
             {

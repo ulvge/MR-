@@ -167,7 +167,7 @@ namespace Debug {
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tb_upgradeLog.Location = new System.Drawing.Point(738, 12);
             this.tb_upgradeLog.Name = "tb_upgradeLog";
-            this.tb_upgradeLog.Size = new System.Drawing.Size(597, 384);
+            this.tb_upgradeLog.Size = new System.Drawing.Size(597, 350);
             this.tb_upgradeLog.TabIndex = 34;
             this.tb_upgradeLog.Text = "";
             this.tb_upgradeLog.TextChanged += new System.EventHandler(this.tb_upgradeLog_TextChanged);
@@ -179,10 +179,10 @@ namespace Debug {
             this.dg_upgradeProcessBar.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCellsExceptHeader;
             this.dg_upgradeProcessBar.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.DisplayedCellsExceptHeaders;
             this.dg_upgradeProcessBar.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dg_upgradeProcessBar.Location = new System.Drawing.Point(738, 402);
+            this.dg_upgradeProcessBar.Location = new System.Drawing.Point(738, 363);
             this.dg_upgradeProcessBar.Name = "dg_upgradeProcessBar";
             this.dg_upgradeProcessBar.RowTemplate.Height = 23;
-            this.dg_upgradeProcessBar.Size = new System.Drawing.Size(597, 150);
+            this.dg_upgradeProcessBar.Size = new System.Drawing.Size(597, 189);
             this.dg_upgradeProcessBar.TabIndex = 35;
             this.dg_upgradeProcessBar.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 

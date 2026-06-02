@@ -34,7 +34,7 @@ namespace BmcUpgradeTool
             handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
 
             _httpClient = new HttpClient(handler);
-            _httpClient.Timeout = TimeSpan.FromSeconds(50); // 默认超时
+            _httpClient.Timeout = TimeSpan.FromSeconds(60); // 默认超时
         }
 
         /// <summary>
