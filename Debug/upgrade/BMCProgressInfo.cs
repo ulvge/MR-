@@ -10,19 +10,19 @@ namespace Debug.upgrade
     {
         public string ip { get; set; }
         public string percent { get; set; }
-        public string stage { get; set; } // "破解中" 或 "BMC升级中"
         public string updateTime { get; set; }
+        public string msg { get; set; }
 
 
         public BMCProgressInfo()
         {
 
         }
-        public BMCProgressInfo(string ip, string percent, string stage)
+        public BMCProgressInfo(string ip, string percent, string msg)
         {
             this.ip = ip;
             this.percent = percent;
-            this.stage = stage;
+            this.msg = msg;
             this.updateTime = DateTime.Now.ToString("HH:mm:ss");
         }
 

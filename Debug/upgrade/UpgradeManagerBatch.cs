@@ -21,7 +21,7 @@ namespace BmcUpgradeTool
         // ipTails: IP地址的尾数数组，例如 new[] { "82", "83", "85" }
         // filePath: 固件文件的本地绝对路径
         // progressCallback: 进度回调，用于在UI上实时打印日志
-        public async Task StartBatchUpgradeAsync(string[] ipTails, string filePath)
+        public async Task UpgradeBatchAsync(string[] ipTails, string filePath)
         {
             if (!File.Exists(filePath))
             {
@@ -95,6 +95,61 @@ namespace BmcUpgradeTool
                 if (!exitSuccess) {
                     Log(new BMCProgressInfo(currentIp, "100", "退出失败"));
                     return; 
+                }
+            }
+            catch (Exception ex)
+            {
+                Log($"{currentIp} 💥 发生未处理的异常: {ex.Message}\r\n");
+            }
+        }
+
+        public async Task GetBMCFirmwaretBatchAsync(string[] ipTails)
+        {
+            Log($"🚀 开始批量查询 BMC 版本，共 {ipTails.Length} 台设备...\r\n");
+
+            // 为每个IP创建一个独立的升级任务
+            var upgradeTasks = ipTails.Select(ipTail => GetBMCFirmWareAsync(DefaultIpHead + ipTail));
+
+            // Task.WhenAll 会并发执行所有任务，并等待它们全部完成
+            await Task.WhenAll(upgradeTasks);
+
+            Log("🎉 所有设备的查询任务已全部执行完毕！\r\n");
+        }
+        // 单个设备的完整升级流程
+        private async Task GetBMCFirmWareAsync(string ip)
+        {
+            string currentIp = ip;
+            try
+            {
+                var client = new UpgradeRedfishCore(Log); // 使用你之前封装好的核心类
+
+                // 1. 获取 Token
+                Log($"{currentIp} 正在获取认证令牌...\r\n");
+                Log(new BMCProgressInfo(currentIp, "0", "开始获取版本信息"));
+                bool authSuccess = await client.GetAuthTokenAsync(currentIp);
+                if (!authSuccess)
+                {
+                    Log(new BMCProgressInfo(currentIp, "0", "获取Token失败"));
+                    return;
+                }
+
+                // 2 获取 BMC 版本信息
+                var (versionSuccess, versionInfo) = await client.GetBMCInfoAsync(currentIp);
+                if (versionSuccess)
+                {
+                    Log(new BMCProgressInfo(currentIp, "100", versionInfo));
+                }
+                else
+                {
+                    Log($"{currentIp} 获取BMC版本失败\r\n");
+                }
+
+                Log($"{currentIp} 准备退出）...\r\n");
+                bool exitSuccess = await client.DeleteSessionAsync(currentIp);
+                if (!exitSuccess)
+                {
+                    Log(new BMCProgressInfo(currentIp, "99", versionInfo));
+                    return;
                 }
             }
             catch (Exception ex)

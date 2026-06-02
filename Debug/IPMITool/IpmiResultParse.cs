@@ -60,7 +60,7 @@ namespace Debug.IPMITool
                 else
                 {
                     Log($"{currentIp} 失败: {error}");
-                    Log(new BMCProgressInfo(currentIp, "50", error));
+                    Log(new BMCProgressInfo(currentIp, "0", error));
                 }
             }
             catch (Exception ex)

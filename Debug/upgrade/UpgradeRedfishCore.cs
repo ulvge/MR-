@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -173,55 +174,6 @@ namespace BmcUpgradeTool
             return false;
         }
 
-        public async Task<bool> UploadFileAsync_NG(string filePath, string ip)
-        {
-            if (_authToken == null) return false;
-            if (!File.Exists(filePath))
-            {
-                Console.WriteLine($"❌ 文件不存在: {filePath}");
-                return false;
-            }
-
-            // 注意：这里需要动态获取当前请求的 BaseAddress 里的 IP，或者你在外部传入完整的 URL
-            // 为了简单起见，这里假设我们依然使用默认的 IP Head + Tail 构造 URL
-            // 在实际 UI 程序中，建议把 IP 地址作为类的属性保存下来
-            string bmcIp = ip;
-            string url = $"https://{bmcIp}/redfish/v1/UpdateService/FirmwareInventory";
-
-            try
-            {
-                using (var fileStream = File.OpenRead(filePath))
-                {
-                    var content = new MultipartFormDataContent();
-                    var fileContent = new StreamContent(fileStream);
-                    fileContent.Headers.ContentType = MediaTypeHeaderValue.Parse("application/octet-stream");
-                    content.Add(fileContent, "imgfile", Path.GetFileName(filePath));
-
-                    // 添加 Token 到请求头
-                    _httpClient.DefaultRequestHeaders.Remove("X-Auth-Token");
-                    _httpClient.DefaultRequestHeaders.Add("X-Auth-Token", _authToken);
-
-                    var response = await _httpClient.PostAsync(url, content);
-
-                    if (response.StatusCode == HttpStatusCode.OK ||
-                        response.StatusCode == HttpStatusCode.Created ||
-                        response.StatusCode == HttpStatusCode.Accepted)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        string error = await response.Content.ReadAsStringAsync();
-                        Console.WriteLine($"❌ 文件上传失败: {response.StatusCode}, 信息: {error}");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"❌ 上传请求异常: {ex.Message}");
-            }
-            return false;
-        }
         /// <summary>
         /// 步骤3：启动更新任务 (SimpleUpdate)
         /// </summary>
@@ -299,7 +251,8 @@ namespace BmcUpgradeTool
             {
                 if (isFinished)
                 {
-                    return (true, msgText);
+                    Log(new BMCProgressInfo(bmcIp, "100", "成功"));
+                    return (true, "成功");
                 }
                 await Task.Delay(300); // 等待2秒
                 count += 2;
@@ -397,6 +350,66 @@ namespace BmcUpgradeTool
             {
                 Console.WriteLine($"❌ 释放 Token 异常: {ex.Message}");
                 return false;
+            }
+        }
+        /// <summary>
+        /// 获取 BMC 固件信息（特别是 ReleaseDate）
+        /// </summary>
+        /// <param name="ip">BMC 的 IP 地址</param>
+        /// <returns>包含操作是否成功及 ReleaseDate 信息的元组</returns>
+        public async Task<(bool success, string message)> GetBMCInfoAsync(string ip)
+        {
+            // 1. 检查认证状态
+            if (_authToken == null) 
+                return (false, "未授权");
+
+            // 2. 构建请求 URL
+            string bmcIp = ip;
+            string url = $"https://{bmcIp}/redfish/v1/UpdateService/FirmwareInventory/ActiveBMC";
+
+            // 3. 设置认证头
+            _httpClient.DefaultRequestHeaders.Remove("X-Auth-Token");
+            _httpClient.DefaultRequestHeaders.Add("X-Auth-Token", _authToken);
+
+            try
+            {
+                // 4. 发送 GET 请求
+                var response = await _httpClient.GetAsync(url);
+                
+                // 5. 检查 HTTP 状态码
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    var json = JObject.Parse(responseBody);
+
+                    // 6. 提取 ReleaseDate
+                    // 根据提供的 JSON 结构，ReleaseDate 是顶级属性
+                    var releaseDateToken = json["ReleaseDate"];
+                    
+                    if (releaseDateToken == null)
+                    {
+                        return (false, "未找到 ReleaseDate 字段");
+                    }
+                    // 直接按 DateTime 取值（Newtonsoft 已经自动解析了）
+                    DateTime releaseDate = releaseDateToken.Value<DateTime>();
+
+                    // 关键：告诉 .NET 这个时间是 UTC 时间，然后转换到本地时区
+                    DateTime utcTime = DateTime.SpecifyKind(releaseDate, DateTimeKind.Utc);
+                    DateTime localTime = utcTime.ToLocalTime();
+
+                    string formatted = localTime.ToString("yyyy-MM-dd HH:mm:ss");
+
+                    return (true, formatted); // 返回 "2026-06-01 11:09:30"
+                }
+                else
+                {
+                    return (false, $"HTTP 请求失败，状态码: {response.StatusCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                // 捕获网络错误或 JSON 解析错误
+                return (false, $"发生异常: {ex.Message}");
             }
         }
     }

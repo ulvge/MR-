@@ -193,7 +193,8 @@ namespace Debug {
             this.cb_ipmiCmd.Items.AddRange(new object[] {
             "power status",
             "power reset",
-            "power on"});
+            "power on",
+            "BMC版本"});
             this.cb_ipmiCmd.Location = new System.Drawing.Point(118, 245);
             this.cb_ipmiCmd.Name = "cb_ipmiCmd";
             this.cb_ipmiCmd.Size = new System.Drawing.Size(292, 20);

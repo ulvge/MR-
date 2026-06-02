@@ -239,7 +239,7 @@ namespace Debug {
         {
             string ip = progressInfo.ip;
             string percent = progressInfo.percent;
-            string stage = progressInfo.stage;
+            string msg = progressInfo.msg;
 
             if (dg_upgradeProcessBar.InvokeRequired)
             {
@@ -264,7 +264,7 @@ namespace Debug {
             // 只设置值，不设置颜色（颜色由 CellFormatting 自动处理）
             row.Cells[1].Value = $"{percent}%";
             row.Cells[2].Value = DateTime.Now.ToString("HH:mm:ss");
-            row.Cells[3].Value = percent == "100" ? "完成" : stage; 
+            row.Cells[3].Value = msg; 
             
             if (percent == "100")
             {
@@ -336,7 +336,7 @@ namespace Debug {
                 var batchManager = new UpgradeManagerBatch(tb_upgradeLog_AppendText);
 
                 // 调用批量升级方法，并传入一个匿名函数来更新UI日志
-                await batchManager.StartBatchUpgradeAsync(ipTails, filePath);
+                await batchManager.UpgradeBatchAsync(ipTails, filePath);
             }
             finally
             {
@@ -371,7 +371,7 @@ namespace Debug {
                 var batchManager = new UpgradeManagerBatch(tb_upgradeLog_AppendText);
 
                 // 调用批量升级方法，并传入一个匿名函数来更新UI日志
-                await batchManager.StartBatchUpgradeAsync(ipTails, filePath);
+                await batchManager.UpgradeBatchAsync(ipTails, filePath);
             }
             finally
             {
@@ -390,6 +390,7 @@ namespace Debug {
 
         }
 
+        string g_queryBMCFirmwareKey = "BMC版本";
         private async void bt_ipmiCmd_Click(object sender, EventArgs e)
         {
             string[] ipTails = GetRange.GetIPRange(cb_upgradeIP.Text.Trim()).ToArray();
@@ -398,11 +399,18 @@ namespace Debug {
                 tb_upgradeLog_AppendText("指定 的IP 地址，格式错误");
                 return;
             }
-            IpmiResultParse ipmiResultParse = new IpmiResultParse(tb_upgradeLog_AppendText, tb_loginUserName.Text, tb_loginPwd.Text);
-            
-            string cmd = "power status";
-            // 调用批量升级方法，并传入一个匿名函数来更新UI日志
-            await ipmiResultParse.StartBatchIPMIAsync(ipTails, cmd);
+            if (cb_ipmiCmd.Text == g_queryBMCFirmwareKey)
+            {
+                var batchManager = new UpgradeManagerBatch(tb_upgradeLog_AppendText);
+                await batchManager.GetBMCFirmwaretBatchAsync(ipTails);
+            }
+            else
+            {
+                IpmiResultParse ipmiResultParse = new IpmiResultParse(tb_upgradeLog_AppendText, tb_loginUserName.Text, tb_loginPwd.Text);
+
+                string cmd = cb_ipmiCmd.Text; //  "power status";
+                await ipmiResultParse.StartBatchIPMIAsync(ipTails, cmd);
+            }
 
         }
     }
