@@ -1,0 +1,16 @@
+
+~ /opt/bmc/sr # ipmcget -d fruinfo
+The request failed due to an internal service error.  The service is still operational.
+Request failed.
+
+**********************************************************************
+
+TTY_SEU_1.sr
+TTY_SEU_4.sr
+里面的 FruID=65，这里面有乱码导致的
+
+mv TTY_SEU_1.sr TTY_SEU_1.bak.sr
+mv TTY_SEU_4.sr TTY_SEU_4.bak.sr
+
+这条命令就不再报错了
+ipmcget -d fruinfo

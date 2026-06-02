@@ -1,4 +1,5 @@
 ﻿using BmcUpgradeTool;
+using Debug.IPMITool;
 using Debug.tools;
 using Debug.upgrade;
 using System;
@@ -234,10 +235,17 @@ namespace Debug {
 
             UpdateDataGridView(progressInfo);
         }
+        public readonly string g_upgradeLogFlag = "终止升级";
 
         public void tb_upgradeLog_AppendText(string message)
         {
-            if (message.Contains("升级中") || message.Contains("破解中"))
+            if (tb_upgradeLog.InvokeRequired)
+            {
+                tb_upgradeLog.Invoke(new Action<string>(tb_upgradeLog_AppendText), message);
+                return;
+            }
+
+            if (message.Contains("升级中") || message.Contains("破解中") || message.Contains(g_upgradeLogFlag))
             {
                 updateProcessBar(message);
             }
@@ -342,6 +350,24 @@ namespace Debug {
         private void tb_upgradeLog_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private async void bt_ipmiCmd_Click(object sender, EventArgs e)
+        {
+            var ipmi = new ipmitool();
+
+            // 异步调用
+            string command = "-I lanplus -H 192.168.60.7 -U Administrator -P 'ttytty`12' -C 17 power status";
+            var (success, output, error) = await ipmi.ExecuteFullCommandAsync(command);
+
+            if (success)
+            {
+                Console.WriteLine($"成功: {output}");
+            }
+            else
+            {
+                Console.WriteLine($"失败: {error}");
+            }
         }
     }
 }

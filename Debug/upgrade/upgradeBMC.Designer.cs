@@ -39,6 +39,9 @@ namespace Debug {
             this.tb_loginPwd = new System.Windows.Forms.TextBox();
             this.tb_upgradeLog = new System.Windows.Forms.RichTextBox();
             this.dg_upgradeProcessBar = new System.Windows.Forms.DataGridView();
+            this.cb_ipmiCmd = new System.Windows.Forms.ComboBox();
+            this.bt_ipmiCmd = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dg_upgradeProcessBar)).BeginInit();
             this.SuspendLayout();
             // 
@@ -183,6 +186,34 @@ namespace Debug {
             this.dg_upgradeProcessBar.TabIndex = 35;
             this.dg_upgradeProcessBar.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
+            // cb_ipmiCmd
+            // 
+            this.cb_ipmiCmd.FormattingEnabled = true;
+            this.cb_ipmiCmd.ItemHeight = 12;
+            this.cb_ipmiCmd.Location = new System.Drawing.Point(118, 245);
+            this.cb_ipmiCmd.Name = "cb_ipmiCmd";
+            this.cb_ipmiCmd.Size = new System.Drawing.Size(292, 20);
+            this.cb_ipmiCmd.TabIndex = 32;
+            // 
+            // bt_ipmiCmd
+            // 
+            this.bt_ipmiCmd.Location = new System.Drawing.Point(657, 245);
+            this.bt_ipmiCmd.Name = "bt_ipmiCmd";
+            this.bt_ipmiCmd.Size = new System.Drawing.Size(75, 23);
+            this.bt_ipmiCmd.TabIndex = 31;
+            this.bt_ipmiCmd.Text = "执行命令";
+            this.bt_ipmiCmd.UseVisualStyleBackColor = true;
+            this.bt_ipmiCmd.Click += new System.EventHandler(this.bt_ipmiCmd_Click);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(42, 250);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(47, 12);
+            this.label6.TabIndex = 1;
+            this.label6.Text = "ipmiCmd";
+            // 
             // UpgradeBMC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -192,12 +223,15 @@ namespace Debug {
             this.Controls.Add(this.dg_upgradeProcessBar);
             this.Controls.Add(this.tb_upgradeLog);
             this.Controls.Add(this.checkBox_decryptOnly);
+            this.Controls.Add(this.cb_ipmiCmd);
             this.Controls.Add(this.cb_upgradeIP);
+            this.Controls.Add(this.bt_ipmiCmd);
             this.Controls.Add(this.bt_hpm);
             this.Controls.Add(this.tb_fileHpm);
             this.Controls.Add(this.tb_loginPwd);
             this.Controls.Add(this.tb_loginUserName);
             this.Controls.Add(this.tb_fileTelnet);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label5);
@@ -231,5 +265,8 @@ namespace Debug {
         private System.Windows.Forms.TextBox tb_loginPwd;
         private System.Windows.Forms.RichTextBox tb_upgradeLog;
         private System.Windows.Forms.DataGridView dg_upgradeProcessBar;
+        private System.Windows.Forms.ComboBox cb_ipmiCmd;
+        private System.Windows.Forms.Button bt_ipmiCmd;
+        private System.Windows.Forms.Label label6;
     }
 }
