@@ -392,20 +392,18 @@ namespace Debug {
 
         private async void bt_ipmiCmd_Click(object sender, EventArgs e)
         {
-            var ipmi = new ipmitool();
-
-            // 异步调用
-            string command = "-I lanplus -H 192.168.60.7 -U Administrator -P 'ttytty`12' -C 17 power status";
-            var (success, output, error) = await ipmi.ExecuteFullCommandAsync(command);
-
-            if (success)
+            string[] ipTails = GetRange.GetIPRange(cb_upgradeIP.Text.Trim()).ToArray();
+            if (ipTails.Length == 0)
             {
-                Console.WriteLine($"成功: {output}");
+                tb_upgradeLog_AppendText("指定 的IP 地址，格式错误");
+                return;
             }
-            else
-            {
-                Console.WriteLine($"失败: {error}");
-            }
+            IpmiResultParse ipmiResultParse = new IpmiResultParse(tb_upgradeLog_AppendText, tb_loginUserName.Text, tb_loginPwd.Text);
+            
+            string cmd = "power status";
+            // 调用批量升级方法，并传入一个匿名函数来更新UI日志
+            await ipmiResultParse.StartBatchIPMIAsync(ipTails, cmd);
+
         }
     }
 }

@@ -190,6 +190,10 @@ namespace Debug {
             // 
             this.cb_ipmiCmd.FormattingEnabled = true;
             this.cb_ipmiCmd.ItemHeight = 12;
+            this.cb_ipmiCmd.Items.AddRange(new object[] {
+            "power status",
+            "power reset",
+            "power on"});
             this.cb_ipmiCmd.Location = new System.Drawing.Point(118, 245);
             this.cb_ipmiCmd.Name = "cb_ipmiCmd";
             this.cb_ipmiCmd.Size = new System.Drawing.Size(292, 20);
