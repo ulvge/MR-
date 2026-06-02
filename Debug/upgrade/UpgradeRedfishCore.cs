@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Debug.upgrade;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,9 +21,9 @@ namespace BmcUpgradeTool
         private readonly HttpClient _httpClient;
         private string _authToken;
         private string _seesionID;
-        private readonly Action<string> Log;
+        private readonly Action<Object> Log;
 
-        public UpgradeRedfishCore(Action<string> log)
+        public UpgradeRedfishCore(Action<Object> log)
         {
             this.Log = log;
             // 强制使用 TLS 1.2（关键！）
@@ -332,16 +333,16 @@ namespace BmcUpgradeTool
 
                         if (msgText.Contains("Upgrading the WhiteBranding"))
                         {
-                            Log($"✅ {bmcIp} 破解中......{percent}% {(isFirstLine ? "\r\n" : "\r")}");
+                            Log(new BMCProgressInfo(bmcIp, percent, "破解中"));
                         }
                         if (msgText.Contains("Upgrading the BMC"))
                         {
-                            Log($"✅ {bmcIp} BMC 升级中......{percent}%{(isFirstLine ? "\r\n" : "\r")}");
+                            Log(new BMCProgressInfo(bmcIp, percent, "BMC 升级中"));
                             await Task.Delay(3000); // Python 里这里额外睡了3秒
                         }
                         if (msgText.Contains("Upgrading the Bios"))
                         {
-                            Log($"✅ {bmcIp} BIOS 升级中......{percent}%{(isFirstLine ? "\r\n" : "\r")}");
+                            Log(new BMCProgressInfo(bmcIp, percent, "BIOS 升级中"));
                         }
                         isFirstLine = false;
                     }

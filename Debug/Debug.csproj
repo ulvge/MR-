@@ -71,7 +71,6 @@
   <ItemGroup>
     <Compile Include="IPMITool\ipmitool.cs" />
     <Compile Include="tools\GetRange.cs" />
-    <Compile Include="upgrade\ParseToProgressInfo.cs" />
     <Compile Include="upgrade\UpgradeManagerBatch.cs" />
     <Compile Include="upgrade\BMCProgressInfo.cs" />
     <Compile Include="upgrade\BMCProgressManager.cs" />

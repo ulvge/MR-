@@ -162,7 +162,7 @@ namespace Debug {
         private void UpdateDataGridView(BMCProgressInfo progressInfo)
         {
             string ip = progressInfo.ip;
-            int percent = progressInfo.percent;
+            string percent = progressInfo.percent;
             string stage = progressInfo.stage;
 
             if (dg_upgradeProcessBar.InvokeRequired)
@@ -187,11 +187,11 @@ namespace Debug {
 
             // 只设置值，不设置颜色（颜色由 CellFormatting 自动处理）
             row.Cells[1].Value = $"{percent}%";
-            row.Cells[2].Value = percent == 100 ? "完成" : stage;
+            row.Cells[2].Value = percent == "100" ? "完成" : stage;
             row.Cells[3].Value = DateTime.Now.ToString("HH:mm:ss");
             
             // 强制设置样式（多种方式）
-            if (percent == 100)
+            if (percent == "100")
             {
                 // 方式1：直接设置
                 row.Cells[1].Style.BackColor = Color.LightGreen;
@@ -227,46 +227,29 @@ namespace Debug {
             Application.DoEvents();
         }
 
-        // 在你的升级方法中调用
-        private void updateProcessBar(string message)
-        {
-            ParseToProgressInfo parseToProgressInfo = new ParseToProgressInfo();
-            BMCProgressInfo progressInfo = parseToProgressInfo.ParseProgressInfo(message);
-
-            UpdateDataGridView(progressInfo);
-        }
         public readonly string g_upgradeLogFlag = "终止升级";
 
-        public void tb_upgradeLog_AppendText(string message)
+        public void tb_upgradeLog_AppendText(object message)
         {
             if (tb_upgradeLog.InvokeRequired)
             {
-                tb_upgradeLog.Invoke(new Action<string>(tb_upgradeLog_AppendText), message);
+                tb_upgradeLog.Invoke(new Action<object>(tb_upgradeLog_AppendText), message);
                 return;
             }
-
-            if (message.Contains("升级中") || message.Contains("破解中") || message.Contains(g_upgradeLogFlag))
+            switch (message)
             {
-                updateProcessBar(message);
+                case string str:
+                    tb_upgradeLog.AppendText($"{DateTime.Now:HH:mm:ss} {str}");
+                    break;
+                case BMCProgressInfo progressInfo:
+                    UpdateDataGridView(progressInfo);
+                    break;
             }
-            if (message.EndsWith(Environment.NewLine) || tb_upgradeLog.Lines.Length == 0)
-            {
-                tb_upgradeLog.AppendText($"{DateTime.Now:HH:mm:ss} {message}");
-            }
-            else
-            {
-                // 获取除最后一行外的所有内容
 
-                var lines = tb_upgradeLog.Lines;
-                if (lines.Length > 0 && string.IsNullOrEmpty(lines[lines.Length - 1]))
-                {
-                    lines = lines.Take(lines.Length - 1).ToArray();
-                }
-                var allButLast = string.Join(Environment.NewLine, lines, 0, lines.Length - 1); //上一行的内容
-
-                // 重新设置文本：保留前面的行 + 新的最后一行
-                tb_upgradeLog.Text = allButLast +  $"\r{DateTime.Now:HH:mm:ss} " + message;
-            }
+            //if (message.Contains("升级中") || message.Contains("破解中") || message.Contains(g_upgradeLogFlag))
+            //{
+            //}
+            
             // 如果是 WinForms，还可以让滚动条自动滚到最下方
             tb_upgradeLog.SelectionStart = tb_upgradeLog.Text.Length;
             tb_upgradeLog.ScrollToCaret();

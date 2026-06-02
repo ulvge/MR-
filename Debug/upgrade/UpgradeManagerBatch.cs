@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Debug.upgrade;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,10 +11,10 @@ namespace BmcUpgradeTool
 {
     public class UpgradeManagerBatch
     {
-        private readonly Action<string> log;
-        public UpgradeManagerBatch(Action<string> log)
+        private readonly Action<object> Log;
+        public UpgradeManagerBatch(Action<object> log)
         {
-            this.log = log;
+            this.Log = log;
         }
         private const string DefaultIpHead = "192.168.60.";
         // 批量升级核心方法
@@ -24,11 +25,11 @@ namespace BmcUpgradeTool
         {
             if (!File.Exists(filePath))
             {
-                log($"❌ 错误：找不到文件 {filePath}\r\n");
+                Log($"❌ 错误：找不到文件 {filePath}\r\n");
                 return;
             }
 
-            log($"🚀 开始批量升级，共 {ipTails.Length} 台设备...\r\n");
+            Log($"🚀 开始批量升级，共 {ipTails.Length} 台设备...\r\n");
 
             // 为每个IP创建一个独立的升级任务
             var upgradeTasks = ipTails.Select(ipTail => UpgradeSingleDeviceAsync(DefaultIpHead+ipTail, filePath));
@@ -36,7 +37,7 @@ namespace BmcUpgradeTool
             // Task.WhenAll 会并发执行所有任务，并等待它们全部完成
             await Task.WhenAll(upgradeTasks);
 
-            log("🎉 所有设备的升级任务已全部执行完毕！\r\n");
+            Log("🎉 所有设备的升级任务已全部执行完毕！\r\n");
         }
 
         // 单个设备的完整升级流程
@@ -45,47 +46,60 @@ namespace BmcUpgradeTool
             string currentIp = ip;
             try
             {
-                var client = new UpgradeRedfishCore(log); // 使用你之前封装好的核心类
+                var client = new UpgradeRedfishCore(Log); // 使用你之前封装好的核心类
 
                 // 1. 获取 Token
-                log($"{currentIp} 正在获取认证令牌...\r\n");
+                Log($"{currentIp} 正在获取认证令牌...\r\n");
+                Log(new BMCProgressInfo(currentIp, "0", "开始升级"));
                 bool authSuccess = await client.GetAuthTokenAsync(currentIp);
-                if (!authSuccess) { log($"{currentIp} ❌ 获取Token失败，终止升级。\r\n"); return; }
+                if (!authSuccess) {
+                    Log(new BMCProgressInfo(currentIp, "0", "获取Token失败，终止升级"));
+                    return; 
+                }
 
                 // 2. 上传文件
-                log($"{currentIp} 正在上传固件文件...\r\n");
+                Log($"{currentIp} 正在上传固件文件...\r\n");
                 bool uploadSuccess = await client.UploadFileAsync(filePath, currentIp);
-                if (!uploadSuccess) { log($"{currentIp} ❌ 文件上传失败，终止升级。\r\n"); return; }
-                log($"{currentIp} ✅ 文件上传成功！\r\n");
+                if (!uploadSuccess) {
+                    Log(new BMCProgressInfo(currentIp, "0", "文件上传失败，终止升级"));
+                    return; 
+                }
+                Log($"{currentIp} ✅ 文件上传成功！\r\n");
 
                 // 3. 启动更新
                 string fileName = Path.GetFileName(filePath);
                 string remotePath = $"/tmp/web/{fileName}";
-                log($"{currentIp} 正在请求启动更新任务...\r\n");
+                Log($"{currentIp} 正在请求启动更新任务...\r\n");
                 var (startSuccess, taskId) = await client.StartUpdateAsync(remotePath, currentIp);
-                if (!startSuccess || string.IsNullOrEmpty(taskId)) { log($"{currentIp} ❌ 启动更新任务失败。\r\n"); return; }
-                log($"{currentIp} ✅ 升级任务已启动，TaskID: {taskId}\r\n");
+                if (!startSuccess || string.IsNullOrEmpty(taskId)) {
+                    Log(new BMCProgressInfo(currentIp, "0", "启动更新任务失败，终止升级"));
+                    return; 
+                }
+                Log($"{currentIp} ✅ 升级任务已启动，TaskID: {taskId}\r\n");
 
                 // 4. 轮询检查状态 (注意：升级通常耗时较长，这里将超时时间设为600秒)
-                log($"{currentIp} 开始监控升级状态（请耐心等待）...\r\n");
+                Log($"{currentIp} 开始监控升级状态（请耐心等待）...\r\n");
                 var (statusSuccess, finalMsg) = await client.CheckUpdateStatusAsync(currentIp, taskId, timeoutSeconds: 600);
 
                 if (statusSuccess)
                 {
-                    log($"{currentIp} 🎉 升级成功！消息: {finalMsg}\r\n");
+                    Log($"{currentIp} 🎉 升级成功！消息: {finalMsg}\r\n");
                 }
                 else
                 {
-                    log($"{currentIp} ❌ 升级失败或超时: {finalMsg}\r\n");
+                    Log(new BMCProgressInfo(currentIp, "0", "升级失败或超时，终止升级"));
                 }
 
-                log($"{currentIp} 准备退出）...\r\n");
+                Log($"{currentIp} 准备退出）...\r\n");
                 bool exitSuccess = await client.DeleteSessionAsync(currentIp);
-                if (!exitSuccess) { log($"{currentIp} ❌ 退出失败。\r\n"); return; }
+                if (!exitSuccess) {
+                    Log(new BMCProgressInfo(currentIp, "100", "退出失败"));
+                    return; 
+                }
             }
             catch (Exception ex)
             {
-                log($"{currentIp} 💥 发生未处理的异常: {ex.Message}\r\n");
+                Log($"{currentIp} 💥 发生未处理的异常: {ex.Message}\r\n");
             }
         }
     }
