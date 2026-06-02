@@ -31,17 +31,17 @@ namespace Debug.upgrade
             dataGridView.Columns.Clear();
             dataGridView.Columns.Add("IP", "IP地址");
             dataGridView.Columns.Add("Progress", "进度");
-            dataGridView.Columns.Add("Stage", "阶段");
             dataGridView.Columns.Add("UpdateTime", "更新时间");
+            dataGridView.Columns.Add("msg", "消息");
 
             // 关键设置：让列自动填充整个控件宽度
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             // 设置各列的填充权重（比例）
-            dataGridView.Columns["IP"].FillWeight = 30;      // 30%
-            dataGridView.Columns["Progress"].FillWeight = 20; // 20%
-            dataGridView.Columns["Stage"].FillWeight = 25;    // 25%
+            dataGridView.Columns["IP"].FillWeight = 20;      // 20%
+            dataGridView.Columns["Progress"].FillWeight = 10; // 20%
             dataGridView.Columns["UpdateTime"].FillWeight = 25; // 25%
+            dataGridView.Columns["msg"].FillWeight = 35;    // 35%
 
             // IP列启用排序
             dataGridView.Columns["IP"].SortMode = DataGridViewColumnSortMode.Automatic;

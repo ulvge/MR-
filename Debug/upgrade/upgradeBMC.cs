@@ -101,6 +101,82 @@ namespace Debug {
             
             // 初始化进度管理器
             BMCProgressManager progressManager = new BMCProgressManager(dg_upgradeProcessBar);
+            // 添加列头点击事件
+            dg_upgradeProcessBar.ColumnHeaderMouseClick += DataGridView1_ColumnHeaderMouseClick;
+        }
+        private void DataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            // 只对 IP 列进行排序
+            if (dg_upgradeProcessBar.Columns[e.ColumnIndex].Name == "IP")
+            {
+                SortDataGridViewByIP();
+            }
+        }
+        private void SortDataGridViewByIP()
+        {
+            if (dg_upgradeProcessBar.Rows.Count == 0) return;
+
+            // 保存所有数据
+            var rowsData = new List<DataGridViewRow>();
+            foreach (DataGridViewRow row in dg_upgradeProcessBar.Rows)
+            {
+                // 创建新行并复制数据
+                DataGridViewRow newRow = new DataGridViewRow();
+                newRow.CreateCells(dg_upgradeProcessBar);
+
+                for (int i = 0; i < row.Cells.Count; i++)
+                {
+                    newRow.Cells[i].Value = row.Cells[i].Value;
+                    newRow.Cells[i].Style = row.Cells[i].Style.Clone();
+                }
+                rowsData.Add(newRow);
+            }
+
+            // 获取当前列的排序方向（假设 IP 列是第 0 列）
+            SortOrder currentSortOrder = dg_upgradeProcessBar.Columns[0].HeaderCell.SortGlyphDirection;
+
+            // 如果没有排序方向，默认升序
+            if (currentSortOrder == SortOrder.None)
+                currentSortOrder = SortOrder.Ascending;
+
+            IOrderedEnumerable<DataGridViewRow> sortedRows;
+            if (currentSortOrder == SortOrder.Ascending)
+            {
+                sortedRows = rowsData.OrderBy(r => IPToLong(r.Cells[0].Value?.ToString()));
+            }
+            else
+            {
+                sortedRows = rowsData.OrderByDescending(r => IPToLong(r.Cells[0].Value?.ToString()));
+            }
+
+            // 重新填充
+            dg_upgradeProcessBar.Rows.Clear();
+            ipRowMap.Clear();
+
+            foreach (var row in sortedRows.ToList())
+            {
+                string ip = row.Cells[0].Value?.ToString();
+                dg_upgradeProcessBar.Rows.Add(row);
+                ipRowMap[ip] = row;
+            }
+        }
+       
+        private long IPToLong(string ip)
+        {
+            if (string.IsNullOrEmpty(ip)) return 0;
+
+            string[] parts = ip.Split('.');
+            if (parts.Length != 4) return 0;
+
+            long result = 0;
+            for (int i = 0; i < 4; i++)
+            {
+                if (byte.TryParse(parts[i], out byte b))
+                {
+                    result = (result << 8) | b;
+                }
+            }
+            return result;
         }
         private void UpgradeBMC_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -187,29 +263,15 @@ namespace Debug {
 
             // 只设置值，不设置颜色（颜色由 CellFormatting 自动处理）
             row.Cells[1].Value = $"{percent}%";
-            row.Cells[2].Value = percent == "100" ? "完成" : stage;
-            row.Cells[3].Value = DateTime.Now.ToString("HH:mm:ss");
+            row.Cells[2].Value = DateTime.Now.ToString("HH:mm:ss");
+            row.Cells[3].Value = percent == "100" ? "完成" : stage; 
             
-            // 强制设置样式（多种方式）
             if (percent == "100")
             {
-                // 方式1：直接设置
                 row.Cells[1].Style.BackColor = Color.LightGreen;
                 row.Cells[1].Style.ForeColor = Color.DarkGreen;
                 row.Cells[1].Style.SelectionBackColor = Color.LightGreen;
                 row.Cells[1].Style.SelectionForeColor = Color.DarkGreen;
-                
-                // 方式2：通过 DefaultCellStyle
-                row.DefaultCellStyle.BackColor = Color.LightGreen;
-                
-                // 方式3：通过单元格的 Style 应用
-                var style = new DataGridViewCellStyle();
-                style.BackColor = Color.LightGreen;
-                style.ForeColor = Color.DarkGreen;
-                row.Cells[1].Style = style;
-                
-                // 方式4：强制刷新
-                dg_upgradeProcessBar.InvalidateCell(1, row.Index);
             }
             else
             {
@@ -227,8 +289,6 @@ namespace Debug {
             Application.DoEvents();
         }
 
-        public readonly string g_upgradeLogFlag = "终止升级";
-
         public void tb_upgradeLog_AppendText(object message)
         {
             if (tb_upgradeLog.InvokeRequired)
@@ -245,11 +305,6 @@ namespace Debug {
                     UpdateDataGridView(progressInfo);
                     break;
             }
-
-            //if (message.Contains("升级中") || message.Contains("破解中") || message.Contains(g_upgradeLogFlag))
-            //{
-            //}
-            
             // 如果是 WinForms，还可以让滚动条自动滚到最下方
             tb_upgradeLog.SelectionStart = tb_upgradeLog.Text.Length;
             tb_upgradeLog.ScrollToCaret();
