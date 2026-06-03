@@ -43,43 +43,16 @@ namespace Debug {
             //new AreaZone(199839 - CONST_MIN, 199839+CONST_MAX), // 199839
             new AreaZone(193256 - CONST_MIN, 193256+CONST_MAX), // 112578
         };
-
-        string key_loginName = "loginName";
-        string key_loginPwd = "loginPwd";
-        string key_fileTelnet = "fileTelnet";
-        string key_fileHpm = "fileHpm";
-
         public void loadINI()
         {
             IniHelper iniHelper = new IniHelper();
             iniHelper.IniLoader2Form(this);
-
-            string loginName = iniHelper.getString(this.Text, key_loginName, "Administrator");
-            string loginPwd = iniHelper.getString(this.Text, key_loginPwd, "ttytty`12");
-            string fileTelnet = iniHelper.getString(this.Text, key_fileTelnet, string.Empty);
-            string fileHpm = iniHelper.getString(this.Text, key_fileHpm, string.Empty);
-            try
-            {
-                tb_loginUserName.Text = loginName;
-                tb_loginPwd.Text = loginPwd;
-                tb_fileTelnet.Text = fileTelnet;
-                tb_fileHpm.Text = fileHpm;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
         }
 
         public void updateINI()
         {
             IniHelper iniHelper = new IniHelper();
             iniHelper.IniUpdate2File(this);
-            
-            iniHelper.writeString(this.Text, key_loginName, tb_loginUserName.Text);
-            iniHelper.writeString(this.Text, key_loginPwd, tb_loginPwd.Text);
-            iniHelper.writeString(this.Text, key_fileTelnet, tb_fileTelnet.Text);
-            iniHelper.writeString(this.Text, key_fileHpm, tb_fileHpm.Text);
         }
 
         private void UpgradeBMC_Load(object sender, EventArgs e)

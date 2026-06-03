@@ -127,6 +127,7 @@ namespace Debug {
             this.checkBox_decryptOnly.TabIndex = 33;
             this.checkBox_decryptOnly.Text = "升级完成后是否重启";
             this.checkBox_decryptOnly.UseVisualStyleBackColor = true;
+            this.checkBox_decryptOnly.Visible = false;
             // 
             // label4
             // 
