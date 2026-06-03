@@ -306,7 +306,7 @@ namespace Debug {
                 }
                 string filePath = tb_fileTelnet.Text;
 
-                var batchManager = new UpgradeManagerBatch(tb_upgradeLog_AppendText);
+                var batchManager = new RedfishManager(tb_upgradeLog_AppendText);
 
                 // 调用批量升级方法，并传入一个匿名函数来更新UI日志
                 await batchManager.UpgradeBatchAsync(ipTails, filePath);
@@ -341,7 +341,7 @@ namespace Debug {
                 }
                 string filePath = tb_fileHpm.Text;
 
-                var batchManager = new UpgradeManagerBatch(tb_upgradeLog_AppendText);
+                var batchManager = new RedfishManager(tb_upgradeLog_AppendText);
 
                 // 调用批量升级方法，并传入一个匿名函数来更新UI日志
                 await batchManager.UpgradeBatchAsync(ipTails, filePath);
@@ -376,7 +376,7 @@ namespace Debug {
             }
             if (cb_ipmiCmd.Text == g_queryBMCFirmwareKey)
             {
-                var batchManager = new UpgradeManagerBatch(tb_upgradeLog_AppendText);
+                var batchManager = new RedfishManager(tb_upgradeLog_AppendText);
                 await batchManager.GetBMCFirmwaretBatchAsync(ipTails);
             }
             else
@@ -384,7 +384,7 @@ namespace Debug {
                 IpmiResultParse ipmiResultParse = new IpmiResultParse(tb_upgradeLog_AppendText, tb_loginUserName.Text, tb_loginPwd.Text);
 
                 string cmd = cb_ipmiCmd.Text; //  "power status";
-                await ipmiResultParse.StartBatchIPMIAsync(ipTails, cmd);
+                await ipmiResultParse.SendIPMICmdBatchAsync(ipTails, cmd);
             }
 
         }

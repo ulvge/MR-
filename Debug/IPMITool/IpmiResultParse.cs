@@ -29,7 +29,7 @@ namespace Debug.IPMITool
         // ipTails: IP地址的尾数数组，例如 new[] { "82", "83", "85" }
         // filePath: 固件文件的本地绝对路径
         // progressCallback: 进度回调，用于在UI上实时打印日志
-        public async Task StartBatchIPMIAsync(string[] ipTails, string ipmiCmd)
+        public async Task SendIPMICmdBatchAsync(string[] ipTails, string ipmiCmd)
         {
             Log($"🚀 开始批量发送ipmi命令 {ipmiCmd}，共 {ipTails.Length} 台设备...\r\n");
 

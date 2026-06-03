@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace BmcUpgradeTool
 {
-    public class UpgradeManagerBatch
+    public class RedfishManager
     {
         private readonly Action<object> Log;
-        public UpgradeManagerBatch(Action<object> log)
+        public RedfishManager(Action<object> log)
         {
             this.Log = log;
         }
@@ -46,7 +46,7 @@ namespace BmcUpgradeTool
             string currentIp = ip;
             try
             {
-                var client = new UpgradeRedfishCore(Log); // 使用你之前封装好的核心类
+                var client = new RedfishCore(Log); // 使用你之前封装好的核心类
 
                 // 1. 获取 Token
                 Log($"{currentIp} 正在获取认证令牌...\r\n");
@@ -121,7 +121,7 @@ namespace BmcUpgradeTool
             string currentIp = ip;
             try
             {
-                var client = new UpgradeRedfishCore(Log); // 使用你之前封装好的核心类
+                var client = new RedfishCore(Log); // 使用你之前封装好的核心类
 
                 // 1. 获取 Token
                 Log($"{currentIp} 正在获取认证令牌...\r\n");

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace BmcUpgradeTool
 {
-    public class UpgradeRedfishCore
+    public class RedfishCore
     {
         // BMC 默认配置参数
         private const string LoginName = "Administrator";
@@ -24,7 +24,7 @@ namespace BmcUpgradeTool
         private string _seesionID;
         private readonly Action<Object> Log;
 
-        public UpgradeRedfishCore(Action<Object> log)
+        public RedfishCore(Action<Object> log)
         {
             this.Log = log;
             // 强制使用 TLS 1.2（关键！）
