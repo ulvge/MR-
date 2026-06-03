@@ -195,7 +195,7 @@ namespace Debug {
             "power status",
             "power reset",
             "power on",
-            "BMC版本"});
+            "power off"});
             this.cb_ipmiCmd.Location = new System.Drawing.Point(118, 245);
             this.cb_ipmiCmd.Name = "cb_ipmiCmd";
             this.cb_ipmiCmd.Size = new System.Drawing.Size(292, 20);

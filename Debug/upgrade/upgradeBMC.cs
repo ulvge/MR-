@@ -21,11 +21,20 @@ using static System.Windows.Forms.AxHost;
 namespace Debug {
 
     public partial class UpgradeBMC : Form, InterfaceINI{
+        
+        private string g_queryBMCFirmwareKey = "BMC版本";
+        private string g_queryBIOSFirmwareKey = "BIOS版本";
+
         public UpgradeBMC() {
             InitializeComponent();
         }
         
-
+        public enum DeviceType
+        {
+            BMC = 0,
+            BIOS = 1,
+            CPLD = 2
+        }
 
         private class AreaZone {
             public int min;
@@ -76,6 +85,9 @@ namespace Debug {
             BMCProgressManager progressManager = new BMCProgressManager(dg_upgradeProcessBar);
             // 添加列头点击事件
             dg_upgradeProcessBar.ColumnHeaderMouseClick += DataGridView1_ColumnHeaderMouseClick;
+
+            cb_ipmiCmd.Items.Add(g_queryBMCFirmwareKey);
+            cb_ipmiCmd.Items.Add(g_queryBIOSFirmwareKey);
         }
         private void DataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
@@ -363,7 +375,6 @@ namespace Debug {
 
         }
 
-        string g_queryBMCFirmwareKey = "BMC版本";
         private async void bt_ipmiCmd_Click(object sender, EventArgs e)
         {
             dg_upgradeProcessBar.Rows.Clear();
@@ -377,7 +388,11 @@ namespace Debug {
             if (cb_ipmiCmd.Text == g_queryBMCFirmwareKey)
             {
                 var batchManager = new RedfishManager(tb_upgradeLog_AppendText);
-                await batchManager.GetBMCFirmwaretBatchAsync(ipTails);
+                await batchManager.GetFirmwaretBatchAsync(ipTails, DeviceType.BMC);
+            }else if (cb_ipmiCmd.Text == g_queryBIOSFirmwareKey)
+            {
+                var batchManager = new RedfishManager(tb_upgradeLog_AppendText);
+                await batchManager.GetFirmwaretBatchAsync(ipTails, DeviceType.BIOS);
             }
             else
             {

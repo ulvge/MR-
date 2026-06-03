@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using static Debug.UpgradeBMC;
 
 namespace BmcUpgradeTool
 {
@@ -103,12 +104,12 @@ namespace BmcUpgradeTool
             }
         }
 
-        public async Task GetBMCFirmwaretBatchAsync(string[] ipTails)
+        public async Task GetFirmwaretBatchAsync(string[] ipTails, DeviceType deviceType)
         {
             Log($"🚀 开始批量查询 BMC 版本，共 {ipTails.Length} 台设备...\r\n");
 
             // 为每个IP创建一个独立的升级任务
-            var upgradeTasks = ipTails.Select(ipTail => GetBMCFirmWareAsync(DefaultIpHead + ipTail));
+            var upgradeTasks = ipTails.Select(ipTail => GetBMCFirmWareAsync(DefaultIpHead + ipTail, deviceType));
 
             // Task.WhenAll 会并发执行所有任务，并等待它们全部完成
             await Task.WhenAll(upgradeTasks);
@@ -116,7 +117,7 @@ namespace BmcUpgradeTool
             Log("🎉 所有设备的查询任务已全部执行完毕！\r\n");
         }
         // 单个设备的完整升级流程
-        private async Task GetBMCFirmWareAsync(string ip)
+        private async Task GetBMCFirmWareAsync(string ip, DeviceType deviceType)
         {
             string currentIp = ip;
             try
@@ -134,21 +135,45 @@ namespace BmcUpgradeTool
                 }
 
                 // 2 获取 BMC 版本信息
-                var (versionSuccess, versionInfo) = await client.GetBMCInfoAsync(currentIp);
-                if (versionSuccess)
+                (bool success, string message) result = (false, "未执行查询");
+                switch (deviceType)
                 {
-                    Log(new BMCProgressInfo(currentIp, "100", versionInfo));
+                    case DeviceType.BMC:
+                        result = await client.GetBMCInfoAsync(currentIp);
+                        if (result.success)
+                        {
+                            Log(new BMCProgressInfo(currentIp, "100", result.message));
+                            Log($"{currentIp} 获取BMC版本成功，{result.message}\r\n");
+                        }
+                        else
+                        {
+                            Log($"{currentIp} 获取BMC版本失败\r\n");
+                        }
+                        break;
+                    case DeviceType.BIOS:
+                        result = await client.GetBIOSInfoAsync(currentIp);
+                        if (result.success)
+                        {
+                            Log(new BMCProgressInfo(currentIp, "100", result.message));
+                            Log($"{currentIp} 获取BIOS版本成功，{result.message}\r\n");
+                        }
+                        else
+                        {
+                            Log($"{currentIp} 获取BIOS版本失败\r\n");
+                        }
+                        break;
+                    case DeviceType.CPLD:
+                        break;
                 }
-                else
-                {
-                    Log($"{currentIp} 获取BMC版本失败\r\n");
-                }
+
+                //GetBIOSInfoAsync
+
 
                 Log($"{currentIp} 准备退出）...\r\n");
                 bool exitSuccess = await client.DeleteSessionAsync(currentIp);
                 if (!exitSuccess)
                 {
-                    Log(new BMCProgressInfo(currentIp, "99", versionInfo));
+                    Log(new BMCProgressInfo(currentIp, "99", result.message));
                     return;
                 }
             }

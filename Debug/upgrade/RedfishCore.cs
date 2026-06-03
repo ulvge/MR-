@@ -412,5 +412,58 @@ namespace BmcUpgradeTool
                 return (false, $"发生异常: {ex.Message}");
             }
         }
+
+        /// <summary>
+        /// 获取 BIOS 固件信息（特别是 Version）
+        /// </summary>
+        /// <param name="ip">BMC 的 IP 地址</param>
+        /// <returns>包含操作是否成功及 Version 信息的元组</returns>
+        public async Task<(bool success, string message)> GetBIOSInfoAsync(string ip)
+        {
+            // 1. 检查认证状态
+            if (_authToken == null) 
+                return (false, "未授权");
+
+            // 2. 构建请求 URL
+            string bmcIp = ip;
+            string url = $"https://{bmcIp}/redfish/v1/UpdateService/FirmwareInventory/Bios";
+
+            // 3. 设置认证头
+            _httpClient.DefaultRequestHeaders.Remove("X-Auth-Token");
+            _httpClient.DefaultRequestHeaders.Add("X-Auth-Token", _authToken);
+
+            try
+            {
+                // 4. 发送 GET 请求
+                var response = await _httpClient.GetAsync(url);
+                
+                // 5. 检查 HTTP 状态码
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    string responseBody = await response.Content.ReadAsStringAsync();
+                    var json = JObject.Parse(responseBody);
+
+                    // 6. 提取 Version
+                    // 根据提供的 JSON 结构，Version 是顶级属性
+                    string biosVersion = json["Version"].ToString();
+                    
+                    if (biosVersion == null)
+                    {
+                        return (false, "未找到 Version 字段");
+                    }
+
+                    return (true, biosVersion); // 返回 "2026-06-01 11:09:30"
+                }
+                else
+                {
+                    return (false, $"HTTP 请求失败，状态码: {response.StatusCode}");
+                }
+            }
+            catch (Exception ex)
+            {
+                // 捕获网络错误或 JSON 解析错误
+                return (false, $"发生异常: {ex.Message}");
+            }
+        }
     }
 }
