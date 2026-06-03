@@ -105,6 +105,7 @@ namespace Debug
             this.Controls.Add(this.tabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
+            this.MinimumSize = new System.Drawing.Size(1275, 810);
             this.Name = "form";
             this.Text = "TTY";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.form_FormClosing);

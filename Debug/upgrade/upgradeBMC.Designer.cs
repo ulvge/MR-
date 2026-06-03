@@ -244,6 +244,7 @@ namespace Debug {
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.bt_telnet);
+            this.MinimumSize = new System.Drawing.Size(1363, 587);
             this.Name = "UpgradeBMC";
             this.Text = "upgrade";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.UpgradeBMC_FormClosing);
