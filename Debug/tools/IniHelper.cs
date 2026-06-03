@@ -20,7 +20,7 @@ namespace Debug.tools {
         /// <param name="size">返回值允许的大小</param>
         /// <param name="filepath">ini文件的完整路径</param>
         /// <returns></returns>
-        [DllImport("kernel32.dll")]
+        [DllImport("kernel32", CharSet = CharSet.Unicode)]
         private static extern int GetPrivateProfileString(
             string section,
             string key,
@@ -37,7 +37,7 @@ namespace Debug.tools {
         /// <param name="val">写入值</param>
         /// <param name="filepath">ini文件的完整路径</param>
         /// <returns></returns>
-        [DllImport("kernel32", CharSet = CharSet.Ansi)]
+        [DllImport("kernel32", CharSet = CharSet.Unicode)]
         private static extern int WritePrivateProfileString(
             string section,
             string key,
@@ -75,7 +75,11 @@ namespace Debug.tools {
                 if(ct is TextBox) {
                     textBoxList.Add((TextBox)ct);
                 }
-                if(ct is ComboBox) {
+                if (ct is RichTextBox)
+                {
+                    textBoxList.Add((RichTextBox)ct);
+                }
+                if (ct is ComboBox) {
                     textBoxList.Add((ComboBox)ct);
                 }
                 if(ct is CheckBox) {
@@ -103,8 +107,8 @@ namespace Debug.tools {
                 textBoxList.Clear();
                 textBoxList = FandAllTextBoxControls(form);
                 foreach(var tb in textBoxList) {
-                    if(tb is TextBox) {
-                        TextBox t = (TextBox)tb;
+                    if(tb is TextBoxBase) { // TextBox && RichTextBox 
+                        TextBoxBase t = (TextBoxBase)tb;
                         string readVal = getString(form.Name, t.Name, string.Empty, INI_FILE_NAME);
                         if (t.Multiline == true)
                         {
@@ -113,7 +117,8 @@ namespace Debug.tools {
                             }
                         }
                         t.Text = readVal;
-                    } else if(tb is ComboBox) {
+                    }
+                     else if(tb is ComboBox) {
                         ComboBox c = (ComboBox)tb;
                         string readVal = getString(form.Name, c.Name, string.Empty, INI_FILE_NAME);
                         c.Text = readVal;
@@ -140,9 +145,9 @@ namespace Debug.tools {
             {
                 return false;
             }
-            if (tb is TextBox)
+            if (tb is TextBoxBase)
             {
-                TextBox t = (TextBox)tb;
+                TextBoxBase t = (TextBoxBase)tb;
                 tbName = t.Name;
             }
             else if (tb is ComboBox)
@@ -176,13 +181,14 @@ namespace Debug.tools {
                 {
                     continue;
                 }
-                //write vals to ini
-                if(tb is TextBox) {
-                    TextBox t = (TextBox)tb;
-                    string saveFiled = t.Text.ToString();
+                if (tb is TextBoxBase t)
+                {
+                    string saveFiled = t.Text;
                     if (t.Multiline == true)
                     {
-                        saveFiled = saveFiled.Replace(Environment.NewLine, magic_separator);
+                        saveFiled = saveFiled.Replace("\r\n", "\n")  // Windows 换行 → 统一为 \n
+                         .Replace("\r", "\n")    // 老 Mac 换行 → 统一为 \n
+                         .Replace("\n", magic_separator);
                     }
                     writeString(form.Name, t.Name, saveFiled, iniFileName);
                 } else if(tb is ComboBox) {
