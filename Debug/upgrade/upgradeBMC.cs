@@ -375,7 +375,7 @@ namespace Debug {
 
         }
 
-        private async void bt_ipmiCmd_Click(object sender, EventArgs e)
+        private void bt_ipmiCmd_Click(object sender, EventArgs e)
         {
             dg_upgradeProcessBar.Rows.Clear();
             ipRowMap.Clear();
@@ -388,18 +388,18 @@ namespace Debug {
             if (cb_ipmiCmd.Text == g_queryBMCFirmwareKey)
             {
                 var batchManager = new RedfishManager(tb_upgradeLog_AppendText);
-                await batchManager.GetFirmwaretBatchAsync(ipTails, DeviceType.BMC);
+                _ = batchManager.GetFirmwaretBatchAsync(ipTails, DeviceType.BMC);
             }else if (cb_ipmiCmd.Text == g_queryBIOSFirmwareKey)
             {
                 var batchManager = new RedfishManager(tb_upgradeLog_AppendText);
-                await batchManager.GetFirmwaretBatchAsync(ipTails, DeviceType.BIOS);
+                _ = batchManager.GetFirmwaretBatchAsync(ipTails, DeviceType.BIOS);
             }
             else
             {
                 IpmiResultParse ipmiResultParse = new IpmiResultParse(tb_upgradeLog_AppendText, tb_loginUserName.Text, tb_loginPwd.Text);
 
                 string cmd = cb_ipmiCmd.Text; //  "power status";
-                await ipmiResultParse.SendIPMICmdBatchAsync(ipTails, cmd);
+                _ = ipmiResultParse.SendIPMICmdBatchAsync(ipTails, cmd);
             }
 
         }

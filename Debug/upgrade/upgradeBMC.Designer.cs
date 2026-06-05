@@ -112,6 +112,8 @@ namespace Debug {
             // 
             this.cb_upgradeIP.FormattingEnabled = true;
             this.cb_upgradeIP.ItemHeight = 12;
+            this.cb_upgradeIP.Items.AddRange(new object[] {
+            "7,9,20,81,108,139,197,237"});
             this.cb_upgradeIP.Location = new System.Drawing.Point(118, 200);
             this.cb_upgradeIP.Name = "cb_upgradeIP";
             this.cb_upgradeIP.Size = new System.Drawing.Size(292, 20);

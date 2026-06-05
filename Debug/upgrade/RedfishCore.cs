@@ -397,9 +397,10 @@ namespace BmcUpgradeTool
                     DateTime utcTime = DateTime.SpecifyKind(releaseDate, DateTimeKind.Utc);
                     DateTime localTime = utcTime.ToLocalTime();
 
-                    string formatted = localTime.ToString("yyyy-MM-dd HH:mm:ss");
+                    string buildDateStringFormatted = localTime.ToString("yyyy-MM-dd HH:mm:ss");
 
-                    return (true, formatted); // 返回 "2026-06-01 11:09:30"
+                    string version = json["Version"].ToString();
+                    return (true, version + " "+ buildDateStringFormatted); // 返回 "2026-06-01 11:09:30"
                 }
                 else
                 {
