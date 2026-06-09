@@ -59,7 +59,7 @@ namespace BmcUpgradeTool
                 }
 
                 // 2. 上传文件
-                Log($"{currentIp} 正在上传固件文件...\r\n");
+                Log($"{currentIp} 正在上传固件文件 {filePath}\r\n");
                 bool uploadSuccess = await client.UploadFileAsync(filePath, currentIp);
                 if (!uploadSuccess) {
                     Log(new BMCProgressInfo(currentIp, "0", "文件上传失败，终止升级"));

@@ -243,19 +243,19 @@ namespace BmcUpgradeTool
             _httpClient.DefaultRequestHeaders.Remove("X-Auth-Token");
             _httpClient.DefaultRequestHeaders.Add("X-Auth-Token", _authToken);
 
-            int count = 0;
+            DateTime startTime = DateTime.Now;
             bool isFinished = false;
             bool isFirstLine = true;
             string msgText = string.Empty;
-            while (count < timeoutSeconds)
+
+            while ((int)(DateTime.Now - startTime).TotalSeconds < timeoutSeconds)
             {
                 if (isFinished)
                 {
                     Log(new BMCProgressInfo(bmcIp, "100", "成功"));
                     return (true, "成功");
                 }
-                await Task.Delay(300); // 等待2秒
-                count += 2;
+                await Task.Delay(1000); // 等待1000ms
 
                 try
                 {
@@ -288,12 +288,12 @@ namespace BmcUpgradeTool
                         {
                             Log(new BMCProgressInfo(bmcIp, percent, "破解中"));
                         }
-                        if (msgText.Contains("Upgrading the BMC"))
+                        else if (msgText.Contains("Upgrading the BMC"))
                         {
                             Log(new BMCProgressInfo(bmcIp, percent, "BMC 升级中"));
-                            await Task.Delay(3000); // Python 里这里额外睡了3秒
+                            await Task.Delay(1000); // Python 里这里额外睡了3秒
                         }
-                        if (msgText.Contains("Upgrading the Bios"))
+                        else if (msgText.Contains("Upgrading the Bios"))
                         {
                             Log(new BMCProgressInfo(bmcIp, percent, "BIOS 升级中"));
                         }

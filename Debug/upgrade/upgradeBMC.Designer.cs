@@ -42,6 +42,8 @@ namespace Debug {
             this.cb_ipmiCmd = new System.Windows.Forms.ComboBox();
             this.bt_ipmiCmd = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
+            this.tb_ipmiCmds = new System.Windows.Forms.TextBox();
+            this.bt_ipmiCmdList = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dg_upgradeProcessBar)).BeginInit();
             this.SuspendLayout();
             // 
@@ -200,7 +202,7 @@ namespace Debug {
             "power off"});
             this.cb_ipmiCmd.Location = new System.Drawing.Point(118, 245);
             this.cb_ipmiCmd.Name = "cb_ipmiCmd";
-            this.cb_ipmiCmd.Size = new System.Drawing.Size(292, 20);
+            this.cb_ipmiCmd.Size = new System.Drawing.Size(513, 20);
             this.cb_ipmiCmd.TabIndex = 32;
             // 
             // bt_ipmiCmd
@@ -222,17 +224,37 @@ namespace Debug {
             this.label6.TabIndex = 1;
             this.label6.Text = "ipmiCmd";
             // 
+            // tb_ipmiCmds
+            // 
+            this.tb_ipmiCmds.Location = new System.Drawing.Point(118, 282);
+            this.tb_ipmiCmds.Multiline = true;
+            this.tb_ipmiCmds.Name = "tb_ipmiCmds";
+            this.tb_ipmiCmds.Size = new System.Drawing.Size(513, 115);
+            this.tb_ipmiCmds.TabIndex = 36;
+            // 
+            // bt_ipmiCmdList
+            // 
+            this.bt_ipmiCmdList.Location = new System.Drawing.Point(657, 325);
+            this.bt_ipmiCmdList.Name = "bt_ipmiCmdList";
+            this.bt_ipmiCmdList.Size = new System.Drawing.Size(75, 23);
+            this.bt_ipmiCmdList.TabIndex = 31;
+            this.bt_ipmiCmdList.Text = "执行命令列表";
+            this.bt_ipmiCmdList.UseVisualStyleBackColor = true;
+            this.bt_ipmiCmdList.Click += new System.EventHandler(this.tb_ipmiCmdList_Click);
+            // 
             // UpgradeBMC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(1347, 548);
+            this.Controls.Add(this.tb_ipmiCmds);
             this.Controls.Add(this.dg_upgradeProcessBar);
             this.Controls.Add(this.tb_upgradeLog);
             this.Controls.Add(this.checkBox_decryptOnly);
             this.Controls.Add(this.cb_ipmiCmd);
             this.Controls.Add(this.cb_upgradeIP);
+            this.Controls.Add(this.bt_ipmiCmdList);
             this.Controls.Add(this.bt_ipmiCmd);
             this.Controls.Add(this.bt_hpm);
             this.Controls.Add(this.tb_fileHpm);
@@ -277,5 +299,7 @@ namespace Debug {
         private System.Windows.Forms.ComboBox cb_ipmiCmd;
         private System.Windows.Forms.Button bt_ipmiCmd;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox tb_ipmiCmds;
+        private System.Windows.Forms.Button bt_ipmiCmdList;
     }
 }

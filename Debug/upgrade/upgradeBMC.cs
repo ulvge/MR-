@@ -11,6 +11,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -402,6 +403,27 @@ namespace Debug {
                 _ = ipmiResultParse.SendIPMICmdBatchAsync(ipTails, cmd);
             }
 
+        }
+
+        private async void tb_ipmiCmdList_Click(object sender, EventArgs e)
+        {
+            dg_upgradeProcessBar.Rows.Clear();
+            ipRowMap.Clear();
+            string[] ipTails = GetRange.GetIPRange(cb_upgradeIP.Text.Trim()).ToArray();
+            if (ipTails.Length == 0)
+            {
+                tb_upgradeLog_AppendText("指定 的IP 地址，格式错误");
+                return;
+            }
+
+            string cmdListStr = tb_ipmiCmds.Text;
+            string[] cmdList = cmdListStr.Split('\n');
+            foreach (var cmd in cmdList)
+            {
+                IpmiResultParse ipmiResultParse = new IpmiResultParse(tb_upgradeLog_AppendText, tb_loginUserName.Text, tb_loginPwd.Text);
+                string cmdStr = cmd.Trim();
+                await ipmiResultParse.SendIPMICmdBatchAsync(ipTails, cmdStr);
+            }
         }
     }
 }
