@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Debug.IPMITool
@@ -16,7 +17,8 @@ namespace Debug.IPMITool
         /// </summary>
         public async Task<(bool Success, string Output, string Error)> ExecuteFullCommandAsync(string fullCommand)
         {
-            if (!File.Exists(_ipmitoolPath))
+            string absolutePath = Path.GetFullPath(_ipmitoolPath);
+            if (!File.Exists(absolutePath))
             {
                 Console.WriteLine("IPMI.exe 路径不存在");
                 return (false, "",  "IPMI.exe 路径不存在");
@@ -24,14 +26,15 @@ namespace Debug.IPMITool
             var process = new Process();
             process.StartInfo = new ProcessStartInfo
             {
-                FileName = _ipmitoolPath,
+                FileName = absolutePath,
                 Arguments = fullCommand,
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 CreateNoWindow = true,
                 StandardOutputEncoding = Encoding.UTF8,
-                StandardErrorEncoding = Encoding.UTF8
+                StandardErrorEncoding = Encoding.UTF8,
+                WorkingDirectory = Path.GetDirectoryName(absolutePath)
             };
 
             try
@@ -44,11 +47,10 @@ namespace Debug.IPMITool
 
                 // 等待进程退出（使用 Task.Run 包装 WaitForExit）
                 await Task.Run(() => process.WaitForExit());
-
                 string output = await outputTask;
                 string error = await errorTask;
 
-                return (process.ExitCode == 0, output, error);
+                return (process.ExitCode == 0, output + ". " + error, error); // error信息，可能是一些辅助的调试信息
             }
             catch (Exception ex)
             {

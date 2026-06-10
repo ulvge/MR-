@@ -407,6 +407,7 @@ namespace Debug {
 
         private async void tb_ipmiCmdList_Click(object sender, EventArgs e)
         {
+            int cmdCount = 0;
             dg_upgradeProcessBar.Rows.Clear();
             ipRowMap.Clear();
             string[] ipTails = GetRange.GetIPRange(cb_upgradeIP.Text.Trim()).ToArray();
@@ -420,6 +421,12 @@ namespace Debug {
             string[] cmdList = cmdListStr.Split('\n');
             foreach (var cmd in cmdList)
             {
+                if (cmd.Trim().Length == 0)
+                {
+                    continue;
+                }
+                tb_upgradeLog_AppendText($"***************************************************************    cmdCount = {cmdCount++}\r\n");
+                Thread.Sleep(500);
                 IpmiResultParse ipmiResultParse = new IpmiResultParse(tb_upgradeLog_AppendText, tb_loginUserName.Text, tb_loginPwd.Text);
                 string cmdStr = cmd.Trim();
                 await ipmiResultParse.SendIPMICmdBatchAsync(ipTails, cmdStr);
