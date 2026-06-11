@@ -11,7 +11,7 @@ namespace Debug.IPMITool
 {
     public class ipmitool
     {
-        private string _ipmitoolPath = "..\\..\\IPMITool\\IPMIToolWin1.8.18\\ipmitool.exe";
+        private string _ipmitoolPath = "..\\..\\IPMITool\\IPMIToolWin1.8.19\\ipmitool.exe";
         /// <summary>
         /// 直接执行完整命令（不替换 IP）
         /// </summary>
