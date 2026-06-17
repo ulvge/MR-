@@ -52,14 +52,13 @@ namespace Debug.IPMITool
                 // 异步调用
                 var (success, output, error) = await ipmi.ExecuteFullCommandAsync(ipmiCmd);
 
+                Log($"{currentIp} {output}");
                 if (success)
                 {
-                    Log($"{currentIp} 成功: {output}");
                     Log(new BMCProgressInfo(currentIp, "100", output));
                 }
                 else
                 {
-                    Log($"{currentIp} 失败: {error}");
                     Log(new BMCProgressInfo(currentIp, "0", error));
                 }
             }
