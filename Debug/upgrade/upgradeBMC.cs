@@ -404,7 +404,22 @@ namespace Debug {
             }
 
         }
+        private bool hook_ConvertUTCTime(string unixTimestamp)
+        {
+            try
+            {
+                long unixTimestampLong = long.Parse(unixTimestamp);
+                DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(unixTimestampLong);
+                DateTime localTime = dateTimeOffset.LocalDateTime;
 
+                tb_upgradeLog_AppendText($"当地时间: {localTime:yyyy-MM-dd HH:mm:ss}\r\n");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
         private async void tb_ipmiCmdList_Click(object sender, EventArgs e)
         {
             int cmdCount = 0;
@@ -422,6 +437,10 @@ namespace Debug {
             foreach (var cmd in cmdList)
             {
                 if (cmd.Trim().Length == 0)
+                {
+                    continue;
+                }
+                if (hook_ConvertUTCTime(cmd.Trim()))
                 {
                     continue;
                 }

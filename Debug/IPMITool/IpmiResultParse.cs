@@ -50,7 +50,7 @@ namespace Debug.IPMITool
                 var ipmi = new ipmitool();
 
                 // 异步调用
-                var (success, output, error) = await ipmi.ExecuteFullCommandAsync(ipmiCmd);
+                var (success, output, error) = await ipmi.ExecuteFullCommandAsync(ipmiCmd, Log);
 
                 Log($"{currentIp} {output}");
                 if (success)

@@ -172,7 +172,7 @@ namespace Debug {
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tb_upgradeLog.Location = new System.Drawing.Point(738, 12);
             this.tb_upgradeLog.Name = "tb_upgradeLog";
-            this.tb_upgradeLog.Size = new System.Drawing.Size(597, 350);
+            this.tb_upgradeLog.Size = new System.Drawing.Size(645, 350);
             this.tb_upgradeLog.TabIndex = 34;
             this.tb_upgradeLog.Text = "";
             this.tb_upgradeLog.TextChanged += new System.EventHandler(this.tb_upgradeLog_TextChanged);
@@ -187,7 +187,7 @@ namespace Debug {
             this.dg_upgradeProcessBar.Location = new System.Drawing.Point(738, 363);
             this.dg_upgradeProcessBar.Name = "dg_upgradeProcessBar";
             this.dg_upgradeProcessBar.RowTemplate.Height = 23;
-            this.dg_upgradeProcessBar.Size = new System.Drawing.Size(597, 189);
+            this.dg_upgradeProcessBar.Size = new System.Drawing.Size(645, 189);
             this.dg_upgradeProcessBar.TabIndex = 35;
             this.dg_upgradeProcessBar.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
@@ -199,7 +199,9 @@ namespace Debug {
             "power status",
             "power reset",
             "power on",
-            "power off"});
+            "power off",
+            "sol activate",
+            "sol deactivate"});
             this.cb_ipmiCmd.Location = new System.Drawing.Point(118, 245);
             this.cb_ipmiCmd.Name = "cb_ipmiCmd";
             this.cb_ipmiCmd.Size = new System.Drawing.Size(513, 20);
@@ -247,7 +249,7 @@ namespace Debug {
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(1347, 548);
+            this.ClientSize = new System.Drawing.Size(1795, 548);
             this.Controls.Add(this.tb_ipmiCmds);
             this.Controls.Add(this.dg_upgradeProcessBar);
             this.Controls.Add(this.tb_upgradeLog);
@@ -268,7 +270,7 @@ namespace Debug {
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.bt_telnet);
-            this.MinimumSize = new System.Drawing.Size(1363, 587);
+            this.MinimumSize = new System.Drawing.Size(1811, 587);
             this.Name = "UpgradeBMC";
             this.Text = "upgrade";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.UpgradeBMC_FormClosing);

@@ -15,7 +15,7 @@ namespace Debug.IPMITool
         /// <summary>
         /// 直接执行完整命令（不替换 IP）
         /// </summary>
-        public async Task<(bool Success, string Output, string Error)> ExecuteFullCommandAsync(string fullCommand)
+        public async Task<(bool Success, string Output, string Error)> ExecuteFullCommandAsync(string fullCommand, Action<object> log)
         {
             string absolutePath = Path.GetFullPath(_ipmitoolPath);
             if (!File.Exists(absolutePath))
@@ -27,6 +27,7 @@ namespace Debug.IPMITool
             process.StartInfo = new ProcessStartInfo
             {
                 FileName = absolutePath,
+
                 Arguments = fullCommand,
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
