@@ -330,10 +330,113 @@ namespace Debug {
                 _isTelnetRunning = false;
             }
         }
-        
+        // 删除以前的临时文件
+        private void DeleteTempFiles(string downloadTempPath)
+        {
+            // 1. 安全检查：确保目录存在
+            if (!Directory.Exists(downloadTempPath))
+            {
+                Console.WriteLine("目录不存在，无需清理。");
+                return;
+            }
+
+            // 2. 计算时间阈值：1个月前的时间点
+            DateTime cutoffDate = DateTime.Now.AddMonths(-1);
+
+            // 3. 获取当前目录下的所有文件（默认不递归子目录）
+            string[] files = Directory.GetFiles(downloadTempPath);
+
+            foreach (string file in files)
+            {
+                try
+                {
+                    FileInfo fileInfo = new FileInfo(file);
+
+                    // 4. 判断文件的最后写入时间是否早于1个月前
+                    if (fileInfo.LastWriteTime < cutoffDate)
+                    {
+                        // 5. 处理只读文件：如果文件被设为只读，直接删除会报错
+                        if (fileInfo.IsReadOnly)
+                        {
+                            fileInfo.IsReadOnly = false;
+                        }
+
+                        // 6. 执行删除
+                        fileInfo.Delete();
+                        Console.WriteLine($"已删除过期文件: {file}");
+                    }
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    // 捕获权限不足异常，避免因为一个文件删不掉导致整个程序崩溃
+                    Console.WriteLine($"权限不足，跳过文件: {file}");
+                }
+                catch (Exception ex)
+                {
+                    // 捕获其他异常（如文件正被其他进程占用）
+                    Console.WriteLine($"删除文件失败: {file}，原因: {ex.Message}");
+                }
+            }
+
+            Console.WriteLine("清理完成！");
+        }
+        // 文件大小 <= 50M，且没有以 “signed.hpm” 结尾，就上传签名
+        private static int HPM_MAX_FILE_SIZE_MB = 50;
+        private static string HPM_SIGNED_SUFFIX = "signed.hpm";
+        private async Task<(bool isSingedSuccess, string singedFileFullName)> TrySignHpm(string filePath)
+        {
+            string singedFilePath = filePath;
+            try
+            {
+                // 是否需要签名hpm文件
+                if (filePath.EndsWith("signed.hpm") == true)
+                {
+                    return (true, singedFilePath);
+                }
+                if (new FileInfo(filePath).Length > HPM_MAX_FILE_SIZE_MB * 1024 * 1024)
+                {
+                    tb_upgradeLog_AppendText($"❌ 文件大小超过 {HPM_MAX_FILE_SIZE_MB}MB，是BMC固件，不需要签名\r\n");
+                    return (true, singedFilePath);
+                }
+                tb_upgradeLog_AppendText("❌ 该hpm文件未签名，尝试上传签名后再升级\r\n");
+                SigneHPM signeHPM = new SigneHPM(tb_upgradeLog_AppendText);
+                bool isSignSuccess = await signeHPM.UpdateAndSign(filePath);
+                if (!isSignSuccess)
+                {
+                    tb_upgradeLog_AppendText("❌ 签名失败\r\n");
+                    return (false, singedFilePath);
+                }
+                tb_upgradeLog_AppendText("✅ 签名成功\r\n");
+                
+                string downloadTempPath = $"{Environment.CurrentDirectory}\\downloads";
+                DeleteTempFiles(downloadTempPath);
+                bool isDownloadSuccess = await signeHPM.DownloadSignedHpm(downloadTempPath);
+                if (isDownloadSuccess)
+                {
+                    singedFilePath = $"{downloadTempPath}\\{signeHPM.signedFileName}";
+                }
+                return (isDownloadSuccess, singedFilePath);
+            }
+            finally
+            {
+                
+            }
+            return (false, singedFilePath);
+        }
         private bool _isGradeHpmRunning = false;  // 状态标志
         private async void bt_hpm_Click(object sender, EventArgs e)
         {
+            string filePath = tb_fileHpm.Text;
+            if (!File.Exists(filePath))
+            {
+                tb_upgradeLog_AppendText("❌ 文件不存在或路径无效\r\n");
+                return;
+            }
+            if (filePath.EndsWith(".hpm") == false)
+            {
+                tb_upgradeLog_AppendText("❌ 文件扩展名错误，仅允许 .hpm 文件\r\n");
+                return;
+            }
             if (_isGradeHpmRunning)
             {
                 Console.WriteLine("操作正在进行中，请勿重复点击");
@@ -343,6 +446,13 @@ namespace Debug {
             _isGradeHpmRunning = true;
             try
             {
+                // 是否需要签名hpm文件
+                var (isSingedSuccess, singedFileFullName) = await TrySignHpm(filePath);
+                if (isSingedSuccess == false)
+                {
+                    return;
+                }
+
                 dg_upgradeProcessBar.Rows.Clear();
                 ipRowMap.Clear();
                 // // 解析用户输入的多个IP尾数
@@ -352,12 +462,11 @@ namespace Debug {
                     Console.WriteLine("指定 的IP 地址，格式错误");
                     return;
                 }
-                string filePath = tb_fileHpm.Text;
 
                 var batchManager = new RedfishManager(tb_upgradeLog_AppendText);
 
                 // 调用批量升级方法，并传入一个匿名函数来更新UI日志
-                await batchManager.UpgradeBatchAsync(ipTails, filePath);
+                await batchManager.UpgradeBatchAsync(ipTails, singedFileFullName);
             }
             finally
             {
