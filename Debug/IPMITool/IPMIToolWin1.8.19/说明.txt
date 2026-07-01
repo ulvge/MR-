@@ -1,3 +1,11 @@
+***********************************
+2026年7月1日16:52:40
+添加了enterprise-numbers，不再报错IANA PEN registry open failed: No such file or directory
+--其实是修改了ipmi源码，源码只支持linux路径下查找这个文件，添加windows下查找这个路径
+
+
+
+***********************************
 一定需要 ipmitool_ltshwrapper，这是编译出来的程序，其实是需要在cygwin下运行的。
 
 如果缺少某个dll，上级目录压缩包中，有全部的dll备份。
