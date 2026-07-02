@@ -25,6 +25,7 @@ namespace Debug {
         
         private string g_queryBMCFirmwareKey = "BMC版本";
         private string g_queryBIOSFirmwareKey = "BIOS版本";
+        private string g_powerReset = "power reset";
 
         public UpgradeBMC() {
             InitializeComponent();
@@ -423,6 +424,14 @@ namespace Debug {
             }
             return (false, singedFilePath);
         }
+        private async Task powerReset(string[] ipTails, int delaySec = 10)
+        {
+            IpmiResultParse ipmiResultParse = new IpmiResultParse(tb_upgradeLog_AppendText, tb_loginUserName.Text, tb_loginPwd.Text);
+
+            _ = ipmiResultParse.SendIPMICmdBatchAsync(ipTails, "power off");
+            await Task.Delay(delaySec * 1000);
+            _ = ipmiResultParse.SendIPMICmdBatchAsync(ipTails, "power on");
+        }
         private bool _isGradeHpmRunning = false;  // 状态标志
         private async void bt_hpm_Click(object sender, EventArgs e)
         {
@@ -467,6 +476,12 @@ namespace Debug {
 
                 // 调用批量升级方法，并传入一个匿名函数来更新UI日志
                 await batchManager.UpgradeBatchAsync(ipTails, singedFileFullName);
+
+                // 有签名，说明需要重启系统
+                if (filePath != singedFileFullName) 
+                {
+                    await powerReset(ipTails, 45);
+                }
             }
             finally
             {
@@ -485,7 +500,7 @@ namespace Debug {
 
         }
 
-        private void bt_ipmiCmd_Click(object sender, EventArgs e)
+        private async void bt_ipmiCmd_Click(object sender, EventArgs e)
         {
             dg_upgradeProcessBar.Rows.Clear();
             ipRowMap.Clear();
@@ -503,6 +518,10 @@ namespace Debug {
             {
                 var batchManager = new RedfishManager(tb_upgradeLog_AppendText);
                 _ = batchManager.GetFirmwaretBatchAsync(ipTails, DeviceType.BIOS);
+            }
+            else if (cb_ipmiCmd.Text == g_powerReset)
+            {
+                await powerReset(ipTails);
             }
             else
             {
