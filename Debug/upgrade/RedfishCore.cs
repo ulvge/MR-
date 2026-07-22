@@ -245,7 +245,6 @@ namespace BmcUpgradeTool
 
             DateTime startTime = DateTime.Now;
             bool isFinished = false;
-            bool isFirstLine = true;
             string msgText = string.Empty;
 
             while ((int)(DateTime.Now - startTime).TotalSeconds < timeoutSeconds)
@@ -297,7 +296,10 @@ namespace BmcUpgradeTool
                         {
                             Log(new BMCProgressInfo(bmcIp, percent, "BIOS 升级中"));
                         }
-                        isFirstLine = false;
+                        else if (msgText.Contains("The package for upgrading firmware is invalid."))
+                        {
+                            return (false, "升级包无效");
+                        }
                     }
                 }
                 catch (Exception ex)

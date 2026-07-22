@@ -78,9 +78,9 @@ namespace BmcUpgradeTool
                 }
                 Log($"{currentIp} ✅ 升级任务已启动，TaskID: {taskId}\r\n");
 
-                // 4. 轮询检查状态 (注意：升级通常耗时较长，这里将超时时间设为600秒)
+                // 4. 轮询检查状态 (注意：升级通常耗时较长，这里将超时时间设为300秒)
                 Log($"{currentIp} 开始监控升级状态（请耐心等待）...\r\n");
-                var (statusSuccess, finalMsg) = await client.CheckUpdateStatusAsync(currentIp, taskId, timeoutSeconds: 600);
+                var (statusSuccess, finalMsg) = await client.CheckUpdateStatusAsync(currentIp, taskId, timeoutSeconds: 300);
 
                 if (statusSuccess)
                 {
@@ -91,7 +91,7 @@ namespace BmcUpgradeTool
                     Log(new BMCProgressInfo(currentIp, "0", "升级失败或超时，终止升级"));
                 }
 
-                Log($"{currentIp} 准备退出）...\r\n");
+                Log($"{currentIp} 准备退出...\r\n");
                 bool exitSuccess = await client.DeleteSessionAsync(currentIp);
                 if (!exitSuccess) {
                     Log(new BMCProgressInfo(currentIp, "100", "退出失败"));
@@ -169,7 +169,7 @@ namespace BmcUpgradeTool
                 //GetBIOSInfoAsync
 
 
-                Log($"{currentIp} 准备退出）...\r\n");
+                Log($"{currentIp} 准备退出...\r\n");
                 bool exitSuccess = await client.DeleteSessionAsync(currentIp);
                 if (!exitSuccess)
                 {
