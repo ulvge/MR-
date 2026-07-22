@@ -68,6 +68,7 @@ namespace Debug {
             // 
             // tb_fileTelnet
             // 
+            this.tb_fileTelnet.AllowDrop = true;
             this.tb_fileTelnet.Location = new System.Drawing.Point(118, 138);
             this.tb_fileTelnet.Name = "tb_fileTelnet";
             this.tb_fileTelnet.Size = new System.Drawing.Size(513, 21);
@@ -85,6 +86,7 @@ namespace Debug {
             // 
             // tb_fileHpm
             // 
+            this.tb_fileHpm.AllowDrop = true;
             this.tb_fileHpm.Location = new System.Drawing.Point(118, 170);
             this.tb_fileHpm.Name = "tb_fileHpm";
             this.tb_fileHpm.Size = new System.Drawing.Size(513, 21);

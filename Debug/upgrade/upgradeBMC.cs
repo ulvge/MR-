@@ -90,7 +90,42 @@ namespace Debug {
 
             cb_ipmiCmd.Items.Add(g_queryBMCFirmwareKey);
             cb_ipmiCmd.Items.Add(g_queryBIOSFirmwareKey);
+
+            // 绑定拖拽进入事件
+            this.tb_fileHpm.DragEnter += tb_fileHpm_DragEnter;
+            this.tb_fileTelnet.DragEnter += tb_fileHpm_DragEnter;
+            // 绑定文件放下事件
+            this.tb_fileHpm.DragDrop += tb_fileHpm_DragDrop;
+            this.tb_fileTelnet.DragDrop += tb_fileHpm_DragDrop;
+
+
         }
+        private void tb_fileHpm_DragEnter(object sender, DragEventArgs e)
+        {
+            // 检查拖拽的数据中是否包含文件
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                e.Effect = DragDropEffects.Copy; // 设置光标为“复制”图标（带个加号）
+            }
+            else
+            {
+                e.Effect = DragDropEffects.None; // 如果不是文件，显示禁止图标
+            }
+        }
+        private void tb_fileHpm_DragDrop(object sender, DragEventArgs e)
+        {// 安全地获取文件路径（返回的是字符串数组，因为可能拖入多个文件）
+            if (e.Data.GetData(DataFormats.FileDrop) is string[] files && files.Length > 0)
+            {
+                // 获取第一个文件的路径，并显示在 TextBox 中
+                string filePath = files[0];
+                TextBox targetBox = (TextBox)sender;
+                targetBox.Text = filePath;
+
+                // 将光标移到文本末尾，方便查看长路径
+                targetBox.SelectionStart = targetBox.Text.Length;
+            }
+        }
+
         private void DataGridView1_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             // 只对 IP 列进行排序
@@ -480,7 +515,7 @@ namespace Debug {
                 // 有签名，说明需要重启系统
                 if (filePath != singedFileFullName) 
                 {
-                    await powerReset(ipTails, 45);
+                    await powerReset(ipTails, 55);
                 }
             }
             finally
