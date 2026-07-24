@@ -17,6 +17,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static Debug.MRForm;
+using static Debug.upgrade.FruParser;
 using static System.Windows.Forms.AxHost;
 
 namespace Debug {
@@ -639,17 +640,41 @@ namespace Debug {
             }
             try
             {
+                // 1 更新
                 List<string> cmdList = FruUpdate.GenerateCommands(cb_fruCmd.SelectedValue.ToString(), tb_fruContext.Text);
+                IpmiResultParse ipmiResultParse = new IpmiResultParse(tb_upgradeLog_AppendText, tb_loginUserName.Text, tb_loginPwd.Text);
                 foreach (var cmd in cmdList)
                 {
                     if (cmd.Trim().Length == 0)
                     {
                         continue;
                     }
-                    IpmiResultParse ipmiResultParse = new IpmiResultParse(tb_upgradeLog_AppendText, tb_loginUserName.Text, tb_loginPwd.Text);
                     string cmdStr = cmd.Trim();
                     await ipmiResultParse.SendIPMICmdBatchAsync(ipTails, cmdStr);
                 }
+                Thread.Sleep(200);
+                // 2. 重新读取查询
+                string reReadFruCmd = "fru list 0";
+                var (success, output, error) = await ipmiResultParse.SendIPMICmdAsync(ipTails[0], reReadFruCmd);
+                // 3. 一行代码完成解析
+                if (success)
+                {
+                    Dictionary<string, string> fru = FruParser.Parse(output);
+                    string selectedKey = cb_fruCmd.SelectedValue?.ToString();
+                    string readFruItemVaule = string.Empty;
+                    if (string.IsNullOrEmpty(selectedKey) || !fru.TryGetValue(selectedKey, out readFruItemVaule))
+                    {
+                        // 成功获取到值，显示在文本框中
+                        tb_upgradeLog_AppendText("Fru更新后，读取失败");
+                    }
+                    if (tb_fruContext.Text.Trim() == readFruItemVaule)
+                    {
+                        tb_upgradeLog_AppendText($"Fru更新，校验成功, 新值{readFruItemVaule}");
+                    }
+                    // 4. 更新的结果，读取后，然后打印
+                    //Console.WriteLine($"产品名称: {fru.ProductName}");       // 输出: dddd
+                }
+
             }
             catch (Exception ex)
             {

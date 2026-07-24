@@ -41,9 +41,20 @@ namespace Debug.IPMITool
 
             Log("🎉 所有设备的ipmi命令已全部发送完毕！\r\n");
         }
+        public async Task<(bool Success, string Output, string Error)> SendIPMICmdAsync(string ipTail, string ipmiCmd)
+        {
+            Log($"🚀 开始批量发送ipmi命令 {ipmiCmd}，\r\n");
+
+            // 为每个IP创建一个独立的任务
+            var (success, output, error) = await SendIPMICmdSingleAsync(DefaultIpHead + ipTail, GetCommandHead(ipTail, ipmiCmd), false);
+
+            Log("🎉 所有设备的ipmi命令已全部发送完毕！\r\n");
+
+            return (success, output, error);
+        }
 
         // 单个设备的完整升级流程
-        private async Task SendIPMICmdSingleAsync(string currentIp, string ipmiCmd)
+        private async Task<(bool Success, string Output, string Error)> SendIPMICmdSingleAsync(string currentIp, string ipmiCmd, bool isPrintfResult = true)
         {
             try
             {
@@ -52,7 +63,10 @@ namespace Debug.IPMITool
                 // 异步调用
                 var (success, output, error) = await ipmi.ExecuteFullCommandAsync(ipmiCmd, Log);
 
-                Log($"{currentIp} {output}");
+                if (isPrintfResult)
+                {
+                    Log($"{currentIp} {output}");
+                }
                 if (success)
                 {
                     Log(new BMCProgressInfo(currentIp, "100", output));
@@ -61,12 +75,16 @@ namespace Debug.IPMITool
                 {
                     Log(new BMCProgressInfo(currentIp, "0", error));
                 }
+                return (success, output, error);
             }
             catch (Exception ex)
             {
                 Log(new BMCProgressInfo(currentIp, "0", ex.Message));
                 Log($"{currentIp} 💥 发生未处理的异常: {ex.Message}\r\n");
             }
+
+            return (false, "", "");
+
         }
     }
 }

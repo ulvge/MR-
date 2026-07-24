@@ -13,6 +13,7 @@ namespace Debug.upgrade
         public class FruField
         {
             public string DisplayName { get; set; } // 下拉列表显示的名称
+            public string IpmiFieldName { get; set; }    // 【新增】ipmitool fru print 返回的英文字段名
             public byte Area { get; set; }          // 区域 (0x1=Chassis, 0x2=Board, 0x3=Product)
             public byte Offset { get; set; }        // 偏移量
             public bool IsString { get; set; }      // 是否为字符串类型 (true: 需转换ASCII; false: 特殊格式如时间/类型)
@@ -23,31 +24,31 @@ namespace Debug.upgrade
             public byte? SecondaryOffset { get; set; }
         }
 
-        // 核心：FRU 配置表 (Key 对应下拉列表的 Value，Value 是协议参数)
+
         public static readonly Dictionary<string, FruField> FruTable = new Dictionary<string, FruField>
         {
             // --- Chassis Area (0x1) ---
-            { "chassis_type",     new FruField { DisplayName = "机箱类型",     Area = 0x1, Offset = 0x00, IsString = false, ExtraByte = 0x01 } },
-            { "chassis_pn",       new FruField { DisplayName = "机箱料号",     Area = 0x1, Offset = 0x01, IsString = true } },
-            { "chassis_sn",       new FruField { DisplayName = "机箱序列号",   Area = 0x1, Offset = 0x02, IsString = true } },
-            { "chassis_extra",    new FruField { DisplayName = "机箱自定义",   Area = 0x1, Offset = 0x03, IsString = true } },
+            { "chassis_type",   new FruField { DisplayName = "机箱类型",     IpmiFieldName = "Chassis Type",          Area = 0x1, Offset = 0x00, IsString = false, ExtraByte = 0x01 } },
+            { "chassis_pn",     new FruField { DisplayName = "机箱料号",     IpmiFieldName = "Chassis Part Number",   Area = 0x1, Offset = 0x01, IsString = true } },
+            { "chassis_sn",     new FruField { DisplayName = "机箱序列号",   IpmiFieldName = "Chassis Serial",        Area = 0x1, Offset = 0x02, IsString = true } },
+            { "chassis_extra",  new FruField { DisplayName = "机箱自定义",   IpmiFieldName = "Chassis Extra",         Area = 0x1, Offset = 0x03, IsString = true } },
 
             // --- Board Area (0x2) ---
-            { "board_mfg_date",   new FruField { DisplayName = "主板制造日期", Area = 0x2, Offset = 0x00, IsString = false, ExtraByte = 0x03 } },
-            { "board_mfg",        new FruField { DisplayName = "主板制造商",   Area = 0x2, Offset = 0x01, IsString = true } },
-            { "board_product",    new FruField { DisplayName = "主板产品名",   Area = 0x2, Offset = 0x02, IsString = true } },
-            { "board_sn",         new FruField { DisplayName = "主板序列号",   Area = 0x2, Offset = 0x03, IsString = true } },
-            { "board_pn",         new FruField { DisplayName = "主板料号",     Area = 0x2, Offset = 0x04, IsString = true } },
-            { "board_extra",      new FruField { DisplayName = "主板自定义",   Area = 0x2, Offset = 0x06, IsString = true } },
+            { "board_mfg_date", new FruField { DisplayName = "主板制造日期", IpmiFieldName = "Board Mfg Date",        Area = 0x2, Offset = 0x00, IsString = false, ExtraByte = 0x03 } },
+            { "board_mfg",      new FruField { DisplayName = "主板制造商",   IpmiFieldName = "Board Mfg",             Area = 0x2, Offset = 0x01, IsString = true } },
+            { "board_product",  new FruField { DisplayName = "主板产品名",   IpmiFieldName = "Board Product",         Area = 0x2, Offset = 0x02, IsString = true } },
+            { "board_sn",       new FruField { DisplayName = "主板序列号",   IpmiFieldName = "Board Serial",          Area = 0x2, Offset = 0x03, IsString = true } },
+            { "board_pn",       new FruField { DisplayName = "主板料号",     IpmiFieldName = "Board Part Number",     Area = 0x2, Offset = 0x04, IsString = true } },
+            { "board_extra",    new FruField { DisplayName = "主板自定义",   IpmiFieldName = "Board Extra",           Area = 0x2, Offset = 0x06, IsString = true } },
 
             // --- Product Area (0x3) ---
-            { "product_mfg",      new FruField { DisplayName = "产品制造商",   Area = 0x3, Offset = 0x00, IsString = true } },
-            { "product_name",     new FruField { DisplayName = "产品名称",     Area = 0x3, Offset = 0x01, IsString = true } },
-            { "product_pn",       new FruField { DisplayName = "产品料号",     Area = 0x3, Offset = 0x02, IsString = true } },
-            { "product_ver",      new FruField { DisplayName = "产品版本",     Area = 0x3, Offset = 0x03, IsString = true } },
-            { "product_sn",       new FruField { DisplayName = "产品序列号",   Area = 0x3, Offset = 0x04, IsString = true, SecondaryArea = 0x6, SecondaryOffset = 0x03 } },
-            { "product_asset",    new FruField { DisplayName = "产品资产标签", Area = 0x3, Offset = 0x05, IsString = true } },
-            { "product_extra",    new FruField { DisplayName = "产品自定义",   Area = 0x3, Offset = 0x07, IsString = true } },
+            { "product_mfg",    new FruField { DisplayName = "产品制造商",   IpmiFieldName = "Product Manufacturer",  Area = 0x3, Offset = 0x00, IsString = true } },
+            { "product_name",   new FruField { DisplayName = "产品名称",     IpmiFieldName = "Product Name",          Area = 0x3, Offset = 0x01, IsString = true } },
+            { "product_pn",     new FruField { DisplayName = "产品料号",     IpmiFieldName = "Product Part Number",   Area = 0x3, Offset = 0x02, IsString = true } },
+            { "product_ver",    new FruField { DisplayName = "产品版本",     IpmiFieldName = "Product Version",       Area = 0x3, Offset = 0x03, IsString = true } },
+            { "product_sn",     new FruField { DisplayName = "产品序列号",   IpmiFieldName = "Product Serial",        Area = 0x3, Offset = 0x04, IsString = true, SecondaryArea = 0x6, SecondaryOffset = 0x03 } },
+            { "product_asset",  new FruField { DisplayName = "产品资产标签", IpmiFieldName = "Product Asset Tag",     Area = 0x3, Offset = 0x05, IsString = true } },
+            { "product_extra",  new FruField { DisplayName = "产品自定义",   IpmiFieldName = "Product Extra",         Area = 0x3, Offset = 0x07, IsString = true } },
         };
 
         // 1. 将字符串转换为 IPMI 要求的 Hex 字符串格式 (长度Hex + 内容Hex)
