@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Debug.upgrade
 {
-    public static class Fru
+    public static class FruUpdate
     {
         // 内部结构：定义每一个 FRU 字段对应的协议参数
         public class FruField

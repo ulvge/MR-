@@ -101,7 +101,7 @@
     <Compile Include="IPMITool\IpmiResultParse.cs" />
     <Compile Include="IPMITool\ipmitool.cs" />
     <Compile Include="tools\GetRange.cs" />
-    <Compile Include="upgrade\Fru.cs" />
+    <Compile Include="upgrade\FruUpdate.cs" />
     <Compile Include="upgrade\RedfishManager.cs" />
     <Compile Include="upgrade\BMCProgressInfo.cs" />
     <Compile Include="upgrade\BMCProgressManager.cs" />

@@ -617,7 +617,7 @@ namespace Debug {
         // ********* fru
         private void bru_init()
         {
-            var dataSource = Fru.FruTable.Select(kvp => new
+            var dataSource = FruUpdate.FruTable.Select(kvp => new
             {
                 Key = kvp.Key,           // 实际的英文 Key (如 "product_name")
                 DisplayName = kvp.Key.PadRight(18) + "  " + kvp.Value.DisplayName // 显示的中文 (如 "产品名称")
@@ -639,7 +639,7 @@ namespace Debug {
             }
             try
             {
-                List<string> cmdList = Fru.GenerateCommands(cb_fruCmd.SelectedValue.ToString(), tb_fruContext.Text);
+                List<string> cmdList = FruUpdate.GenerateCommands(cb_fruCmd.SelectedValue.ToString(), tb_fruContext.Text);
                 foreach (var cmd in cmdList)
                 {
                     if (cmd.Trim().Length == 0)
