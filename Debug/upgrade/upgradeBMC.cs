@@ -99,7 +99,7 @@ namespace Debug {
             // 绑定文件放下事件
             this.tb_fileHpm.DragDrop += tb_fileHpm_DragDrop;
             this.tb_fileTelnet.DragDrop += tb_fileHpm_DragDrop;
-
+            _isFormLoaded = true;
         }
         private void tb_fileHpm_DragEnter(object sender, DragEventArgs e)
         {
@@ -468,7 +468,9 @@ namespace Debug {
             await Task.Delay(delaySec * 1000);
             _ = ipmiResultParse.SendIPMICmdBatchAsync(ipTails, "power on");
         }
-        private bool _isGradeHpmRunning = false;  // 状态标志
+        private bool _isUpgradeHpmRunning = false;  // 状态标志
+        private bool _isFormLoaded;
+
         private async void bt_hpm_Click(object sender, EventArgs e)
         {
             string filePath = tb_fileHpm.Text;
@@ -482,13 +484,13 @@ namespace Debug {
                 tb_upgradeLog_AppendText("❌ 文件扩展名错误，仅允许 .hpm 文件\r\n");
                 return;
             }
-            if (_isGradeHpmRunning)
+            if (_isUpgradeHpmRunning)
             {
                 Console.WriteLine("操作正在进行中，请勿重复点击");
                 return;
             }
             // 设置标志
-            _isGradeHpmRunning = true;
+            _isUpgradeHpmRunning = true;
             try
             {
                 // 是否需要签名hpm文件
@@ -522,7 +524,7 @@ namespace Debug {
             finally
             {
                 // 确保标志一定会被清除
-                _isGradeHpmRunning = false;
+                _isUpgradeHpmRunning = false;
             }   
         }
 
@@ -635,7 +637,7 @@ namespace Debug {
             string[] ipTails = GetRange.GetIPRange(cb_upgradeIP.Text.Trim()).ToArray();
             if (ipTails.Length == 0)
             {
-                tb_upgradeLog_AppendText("指定 的IP 地址，格式错误");
+                tb_upgradeLog_AppendText("指定 的IP 地址，格式错误\r\n");
                 return;
             }
             try
@@ -655,24 +657,20 @@ namespace Debug {
                 Thread.Sleep(200);
                 // 2. 重新读取查询
                 string reReadFruCmd = "fru list 0";
-                var (success, output, error) = await ipmiResultParse.SendIPMICmdAsync(ipTails[0], reReadFruCmd);
+                var (writeSuccess, output, error) = await ipmiResultParse.SendIPMICmdAsync(ipTails[0], reReadFruCmd);
                 // 3. 一行代码完成解析
-                if (success)
+                if (writeSuccess)
                 {
-                    Dictionary<string, string> fru = FruParser.Parse(output);
                     string selectedKey = cb_fruCmd.SelectedValue?.ToString();
-                    string readFruItemVaule = string.Empty;
-                    if (string.IsNullOrEmpty(selectedKey) || !fru.TryGetValue(selectedKey, out readFruItemVaule))
+                    var (readSuccess, readFruItemVaule) = await ReadFruItemValueFromIPMI(selectedKey);
+                    if (readSuccess && (tb_fruContext.Text.Trim() == readFruItemVaule))
                     {
-                        // 成功获取到值，显示在文本框中
-                        tb_upgradeLog_AppendText("Fru更新后，读取失败");
+                        tb_upgradeLog_AppendText($"Fru写，校验成功, 新值{readFruItemVaule}\r\n");
                     }
-                    if (tb_fruContext.Text.Trim() == readFruItemVaule)
-                    {
-                        tb_upgradeLog_AppendText($"Fru更新，校验成功, 新值{readFruItemVaule}");
-                    }
-                    // 4. 更新的结果，读取后，然后打印
-                    //Console.WriteLine($"产品名称: {fru.ProductName}");       // 输出: dddd
+                }
+                else
+                {
+                    tb_upgradeLog_AppendText("fru写，失败\r\n");
                 }
 
             }
@@ -681,6 +679,41 @@ namespace Debug {
                 tb_upgradeLog_AppendText(ex.Message);
             }
             
+        }
+        private async Task<(bool Success, string actualValue)> ReadFruItemValueFromIPMI(string selectedKey)
+        {
+            IpmiResultParse ipmiResultParse = new IpmiResultParse(tb_upgradeLog_AppendText, tb_loginUserName.Text, tb_loginPwd.Text);
+            string[] ipTails = GetRange.GetIPRange(cb_upgradeIP.Text.Trim()).ToArray();
+            string reReadFruCmd = "fru list 0";
+            string readFruItemVaule = string.Empty;
+            var (success, output, error) = await ipmiResultParse.SendIPMICmdAsync(ipTails[0], reReadFruCmd);
+            // 3. 一行代码完成解析
+            if (success)
+            {
+                Dictionary<string, string> fru = FruParser.Parse(output);
+                if (string.IsNullOrEmpty(selectedKey) || !fru.TryGetValue(selectedKey, out readFruItemVaule))
+                {
+                    // 成功获取到值，显示在文本框中
+                    tb_upgradeLog_AppendText($"Fru读取，查询结果异常{selectedKey}\r\n");
+                }
+            }
+            else
+            {
+                tb_upgradeLog_AppendText("Fru读取，查询失败\r\n");
+            }
+
+            return (success, readFruItemVaule);
+        }
+
+        private async void cb_fruCmd_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!_isFormLoaded) return;
+            string selectedKey = cb_fruCmd.SelectedValue?.ToString();
+            var (readSuccess, readFruItemVaule) = await ReadFruItemValueFromIPMI(selectedKey);
+            if (readSuccess)
+            {
+                tb_upgradeLog_AppendText($"Fru 读, {selectedKey} = {readFruItemVaule}\r\n");
+            }
         }
     }
 }

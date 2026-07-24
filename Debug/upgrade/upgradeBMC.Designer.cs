@@ -267,6 +267,7 @@ namespace Debug {
             this.cb_fruCmd.Name = "cb_fruCmd";
             this.cb_fruCmd.Size = new System.Drawing.Size(292, 20);
             this.cb_fruCmd.TabIndex = 32;
+            this.cb_fruCmd.SelectedIndexChanged += new System.EventHandler(this.cb_fruCmd_SelectedIndexChanged);
             // 
             // tb_fruContext
             // 
