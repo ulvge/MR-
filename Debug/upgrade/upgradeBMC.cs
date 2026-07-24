@@ -68,6 +68,7 @@ namespace Debug {
 
         private void UpgradeBMC_Load(object sender, EventArgs e)
         {
+            bru_init();
             loadINI();
             // 先设置全局样式（指定具体颜色，而不是依赖默认值）
             dg_upgradeProcessBar.DefaultCellStyle.BackColor = Color.White;
@@ -97,7 +98,6 @@ namespace Debug {
             // 绑定文件放下事件
             this.tb_fileHpm.DragDrop += tb_fileHpm_DragDrop;
             this.tb_fileTelnet.DragDrop += tb_fileHpm_DragDrop;
-
 
         }
         private void tb_fileHpm_DragEnter(object sender, DragEventArgs e)
@@ -613,6 +613,49 @@ namespace Debug {
                 string cmdStr = cmd.Trim();
                 await ipmiResultParse.SendIPMICmdBatchAsync(ipTails, cmdStr);
             }
+        }
+        // ********* fru
+        private void bru_init()
+        {
+            var dataSource = Fru.FruTable.Select(kvp => new
+            {
+                Key = kvp.Key,           // 实际的英文 Key (如 "product_name")
+                DisplayName = kvp.Key.PadRight(18) + "  " + kvp.Value.DisplayName // 显示的中文 (如 "产品名称")
+            }).ToList();
+
+            cb_fruCmd.DataSource = dataSource;
+            cb_fruCmd.DisplayMember = "DisplayName"; // 绑定显示字段
+            cb_fruCmd.ValueMember = "Key";           // 绑定实际值字段
+        }
+        private async void bt_fruUpdate_Click(object sender, EventArgs e)
+        {
+            dg_upgradeProcessBar.Rows.Clear();
+            ipRowMap.Clear();
+            string[] ipTails = GetRange.GetIPRange(cb_upgradeIP.Text.Trim()).ToArray();
+            if (ipTails.Length == 0)
+            {
+                tb_upgradeLog_AppendText("指定 的IP 地址，格式错误");
+                return;
+            }
+            try
+            {
+                List<string> cmdList = Fru.GenerateCommands(cb_fruCmd.SelectedValue.ToString(), tb_fruContext.Text);
+                foreach (var cmd in cmdList)
+                {
+                    if (cmd.Trim().Length == 0)
+                    {
+                        continue;
+                    }
+                    IpmiResultParse ipmiResultParse = new IpmiResultParse(tb_upgradeLog_AppendText, tb_loginUserName.Text, tb_loginPwd.Text);
+                    string cmdStr = cmd.Trim();
+                    await ipmiResultParse.SendIPMICmdBatchAsync(ipTails, cmdStr);
+                }
+            }
+            catch (Exception ex)
+            {
+                tb_upgradeLog_AppendText(ex.Message);
+            }
+            
         }
     }
 }

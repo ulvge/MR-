@@ -44,6 +44,10 @@ namespace Debug {
             this.label6 = new System.Windows.Forms.Label();
             this.tb_ipmiCmds = new System.Windows.Forms.TextBox();
             this.bt_ipmiCmdList = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.cb_fruCmd = new System.Windows.Forms.ComboBox();
+            this.tb_fruContext = new System.Windows.Forms.TextBox();
+            this.bt_fruUpdate = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dg_upgradeProcessBar)).BeginInit();
             this.SuspendLayout();
             // 
@@ -246,6 +250,41 @@ namespace Debug {
             this.bt_ipmiCmdList.UseVisualStyleBackColor = true;
             this.bt_ipmiCmdList.Click += new System.EventHandler(this.tb_ipmiCmdList_Click);
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(42, 433);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(23, 12);
+            this.label7.TabIndex = 1;
+            this.label7.Text = "Fru";
+            // 
+            // cb_fruCmd
+            // 
+            this.cb_fruCmd.FormattingEnabled = true;
+            this.cb_fruCmd.ItemHeight = 12;
+            this.cb_fruCmd.Location = new System.Drawing.Point(118, 425);
+            this.cb_fruCmd.Name = "cb_fruCmd";
+            this.cb_fruCmd.Size = new System.Drawing.Size(292, 20);
+            this.cb_fruCmd.TabIndex = 32;
+            // 
+            // tb_fruContext
+            // 
+            this.tb_fruContext.Location = new System.Drawing.Point(477, 424);
+            this.tb_fruContext.Name = "tb_fruContext";
+            this.tb_fruContext.Size = new System.Drawing.Size(154, 21);
+            this.tb_fruContext.TabIndex = 2;
+            // 
+            // bt_fruUpdate
+            // 
+            this.bt_fruUpdate.Location = new System.Drawing.Point(657, 422);
+            this.bt_fruUpdate.Name = "bt_fruUpdate";
+            this.bt_fruUpdate.Size = new System.Drawing.Size(75, 23);
+            this.bt_fruUpdate.TabIndex = 31;
+            this.bt_fruUpdate.Text = "fru更新";
+            this.bt_fruUpdate.UseVisualStyleBackColor = true;
+            this.bt_fruUpdate.Click += new System.EventHandler(this.bt_fruUpdate_Click);
+            // 
             // UpgradeBMC
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -257,14 +296,18 @@ namespace Debug {
             this.Controls.Add(this.tb_upgradeLog);
             this.Controls.Add(this.checkBox_decryptOnly);
             this.Controls.Add(this.cb_ipmiCmd);
+            this.Controls.Add(this.cb_fruCmd);
             this.Controls.Add(this.cb_upgradeIP);
             this.Controls.Add(this.bt_ipmiCmdList);
             this.Controls.Add(this.bt_ipmiCmd);
+            this.Controls.Add(this.bt_fruUpdate);
             this.Controls.Add(this.bt_hpm);
             this.Controls.Add(this.tb_fileHpm);
+            this.Controls.Add(this.tb_fruContext);
             this.Controls.Add(this.tb_loginPwd);
             this.Controls.Add(this.tb_loginUserName);
             this.Controls.Add(this.tb_fileTelnet);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -305,5 +348,9 @@ namespace Debug {
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox tb_ipmiCmds;
         private System.Windows.Forms.Button bt_ipmiCmdList;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox cb_fruCmd;
+        private System.Windows.Forms.TextBox tb_fruContext;
+        private System.Windows.Forms.Button bt_fruUpdate;
     }
 }
