@@ -471,6 +471,7 @@ namespace Debug {
         private bool _isUpgradeHpmRunning = false;  // 状态标志
         private bool _isFormLoaded;
 
+        private DateTime _lastHPMClickTime = DateTime.Now;
         private async void bt_hpm_Click(object sender, EventArgs e)
         {
             string filePath = tb_fileHpm.Text;
@@ -484,12 +485,19 @@ namespace Debug {
                 tb_upgradeLog_AppendText("❌ 文件扩展名错误，仅允许 .hpm 文件\r\n");
                 return;
             }
+            var now = DateTime.Now;
+            if(((now - _lastHPMClickTime).TotalMilliseconds > 5000) && (_isUpgradeHpmRunning)) {
+                // 两次点击间隔小于1秒，做特别的事情
+                _isUpgradeHpmRunning = false;
+                tb_upgradeLog_AppendText("强行取消上一次的操作\r\n");
+            }
             if (_isUpgradeHpmRunning)
             {
-                Console.WriteLine("操作正在进行中，请勿重复点击");
+                tb_upgradeLog_AppendText("❌ 上一次操作正在进行中，等待结束\r\n");
                 return;
             }
-            // 设置标志
+            _lastHPMClickTime = DateTime.Now;
+                // 设置标志
             _isUpgradeHpmRunning = true;
             try
             {
