@@ -215,19 +215,29 @@ namespace BmcUpgradeTool
                     else
                     {
                         Console.WriteLine($"❌ 启动更新返回了错误信息: {json["Messages"]}");
+                        return (false, json["Messages"]?.ToString());
+                    }
+                } else if(response.StatusCode == HttpStatusCode.BadRequest) {
+                    string error = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"❌ 启动更新失败: {response.StatusCode}, 信息: {error}");
+                    if (error.Contains("An upgrade is in progress. Please wait")) {
+                        return (false, "系统正在重启或升级等操作，请稍候再操作");
+                    } else {
+                        return (false, error);
                     }
                 }
-                else
+                else 
                 {
                     string error = await response.Content.ReadAsStringAsync();
                     Console.WriteLine($"❌ 启动更新失败: {response.StatusCode}, 信息: {error}");
+                    return (false, error);
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"❌ 启动更新请求异常: {ex.Message}");
+                return (false, ex.Message);
             }
-            return (false, null);
         }
 
         /// <summary>
@@ -270,10 +280,13 @@ namespace BmcUpgradeTool
                         // 获取第一条消息的 Message 字段
                         msgText = messages?["Message"]?.ToString();
                         if (string.IsNullOrEmpty(msgText)) continue;
-
+                        Console.WriteLine("response Msg: " + msgText);
 
                         string percent = json["PercentComplete"]?.ToString();
-
+                        if (msgText.Contains("The upgrade file does not match the device to be upgraded")) {
+                            Log(new BMCProgressInfo(bmcIp, percent, "升级包上传过程中，发生错误。请重试"));
+                            return (false, "升级包上传过程中，发生校验错误。请重试");
+                        }
                         // 判断关键状态 (完全照搬你的 Python 逻辑)
                         if (msgText.Contains("Upgrading the WhiteBranding is complete") ||
                             msgText.Contains("Upgrading the BMC is complete") ||

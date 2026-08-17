@@ -73,7 +73,7 @@ namespace BmcUpgradeTool
                 Log($"{currentIp} 正在请求启动更新任务...\r\n");
                 var (startSuccess, taskId) = await client.StartUpdateAsync(remotePath, currentIp);
                 if (!startSuccess || string.IsNullOrEmpty(taskId)) {
-                    Log(new BMCProgressInfo(currentIp, "0", "启动更新任务失败，终止升级"));
+                    Log(new BMCProgressInfo(currentIp, "0", taskId));
                     return; 
                 }
                 Log($"{currentIp} ✅ 升级任务已启动，TaskID: {taskId}\r\n");
@@ -88,7 +88,7 @@ namespace BmcUpgradeTool
                 }
                 else
                 {
-                    Log(new BMCProgressInfo(currentIp, "0", "升级失败或超时，终止升级"));
+                    Log(new BMCProgressInfo(currentIp, "0", finalMsg));
                 }
 
                 Log($"{currentIp} 准备退出...\r\n");
