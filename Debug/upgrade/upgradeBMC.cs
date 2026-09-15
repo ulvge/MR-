@@ -556,25 +556,24 @@ namespace Debug {
                 tb_upgradeLog_AppendText("指定 的IP 地址，格式错误");
                 return;
             }
-            if (cb_ipmiCmd.Text == g_queryBMCFirmwareKey)
+            string cmdOnly = cb_ipmiCmd.Text.Split('|')[0];
+            if (cmdOnly == g_queryBMCFirmwareKey)
             {
                 var batchManager = new RedfishManager(tb_upgradeLog_AppendText);
                 _ = batchManager.GetFirmwaretBatchAsync(ipTails, DeviceType.BMC);
-            }else if (cb_ipmiCmd.Text == g_queryBIOSFirmwareKey)
+            }else if (cmdOnly == g_queryBIOSFirmwareKey)
             {
                 var batchManager = new RedfishManager(tb_upgradeLog_AppendText);
                 _ = batchManager.GetFirmwaretBatchAsync(ipTails, DeviceType.BIOS);
             }
-            else if (cb_ipmiCmd.Text == g_powerReset)
+            else if (cmdOnly == g_powerReset)
             {
                 await powerReset(ipTails);
             }
             else
             {
                 IpmiResultParse ipmiResultParse = new IpmiResultParse(tb_upgradeLog_AppendText, tb_loginUserName.Text, tb_loginPwd.Text);
-
-                string cmd = cb_ipmiCmd.Text; //  "power status";
-                _ = ipmiResultParse.SendIPMICmdBatchAsync(ipTails, cmd);
+                _ = ipmiResultParse.SendIPMICmdBatchAsync(ipTails, cmdOnly);
             }
 
         }

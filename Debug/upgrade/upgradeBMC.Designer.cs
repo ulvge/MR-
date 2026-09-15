@@ -206,6 +206,8 @@ namespace Debug {
             "power reset",
             "power on",
             "power off",
+            "raw 0x30 0x93 0xDB 0x07 0x00 0x07 0x00 0xAA | 设置还原点",
+            "raw 0x30 0x93 0xDB 0x07 0x00 0x07 0x00 0x55 | 查询否设置完成。0设置中，1设置完成",
             "sol activate",
             "sol deactivate"});
             this.cb_ipmiCmd.Location = new System.Drawing.Point(118, 245);
